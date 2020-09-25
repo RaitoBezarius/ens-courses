@@ -1,0 +1,58 @@
+INTRODUCTION TO COGNITIVE NEUROSCIENCES
+
+Session 1
+
+Obective : help why you would learn about Neurosciences (what are your objectives learning the course)
+Quick eval of previous knowledge
+Presentation of the module
+
+Program today:
+Position of neuroscience within cogscience
+Are cognitive neurociences necessarily reductionist
+Why should we care about neural impelementation
+Know what you know and assess what you need to learn
+Course organization
+
+Infer minds to other > projecting intentions
+
+(David Marr's levels of explanation)
+* "Computational theory"
+= goal of the system ?
+what is the goal of x? (evolutionary perspective for instance)
+
+* Representation and algorithm
+What are the representations that we need to do x?
+What kind of operations will we perform on it?
+
+* Hardware implementation
+Electronics => how to implement an algorithm...
+
+
+Are cognitive neurosciences necessarily reductionnist ? ie will it render the other disciplines useless ?
+
+Horace Barlow (1953) : link between neuronal selectivity and behaviour : gangion cell of the frog's retina
+"Thinking is brought about by neurons and we should not use phrases like
+	'unit activity relects, reveals, or monitors thought processes', becaue the activities of neurons, quite simply, are thought processes".
+
+
+examples where a psychological construct has explainatory power without knowing the implementation ?
+-> model of respons time : random oriented walk (attention on the stimulus or not) => accumulation process
+-> ambiguity reduction by combining evidence with priors (Bayes formula) + neuronal firing can "encode" probability
+
+Why should we care about the implementational level?
+Philip Johnson-Laird (1983)
+"The computer is the last metaphor; it need never be supplanted"
+
+But there are some examples that proove that the implementation is key in understanding some functions :
+> drugs
+> computational limitation
+> ...
+
+Does it matter that the mind is matter ?
+> change the way we teach...
+> psychiatric diseases
+
+Objectives of the courses:
+> overview of current knowledge
+> bridging different levels of description from molecular/cellular to psychology
+> basic knowledge on techniques and logic of investigation in neuroscience
