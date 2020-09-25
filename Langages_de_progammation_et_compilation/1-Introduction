@@ -1,0 +1,94 @@
+==Langage de programmation et compilation==
+
+Objectifs :
+> maîtriser les mécanismes de la compilation
+> comprendre les différents aspects des langages de programmation
+
+Ici on programme bcp (en OCaml)
+
+Il n'y a pas de bon lagage, il n'y a que de bons programmeurs
+=> lire "La programmation en pratique" Kenighan & Pike
+
+
+--Mise à niveau OCaml--
+Astuce : utiliser des nombres en base 2 
+pour représenter des données pour utiliser les opérateurs bitwise 
+=> land, lor, lsl, lsr Ecrire nombres en binaire: 0b10
+let () = blah blah
+	=> permet d'exéctuter des instructions sans poser de pb de type
+
+Exceptions :
+	ex :
+raise Not_found
+try blah with Not_found -> yaddayadda
+Déclaration d'exception ;
+exception Error
+exception Error of string
+
+Pour des gros programmes :
+	> modularité
+	> encapsulation
+	> éviter la duplication de code
+En OCaml : modules
+
+arith.ml |> compil (ocamlopt -c arith.ml) |> autre module main.ml
+	|> compil (ocamlopt -c main.ml)
+	|> ocamlopt arith.cmx main.cmx -o main
+
+Encapsulaition:
+On peut restreindre les valeurs exportées avec une interface:
+	(arith.mli)
+val round: float -> float
+Il faut que l'interface soit cohérente avec le module
+Type abstrait => type t mais on ne dit pas lequel c'est
+La compilation d'un fichier ne dépend que des interfaces
+des fichiers utilisés (compil séparée)
+
+Modules non resstreints aux fichiers :
+module M = struct
+(comme dans un fichier)
+end
+Idem pour les signatures (= ce qu'il y a dans les interfaces)
+module type S = sig
+...
+end
+Contrainte : module M:S = struct
+
+Foncteur = module paramétré par un ou plusieurs autres modules
+ex : table de hachage générique
+	> il faut paramétrer par rapport aux fonctions
+	de hachage et d'égalité
+module HashTable(K: KEY) = struct
+avec
+module type KEY = sig
+	type key
+	val hash : key -> int
+	...
+end
+
+=> K.hash, K.key dans le module Foncteur
+Interface foncteur:
+module HashTable(K : KEY): sig
+	type 'a t
+	val create :int -> 'a t
+	...
+end
+Pour l'utiliser : module Hash=HashTable(Int) où Int est un bon module
+Utilisation des foncteurs :
+	> structures de données paramétrées par d'autres types de données
+	> Algorithmes paramétrés par des structures de données
+
+Ex : écrire un foncteur pour calculer modulo m:
+
+module Modular(M: sig val m:int end): sig
+	(* arithmétique dans Z/mZ *)
+	type t
+	val of_int : int -> t
+	val add: t -> t -> t
+	val sub:
+	val mul:
+	val div:
+
+Ce n'est pas parce qu'on peut qu'on doit généraliser
+Suggestion : écrire un foncteur si il s'agit d'une bibliothèque générique
+ou si on a au moins deux instances à en faire
