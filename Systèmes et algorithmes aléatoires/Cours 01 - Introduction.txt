@@ -50,7 +50,7 @@ X_{n+1} = max(X_n-1,0) + A_n où A_n décrit le nombre d’arrivé
 Def : Chaîne de markov :
 	- Soit {X_n, n\in \mathbb{N}} une suite de variables aléatoires à valeurs dans un espace d’états E au plus dénombrables.
 	- Le processus {X_n} est appelé chaîne de Markov à temps discret sur E si pour tout n \in \mathbb{N}, pour tous i,j,i_0,…,i_{n-1} \in E
-P(X_{n+1} | X_n=i,X_{n-1}=i_{n-1},…,X_0=i_0) = P(X_{n+1}=j|Xn = i) càd dpl indépendant de l’historique
+P(X_{n+1}=j | X_n=i,X_{n-1}=i_{n-1},…,X_0=i_0) = P(X_{n+1}=j|Xn = i) càd dpl indépendant de l’historique
 
 Questions sur l’exemple :
 	Comportement asymptotique ?
@@ -66,7 +66,7 @@ Une tribu sur Ω est une famille F de sous-ensembles de Ω qui est :
 - stable par intersection
 - stable par complémentaire
 - stable par union dénombrable
-On utiliseras souvent P(Ω) (= 2^Ω)
+On utiliseras souvent P(Ω) (de cardinal 2^|Ω|)
 
 Exemple des événements plus complexes (non dénombrable) : 
  - Ω = {0,1}^N. Les épreuves : w = (w_0,…) des lancers de pièces
@@ -102,20 +102,20 @@ Exercice : Vérification d’une multiplication matricielle AB ?= C
 1) Vérification en O(n^3) en naïf (meilleur connu est en O(n^2.37))
 On utilise un algo probabiliste
 Soit r \in {0,1}^n
-2) Complexité pour vérifier ABr = Cr ?
+2) Complexité pour vérifier ABr = Cr ? En O(n^2) au total
 3) Probabilité de se tromper ? 
 Correction : on pose la différence D = AB-C et on peut majorer (sauvagement) que P(Dr_i=0)<= 1/2
 
 
 	*Variable aléatoire*
 rappel de prépa… (voir slide si besoin) : définitions, propriétés, combinaison de VA, indépendance de VA, notation,…
-Loi constante, loi de Bernouilli (P(X=0) = 1-p,P(X=1) = p), loi binômiale (somme de lois de Bernouilli), loi géométrique (P(X=n) = p(1-p)^{p-1}, sans mémoire donc hyper importante pour nous)
+Loi constante, loi de Bernouilli (P(X=0) = 1-p,P(X=1) = p), loi binômiale (somme de lois de Bernouilli), loi géométrique (P(X=n) = p(1-p)^{n-1}, sans mémoire donc hyper importante pour nous)
 
 Rappel à faire nous même : espérance (qui est linéaire, monotone, positive), variance, …
 Si X et Y indépendantes alors E[XY] = E[X]E[Y]
 Espérance conditionnelle : espérance calculé avec les probabilités conditionnelles
 
-Variance : Var(X) = E[(X-E[X])^2] = E[X^2] = E[X]^2
+Variance : Var(X) = E[(X-E[X])^2] = E[X^2] - E[X]^2
 Cov(X,Y) = E[(X-E[X])(Y-E[Y])]
 Var(X+Y) = Var(X) + Var(Y) + Cov(X,Y)
 
