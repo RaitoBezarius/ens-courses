@@ -1,0 +1,39 @@
+
+Séance du 24 septembre
+
+Tatiana (… de texte) -> 6 premiers cours + TD1 
+Pierre (théorie des graphes) -> La suite + TD2 
+
+Site du cours mode où https://bit.ly/2HuPW1D (raccourci)
+Il y auras des video, slides et fiche de TD ainsi que toutes les annonces
+
+*présentation du Moodle*
+ -> Forum (si question envoyer sur le forum que tout le monde en profite)
+ -> Chat
+ -> ∆ Faire le Background : let us know what you know (le mégaphone sur la page du cours)
+   « On sait que le groupe n’est pas homogène. Merci de communiquer pour que le cours soit intéressant pour chacun »
+ -> Notes
+
+Cours en vidéo posté idéalement une semaine avant le cours. On la regarde avant de venir. Chaque groupe vient sur la moitié du cours pour poser des questions sur le cours. 
+ -> ∆ Séance obligatoire même si on n’as pas de questions car on parleras aussi des questions de TD.
+ -> Cours en anglais mais il y a des sous-titres (si pas à la bonne vitesse il est possible de changer la vitesse de lecture)
+ -> Même si on connait le sujet ça peut être utile de regarder la vidéo (voir en x2)
+ -> Tous les cours sont basé sur le CLRS (aka Introduction to Algorithms), tous les cours donnent les références dans le livre et il est recommandé de le télécharger en pdf.
+ -> Parfois d’autres livres sont utilisé
+ -> Les cours sont nommé de la forme « lecture x ep y ». Le x correspond à la séance et les différents épisodes sont tous à visionner et existent pour faciliter l’enregistrement.
+
+Après 6 séance on échange qui vient à 8h30.
+
+« C’est la première fois qu’on fait ça. Merci de nous donner des retour, on est ouvert aux critiques »
+
+Les TD se passent normalement mais tout est sur papier
+
+4 DM noté + un examen de 3h (∆ possible d’avoir des question du style « on a vu tel algo en cours, décrivez le et prouvez qu’il marche » )
+
+Les DM seront à rendre sur Moodle :
+ -> possibilité d’écrire directement ou upload pdf ou word
+ -> questions de code à programmer directement sur Moodle (en python) qu’on peut tester directement sur le site (+ possibilité de faire 3 soumissions)
+
+Le TD du vendredi est en Fr, le reste en anglais. On peut soumettre ses DM en anglais (si on aime le challenge) et ce seras utile pour le stage de M1.
+
+∆ Faire le test Background
