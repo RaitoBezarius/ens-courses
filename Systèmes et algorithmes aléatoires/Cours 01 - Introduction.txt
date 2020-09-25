@@ -1,0 +1,159 @@
+
+Une introduction aux algorithmes aléatoires
+
+Q&A toutes les semaines pour raison de disponibilité de salles
+
+Thème : probabilités discrètes (espaces au plus dénombrables) et applications
+
+Le cours inté et proba de L3 est complémentaire de ce cours car regarde le cas générale des proba
+Cependant le cours de math est plus sur la théorie et moins sur la modélisation/les applications
+
+Références : voir slide. Deux livres sur les deux parties du cours (proba discrète et modèles markoviens)
+
+Plan : 
+- Probabilité discrètes
+ -> Rappel sur les proba de prépa (rapide pour qu’on ne s’ennuie pas trop)
+ -> Algo aléatoire (calculer la probabilité de trouver qqch en prenant aléatoirement et si P>0 alors il en existe bien un)
+ -> Méthode probabiliste
+ -> Graphes aléatoires
+- Modèles markoviens
+ -> Chaînes de Markov, comportement asymptotique
+ -> Simulation Monte Carlo et simulation parfaite
+ -> Extensions et applications
+
+Il y auras des devoir maison (sûrement des petites vidéo de présentation de travail personnel)
+
+
+				- - Cours- -
+
+		*Introduction*
+
+Algorithme déterministe : pour chaque entré il existe une et une seule valeur de sortie
+
+Parfois on veut une réponse rapide et correcte mais on ne sait pas toujours faire un algo déterministe. Même du O(n^3) n’est pas assez rapide parfois si n est trop grand.
+
+Algorithme aléatoire : on peut ajouter un aléa sous la forme de bits aléatoires : la sortie n’est plus unique à chaque entrée.
+-> Option 1 : toujours correct et rapide dans la plupart des cas
+-> Option 2 : correct dans la plupart des cas, mais rapide dans tous les cas (utile si on peut borner l’erreur)
+
+Exemple : vérifier l’égalité de deux polynômes.
+ - naïf : Algo en O(d^2) on développe les deux polynômes et on vérifie l’égalité
+ - probabiliste : On prend un point aléatoire et on regarde si F et G sont égaux en ce point. Par exemple si on prend r dans {1,…,100d} on a 1/100 de se tromper si F != G (mais algo en O(d)).
+	Si on veux diminuer la probabilité de se tromper on augmente le nb de valeurs possible pour r ou on réalise plusieurs expériences aléatoires.
+
+∆ Si on fait un algo probabiliste il ne faut pas dépasser la complexité d’un algorithme naïf !
+
+Étude du cas d’une file d’attente.
+On note X_n la taille de la file à l’instant n.
+X_{n+1} = max(X_n-1,0) + A_n où A_n décrit le nombre d’arrivé
+
+Def : Chaîne de markov :
+	- Soit {X_n, n\in \mathbb{N}} une suite de variables aléatoires à valeurs dans un espace d’états E au plus dénombrables.
+	- Le processus {X_n} est appelé chaîne de Markov à temps discret sur E si pour tout n \in \mathbb{N}, pour tous i,j,i_0,…,i_{n-1} \in E
+P(X_{n+1} | X_n=i,X_{n-1}=i_{n-1},…,X_0=i_0) = P(X_{n+1}=j|Xn = i) càd dpl indépendant de l’historique
+
+Questions sur l’exemple :
+	Comportement asymptotique ?
+	Quel est la taille moyenne de la file ?
+	Et si le nb de client double quoi faire pour garder le même temps d’attente ?
+	Si deux files d’attentes, faut-il avoir des salles d’attente séparés ou communes ?
+
+		*Tribus et évènements* (très rapide, se référer aux slides)
+
+Un univers Ω - un ensemble qui décrits toutes les possibilités d’une expérience. Les éléments de Ω sont appelé les événements élémentaires.
+
+Une tribu sur Ω est une famille F de sous-ensembles de Ω qui est :
+- stable par intersection
+- stable par complémentaire
+- stable par union dénombrable
+On utiliseras souvent P(Ω) (= 2^Ω)
+
+Exemple des événements plus complexes (non dénombrable) : 
+ - Ω = {0,1}^N. Les épreuves : w = (w_0,…) des lancers de pièces
+ - Soit A l’ensemble des lancers où les k premiers sont fixé.
+ - Les événements de type A ne sont pas stables par union dénombrables
+
+Def : probabilité : application de la tribu vers [0,1] avec :
+(a) P(Ω) = 1
+(b) P respecte la propriété de ∑-additivité
+
+Proposition : 
+1) P(A^c) = 1-P(A)
+2) P(ø) = 0
+3) P(A) <= P(B) si A <= B
+4) P(U A_i) <= ∑P(A_i)
+5) P(AuB) = P(A)+P(B)-P(AnB)
+
+Théorème : Soit (A_n)n une suite croissante pour l’inclusion. On a P(UA_n) = lim P(A_n)
+Théorème 2 : De même pour l’intersection
+
+
+Théorème : Si les C_k sont mutuelements indépendants alors P(nC_k) = ∏P(C_k)
+
+Probabilité conditionnelles  : P(A|B)P(B) = P(AnB)
+
+Remarque : Si A et B sont indépendant alors P(A|B) = P(A)
+
+Théorème P(E_1 n … n E_k ) = P(E_1) P(E_2 | E_1)  … P(E_k | E_1 n E_2 n … n E_{k-1})
+
+Méthode pour l’exemple des polynômes : plusieurs tirages. On peut ou non vérifier que chaque tirage est distinct des précédant pour diminuer la probabilité de se tromper. (cette probabilité baisse aussi dans le cas de racines multiples)
+
+Exercice : Vérification d’une multiplication matricielle AB ?= C
+1) Vérification en O(n^3) en naïf (meilleur connu est en O(n^2.37))
+On utilise un algo probabiliste
+Soit r \in {0,1}^n
+2) Complexité pour vérifier ABr = Cr ?
+3) Probabilité de se tromper ? 
+Correction : on pose la différence D = AB-C et on peut majorer (sauvagement) que P(Dr_i=0)<= 1/2
+
+
+	*Variable aléatoire*
+rappel de prépa… (voir slide si besoin) : définitions, propriétés, combinaison de VA, indépendance de VA, notation,…
+Loi constante, loi de Bernouilli (P(X=0) = 1-p,P(X=1) = p), loi binômiale (somme de lois de Bernouilli), loi géométrique (P(X=n) = p(1-p)^{p-1}, sans mémoire donc hyper importante pour nous)
+
+Rappel à faire nous même : espérance (qui est linéaire, monotone, positive), variance, …
+Si X et Y indépendantes alors E[XY] = E[X]E[Y]
+Espérance conditionnelle : espérance calculé avec les probabilités conditionnelles
+
+Variance : Var(X) = E[(X-E[X])^2] = E[X^2] = E[X]^2
+Cov(X,Y) = E[(X-E[X])(Y-E[Y])]
+Var(X+Y) = Var(X) + Var(Y) + Cov(X,Y)
+
+Rappel des variances des loi sur le slide
+
+Théorème (inégalité de Jensen) : E[f(X)] >= f(E[X]) si f est convexe
+
+Théorème (inégalité de Markov) : P(X >= a) <= E[X]/a si a>0 et X>=0
+
+Théorème (inégalité de Tchebychev) : P(|X-E[X]|>=a) <= Var(X)/a^2
+
+Exemple : proba d’avoir au moins 3n/4 fois face en n lancers de pièces 
+ - <= 2/3 d’après Markov
+ - <= 4/n avec Tchebychev
+
+Exemple : collectionneur de coupon
+ - Il y a n image et dans chaque boîte acheté il gagne une image de manière uniforme
+ - Combien de boîte pour obtenir les n images ?
+ - On découpe le problème en : combien de temps on met pour obtenir la i-ème image après avoir obtenu la i-1-ème. Donc X = ∑X_i
+ - Les X_i suivent une loi géométrique de paramètre (n-(i-1))/n et les X_i sont indépendants.
+ - On obtient que E[X] = nH(n)
+ - Markov : P(X>= 2nH(n)) <= nH(n)/(2nH(n)) = 1/2
+ - Tchebychev : P(…) <= π^2/(6H(n)^2) = O((1/ln n)^2)
+ - Inégalité de Boole (union bound) -> majoration par O(1/n)
+
+		*Classification des algo probabilistes*
+
+	- Algorithmes de Monte Carlo
+Erreur autorisé mais la complexité est déterministe de la donnée
+∆ Attention : si la probabilité d’erreur d’un algo de monte carlo est de p alors l’algo se trompe avec une erreur d’au plus p pas qu’une proportion p d’entré renverras une réponse fausse.
+
+Erreur unilatéral : une des deux réponse vrai/faux seras tjrs exacte (ex : les polynômes)
+Erreur bilatérale : peut se tromper sur les deux réponses
+Méthode : si l’erreur est <= 1/2 on peut faire pls fois l’expérience et conserver la réponse majoritaire.
+
+	- Algorithmes de Las Vegas
+
+La réponse est toujours exacte mais pas toujours rapide
+-> Complexité moyenne finie que l’on cherche à minimiser (mais parfois pas de complexité maximale)
+Par exemple le tri rapide où on sélectionne le pivot aléatoirement
+
