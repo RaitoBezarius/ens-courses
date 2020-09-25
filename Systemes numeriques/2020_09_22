@@ -1,0 +1,272 @@
+SYSTEMES NUMERIQUES
+
+Objectif : développer un microporcesseur, développer du code logicel, faire tourner une application
+Emphasis on energy and time
+Tech : FPGA (Field Programmable Gate Array), ASIC (Application Specific)
+Complexiy management
+CPU and programmation
+
+"vous n'allez pas en lire beaucoup dans votre vie" ie le cours sert à rien
+
+Rapidité : fréquence de l'horloge, parallélisme, 
+	anticipation des opérations futures (éviter les jump à tout bout de champ qui vont perdre le processeur, les disjonctions de cas...)
+
+Électronique : secteur le + innovant en termes de brevet. Bcp de "zaibatsu" parmi les principales entreprises
+
+Profits : fab-less (conçeption mais pas conception) -> Qualcom, AMD, Broadcom, NVidia, MediaTek...
+Architecture libre de processeurs qui est en train d'émerger (RISC-V)
+RISC-V étant ouvert a vocation à être (plus) universel (portabilité, voie vers l'optiisation ?)
+
+En pratique on n'écrit pas en assembleur parce que l'assembleur dépend en grande partie du processeur,
+	 physiquement (d'où l'intérêt de la compilation)
+
+Pourquoi s'y intéresser ?
+	> Comprendre le software
+	> Performance (circuits fondus sur mesure) ex Kalray (à Grenoble) -> autonomous cars...
+	> Low-power -> plus économe de faire sur hardware que software
+	> Securité -> données sensibles dans des parties matérielles isolées et dont l'accès est contôlé matériellement
+	> Sûreté -> éviter le plantage (un seul bit qui plante fait planter tout le proc) => code correcteur, bits de parité...
+
+Loi de Moore (2x plus de transistors tous les 18 mois)
+Ajd : ~10nm. Plus de processeurs que d'êtres humains
+
+Transistor :
+(vue de coupe)
+	______________
+	|   Grille   |
+	|   (oxide)  |
+--------------------------
+ |Source|==channel== |Drain|   (Si)
+
+(vue du dessus)
+	|-------|
+	|	|
+________|_______|________
+|	|	|	|
+|Source	|Grille	|Drain	|
+|_______|_______|_______|
+	|	|
+	|	|
+	|_______|
+
+Grille : doit être "activée" pour que les électrons puissent passer dans le canal
+
+
+Technologie planaire (CMOS) -> ~27nm
+Ajd : on "plie" pour être sur de plus petites dimensions
+L'oxide doit être très très bon car très très fin (~1nm ajd)
+
+Loi de Moore :
+(beta = sqrt(2), facteur d'échelle)
+W |-> W/beta pour la longueur
+Idem pour l'épaisseur d'oxyde
+Idem pour la tension d'alimentation
+Idem pour la tension de seuil
+
+Inverseur :
+Threshold => évite les perturbations par le bruit
+output	^
+	|...
+	|  |.
+	|    .
+	|  |  .
+	|      .
+	|__|____...___> input
+	   vT  
+vT ; threshold
+
+Evolution des capacités parasites
+C_par(beta) = (W/beta)(L/beta)(beta*C'ox)=Cpar/beta
+Evolution de l'énergie consommée par une porte
+E_porte(beta) = Cpar/beta * (V_dd/beta)^2 = E_porte/beta^3
+(V_dd : tension d'alim.)
+Temps de propagation :
+t_prop(beta) = t_prop/beta
+
+Diminuer la conso :
+On n'exploite pas le gain en vitesse : F_h(beta) = F_h (freq. d'horloge)
+Le gain en surface fait diminur les prix : Surf(beta)=Surf/beta^2
+La consommation dimine : P_circuit(beta) = F_h*E_circuit(beta) = P_circuit/beta^3 (cf énergie)
+
+Cette stratégie est particulièrement efficace dans l'embarqué : transition du haut de gamme vers le bas de gamme
+(loi de Moore à fréquence constante)
+
+Augmenter les performances
+F_h(beta) = beta*F_H
+Surf(beta) = Surf
+P_circuit(beta) = P_circuit
+> type serveur : plus de puissance de calcul et plus de parallélisme
+
+Dans la pratique ça ne fonctionne plus si bien
+> la vitesse stagne (trop de dissipation thermique)
+> on s'écarte du modèle théorique...
+
+Prix du transistor baisse de manière exponennetiel (cf intel)
+
+Infrastructure : 
+Différents niveaux de routage dans le processeur
+	=> plus on va vers l'extérieur, plus c'est large (à cause de la nature cristalline de Si et des surface métalliques)
+
+Trivia : M.Moore toujours vivant
+
+Signal électrique, suppoert de l'information
+> électronique numérique (valeurs discrétisées)
+
+Discrétiser le signal dans le temps : échantillonage
+Représenter le signal par un nombre fini de valeurs (de nombres) : quantification
+
+Pb : on n'a "pas envie" d'échantilloner au moment de la transition entre 2 états
+Dans notre cas : quantification en 0/1
+
+En pratique : signal bruité
+
+Intérêt :
+	> reproduire l'info
+	> indépendance du support utilisé
+
+En pratique, pour avoir plus que 2 états en base 2:
+	> plusieurs fils
+	> binaire...
+
+Convention :
+> 2 niveaux de tension (0/5V, -12/12V...)
+
+Génération d'un signal binaire :
+(cf diapo)
+
+(not)
+________|Vdd
+|	|
+|	resistance
+|	|
+|	|--------
+|		|
+|	/	|sortie
+|	|	|
+|_______|_______| 
+|
+masse
+
+
+Interrupteur = transistor :
+
+Vin	| Vs	| In	|| Out
+<Vref	| Vdd	| 0	|| 1
+>Vref	| 0	| 1	|| 0
+
+En mettant en parallèle plusieurs transistors, on fait une porte "ou" (en réalité NOR)
+En en mettant en série, on fait un NAND
+
+Fonction de mémorisation (RS NOR Latch)
+Transistor 1 alimenté par la sortie de transistor 2
+Transistor 2 alimenté par la sortie de transistor 1
+(cf caractéristique)
+2 états stables possibles pour (Va, Vb) : (V_dd, V_min) ou (V_min, V_dd)
+Pas terrible comme système de mémorisation : pas de point de départ programmable
+(penser à faire joujou avec des torches redstone sur Minecraft pour voir comment ça fonctionne)
+
+(ce modèle est NMOS => consomme en continu)
+
+
+Logique booléenne
+Variable logique à valeur dans E={0,1}
+Fonction combinatoire : s(t)=F(e_i(t))
+Fonction séquentielle : s(t)=F(e_i(t),e_i(t-t_1))
+
+Représentation :
+> tables de vérité
+> analytique
+> graphique
+> HDL (Hardware Description Language) : langage "informatique" de description de matériel
+
+(cf diapo pour les symboles)
+NOT :
+
+   |\
+e -| o- s	s = not(e) (e barre)
+   |/
+
+
+AND : s = a.b (ou a^b)
+
+OR : s = a+b (ou avb)
+
+Fonction inverseuses : utiles car ce sont celles qui apparaissent naturellement avec les transistors
+(not = rond pour les schémas)
+
+Théorème de De Morgan : 
+	not(a.b) = not(a)+not(b)
+	not(a+b) = not(a).not(b)
+
+Exercice :
+Comment réaliser un XOR ? AND(OR(a,b),NAND(a,b))
+XOR (cf diapo)
+s = a(+)b (+ rond)
+s = a.not(b)+not(a).b
+XNOR : cf diapo
+
+Comment réaliser un AND ? NOR(NOT(a),NOT(b))
+
+Exercice : multiplexeur
+S = E0 si Sel = 0
+S = E1 si Sel = 1
+
+S = Sel.E1 + NOT(Sel).E2
+(extension à un multiplexeur à 4 entrées et 2 selecteurs)
+
+Formes canoniques pour écrire les équations booléennes : FNC (forme normale conjonctive) et FND (Forme Normale Disjonctive)
+On peut écrire chaque équation booléenne en FNC et en FND
+FND : Somme (~ développée)
+FNC : Produit (~ factorisée)
+
+ex :
+
+a	b	c	|m
+--------------------------
+0	0	0	|0
+0	0	1	|0
+0	1	0	|0
+0	1	1	|1
+1	0	0	|0
+1	0	1	|1
+1	1	0	|1
+1	1	1	|1
+
+FND :
+m = not(a).b.c + a.not(b).c + a.b.not(c) + a.b.c
+  = not(a).b.c + a.not(b).c + a.b
+
+FNC :
+m = (a+b+c) . (a+b+not(c)) . (a+not(b)+c) . (not(a)+b+c)
+  = a.b + b.c + c.a (admis)
+
+Règles de simplification :
+Compémentarité
+Idempotence
+Elements neutres
+Elements absorbants
+Commutativité
+Associativité
+Distributé
+thm. d'absorption 1 : 	a+(a.b) = a,  		a.(a+b) = a
+thm. d'absorption 2 : 	a.not(b) + b = a+b,	(a+not(b)) . not(b) = a.b
+(dem : a.not(b) + b = a.not(b) + b + a.b = a.(not(b) + b) + b = a+b)
+thm. d'adjacence : 	(a+not(b)) . (a+b) = a	a.not(b) + a.b = a
+
+Rem : deux termes sont dits adjacents lorsqu'ils ne diffèrent que par une variable
+
+On en revient à la FNC de m :
+m = (a+b+c) . (a+b+not(c)) . (a+not(b)+c) . (not(a)+b+c)
+  = (a+b) . (a+not(b)+c) . (not(a)+b+c)
+  = (a + a.not(b) + a.c + b.a + b.not(b) + b.c) . (not(a)+b+c)
+  = (a + a.c + b.c) . (not(a)+b+c)
+  = (a+ b.c) . (not(a)+b+c)
+  = a.b + a.c + b.c
+
+
+Thm d'expansion : F(e0,...ei,...) = ei.F(e0,...1,...) + not(e1).F(e0,...,0,...)
+idem avec + : F(e0,...ei) = (ei+F(e0....,0,...)) . (not(ei)+F(e0,...,1,...))
+
+Karnaugh maps (cf diapo) -> on cherche des blocs rectangulaires adjacents
+On voit rapidement des formes assez bonnes d'expression booléennes
+Pratique avec des valeurs indéfinies ("don't care")
