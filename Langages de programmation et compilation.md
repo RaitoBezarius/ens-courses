@@ -13,7 +13,7 @@ Entiers binaires = `0b1000101101`
 
 En première approximation fichier = module.
 
-Pour compiler sans faire d'exécutable on utilise `ocamlopt -c fichier.ml`. Avcec plusieurs fichier compilés comme ceci ( f1 et f2 ) on peut créer un fichier complet comme ceci : `ocamlopt f1.cmx f2.cmx -o out`.
+Pour compiler sans faire d'exécutable on utilise `ocamlopt -c fichier.ml`. Avcec plusieurs fichiers compilés comme ceci ( f1 et f2 ) on peut créer un fichier complet comme ceci : `ocamlopt f1.cmx f2.cmx -o out`.
 
 On peut exporter seulement certaines valeurs en les spécifiant dans un fichier `.mli` puis en exécutant successivement `ocamlopt -c f.mli` et `ocamlopt -c f.ml`.
 
