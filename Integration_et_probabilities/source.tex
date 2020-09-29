@@ -1,0 +1,510 @@
+% !TeX spellcheck = fr-FR
+
+
+\documentclass[10pt,a4paper,notitlepage ]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{dsfont}
+\usepackage{tcolorbox}
+\usepackage{stmaryrd}
+
+
+\title{Intégration et probabilités}
+\date{}
+
+\newenvironment{definition}{
+	
+	\textbf{Définition : }
+}
+{}
+
+\newenvironment{propriete}{
+	\begin{tcolorbox}
+		\textbf{Propriété : }
+}
+{\end{tcolorbox}}
+
+\newenvironment{demo}{
+
+	\textbf{Démonstration :}
+}{\begin{flushright}
+	$\square$
+\end{flushright}
+}
+
+\newenvironment{exo}{
+	
+	\textbf{Exercice :} }{}
+
+\newenvironment{exemple}{
+	
+	\textbf{Exemple :} }{}
+
+\newenvironment{corollaire}{
+	\begin{tcolorbox}
+		\textbf{Corollaire : }
+	}
+	{\end{tcolorbox}}
+
+\newenvironment{lemme}{
+	\begin{tcolorbox}
+		\textbf{Lemme : }
+	}
+	{\end{tcolorbox}}
+
+\newenvironment{rem}{
+	
+	\textbf{Remarque :}}{}
+
+\begin{document}
+	\maketitle
+	\part*{Introduction}
+	Références : 
+	\begin{itemize}
+		\item \textsc{Billingsley}, \textit{Probabiliy and measure}
+		\item \textsc{Kolmogorov \& Fomin}, tome 2 
+	\end{itemize}
+	Motivations :
+	\begin{itemize}
+		\item Définir la longueur d'une partie de $\mathbb R$
+		\item Définir l'aire d'une partie de $\mathbb R ^2$
+		\item  Définir $\int f \mathrm dx$ pour $f : \mathbb R ^d \rightarrow \mathbb R$
+		\item Définir, préciser la notion mathématique décrivant une suite infinie de jets de dés
+	\end{itemize}
+Par exemple :
+\begin{itemize}
+	\item Si $f : \mathbb R \rightarrow \mathbb R$, on peut définir $\int f$ comme l'aire algébrique définie par le graphe de $f$. Ainsi, définir une aire permet de définir une intégrale
+	\item De même, $\lambda(A) = \mathds 1_A$ avec $\mathds 1_A(x)=1$ ssi $x \in A$. Donc définir une intégrale revient à définir une mesure.
+	\item Tirer un nombre au hasard dans $[\,0,1]\,$, cela revient à tirer au hasard la suite de ses décimales au D10, car on mesure une partie de $\{ 0, 1, \dots 9 \}^\mathbb N$
+ \end{itemize}
+
+On se demande alors comment définir la surface d'une partie du plan.
+
+Méthode 1 : à la Riemann. On approxime avec un quadrillage. On compte le nombre de carrés qui intersectent l'ensemble considéré, puis on conclut en passant à la limite quand le côté du quadrillage tend vers $0$.
+
+Méthode 2 : on pose $\lambda(A) := \underset{(R_i)}{\inf} \sum_{i=1}^{\infty}  \lambda(R_i)$ où $R_i$ est une suite de rectangles recouvrant $A$.
+
+À noter : les deux méthodes ont des cas pathologiques différents.
+
+\part*{Ensembles dénombrables}
+
+\begin{definition}
+	Un ensemble est dénombrable ssi il est en bijection avec $\mathbb N$
+\end{definition}
+\begin{propriete}
+	Toute partie d'un ensemble dénombrable est au plus dénombrable
+\end{propriete}
+\begin{demo}
+	On pose $x : \mathbb N \rightarrow X, Y \subset X$. Si $Y$ n'est pas fini :
+	\begin{align*}
+	&i_1 = \min \{i\in\mathbb N, x_i \in Y \} \\
+	&\dots  \\
+ 	&i_n = \min \{ i\in \mathbb N, x_i\in Y \setminus\{x_1, \dots,x_{n-1}\}\}
+ 	\end{align*} 
+	Ainsi, $k \mapsto x_{n_k}$ est une bijection de $\mathbb N$ vers $Y$.
+\end{demo}
+
+\begin{propriete}
+	L'image d'une suite est au plus dénombrable.
+\end{propriete}
+\begin{demo}
+	On note $x:\mathbb N \rightarrow X$ une suite.
+On crée de manière analogue une sous-suite injective de $x$ de même image que $x$ (sauf si $f(x(\mathbb N))$ est fini).
+\end{demo}
+\begin{propriete}
+	$\mathbb N \times \mathbb N$ est dénombrable.
+\end{propriete}
+\begin{demo}
+	$(n_1,n_2) \mapsto 2^{n_1} (2n_2+1) -1$ est une bijection $\mathbb N^2 \rightarrow \mathbb N$.
+\end{demo}
+
+\begin{propriete}
+	Une réunion au plus dénombrables d'ensembles au plus dénombrable est au plus dénombrable.
+\end{propriete}
+
+\begin{demo}
+	On traite le cas "union dénombrable d'ensembles dénombrables".
+	
+	Soit $A_i$ des parties dénombrables d'un ensemble $X$.
+	Pour tout $i$, il existe $b_i : \mathbb N \rightarrow A_i$ bijection. (nb : ceci requiert en fait l'axiome du choix dénombrable)
+	Alors$ \begin{aligned}
+		(i,j) &\mapsto b_i(j) \\
+		\mathbb N ^2 & \rightarrow \underset{i}{\bigcup} A_i
+	\end{aligned}$ est surjective.
+
+Donc $\underset{i}{\bigcup}A_i$ est au plus dénombrable.
+
+Or $\underset{i}{\bigcup}A_i \supset A_i$.
+
+Donc $\underset{i}{\bigcup} A_i$ est dénombrable.
+\end{demo}
+
+\begin{propriete}
+	Si $X$ est dénombrable, $\mathcal P(X)$ ne l'est pas.
+	
+	Plus généralement, quel que soit $X$, $X$ et $\mathcal P(X)$ ne sont jamais en bijection (théorème de Cantor).
+\end{propriete}
+
+\begin{demo}
+	Supposons qu'il existe $x: \begin{aligned} X & \rightarrow \mathcal P(X) \\
+		x & \mapsto A_x \end{aligned}$ une bijection.
+	
+	Considérons $B := \{x, x\notin A_x\}$. Comme $x$ est une bijection, il existe $y \in X$ tel que $B = A_y$.
+	
+	Question : a-t-on $y\in B$. On arrive à un paradoxe type Russel.
+\end{demo}
+
+\begin{exo}
+\begin{itemize}	
+	\item $\{0,1\}^\mathbb N$ est non dénombrable.
+	
+	\item $\mathbb R$ est non dénombrable.
+	
+\end{itemize}
+\end{exo}
+
+\part*{$\limsup$ et $\liminf$}
+
+\begin{definition}
+	
+Soit $(x_n)_{n\in\mathbb N} \in \mathbb R ^\mathbb N$ (plus généralement $\in\bar{\mathbb R}^\mathbb N$). Alors $s_n := \underset{k\geq n}{\sup} x_k$.
+
+$s_n$ est décroissante (donc a une limite dans $\bar{\mathbb R})$.
+
+Alors $\lim s_n =: \limsup x_n = \inf s_n$.
+
+De même pour $\liminf x_n$. 
+\end{definition}
+\begin{propriete}
+	$\lim x_n$ existe ssi $\liminf x_n = \limsup x_n$. Dans ce cas, $\lim x_n = \limsup x_n = \liminf x_n$.
+\end{propriete}
+
+\begin{demo}
+	$\Leftarrow$ : $i_n \leq x_n \leq s_n$. On conclut par théorème d'encadrement.
+	
+	$\Rightarrow$ : Si $x_n \rightarrow l$ alors : $\forall \varepsilon > 0, \exists N \in \mathbb N, \forall n \geq N, l-\varepsilon \leq i_n \leq l \leq s_n \leq l+\varepsilon$.
+	Donc $s_n \rightarrow l$ et $i_n \rightarrow l$.
+\end{demo}
+
+\begin{propriete}
+	Si $y_n$ est une sous-suite de $x_n$, alors $\liminf x_n \le \liminf y_n \le \limsup y_n \le \limsup x_n$
+\end{propriete}
+
+Ainsi, si $l$ est valeur d'adhérence de $x_n$, alors $\liminf x_n \le l \le \limsup x_n$.
+\begin{propriete}
+	$\limsup x_n = -\liminf (-x_n)$
+\end{propriete}
+
+\begin{propriete}
+	Il existe une sous-suite de $x_n$ qui converge vers $\limsup x_n$. Idem pour $\liminf x_n$.
+\end{propriete}
+\begin{demo}
+	On choisit $k_n \ge n$ tel que $s_n - \frac{1}{n} \le x_{k_n} \le s_n$. $n \mapsto x_{k_n}$ converge vers $\limsup x_n$.
+\end{demo}
+
+\part*{Familles sommables}
+
+On pose $(a_i)_{i\in I}$ famille de nombres positifs.
+
+\begin{definition}
+	$\sum_{i \in I} a_i := \underset{F \subset I \mathrm{fini}}{\sup}\sum_{i \in F}a_i$
+\end{definition}
+\begin{propriete}
+	Si $\sum_{i \in I} a_i$ est fini, alors $\{i \in I, a_i\neq 0\}$ est au plus dénombrable.
+\end{propriete}
+
+\begin{demo}
+	$\{i\in I, a_i \in \mathbb R \setminus \{0\}\} \subset \underset{k \in \mathbb N}{\bigcup}
+	\underset{\# \le k\sum_{i\in I} a_i}{\underbrace{\{i \in I, a_i \ge \frac{1}{k}\}}}$
+\end{demo}
+
+À partir de maintenant, on considérera $I$ dénombrable.
+
+\begin{propriete}
+	Si $\sigma : \mathbb N \rightarrow I$ est une bijection, alors
+	$\sum_{i\in I}a_i = \underset{n \rightarrow +\infty}{\lim}\sum_{k=1}^{n}a_{\sigma (k)} =: \sum_{k=1}^{+\infty}a_{\sigma(k)}$
+\end{propriete}
+
+\begin{demo}
+	$\forall F \subset I$ fini, $\sigma ^{-1}(F)$ est fini donc majoré par un entier $N$.
+	
+	$\sum_{i\in F}a_i = \sum_{k\in \sigma^{-1}(F)}a_{\sigma(k)} \le \sum_{k=1}^N a_{\sigma(k)} \le \sum_{k=1}^{+\infty}a_{\sigma(k)}$
+	
+	Donc par passage au sup : $\sum_{i\in I} a_i \le \sum_{k=1}^{+\infty}a_{\sigma(k)}$.
+	
+	Réciproquement, $\sum_{k=1}^N a_{\sigma(k)} = \sum_{i\in\sigma(\llbracket 1,N \rrbracket)} a_i \le \sum_{i\in I}a_i$. On conclut par passage à la limite.
+\end{demo}
+
+\begin{corollaire}
+	Si $(a_k) \in \mathbb R_+^{\mathbb N}, \sum_{k=1}^{+\infty}a_k=\sum_{k=1}^{+\infty}a_{\sigma(k)}$ et ce quel que soit $\sigma : \mathbb N \rightarrow \mathbb N$ bijection.
+\end{corollaire}
+
+En particulier dans le cas $I=\mathbb N^2, (a_{i,j})_{(i,j)\in I}\in \mathbb R_+^I$ :
+\begin{propriete}
+	$\sum_{(i,j)\in I}a_{i,j} = \sum_{i=1}^{+\infty}\left(\sum_{j=1}^{+\infty}a_{i,j}\right) =
+	\sum_{j=1}^{+\infty}\left(\sum_{i=1}^{+\infty}a_{i,j}\right)$
+\end{propriete}
+
+\begin{demo}
+	$F\subset I$ fini. Il existe $N \in \mathbb N$ tel que $F \subset \llbracket 1,N\rrbracket^2$. Donc $\sum_{(i,j)\in F}a_{i,j} \le \sum_{i=1}^{N}\sum_{j=1}^{N}a_{i,j} \le
+	\sum_{i=1}^N\sum_{j=1}^{+\infty}a_{i,j} \le
+	\sum_{i=1}^{+\infty}\sum_{j=1}^{+\infty}a_{i,j}$.
+	
+	Réciproquement, $\forall N\in\mathbb N, \forall M \in\mathbb N, \sum_{i=1}^N\sum_{j=1}^Ma_{i,j} \le
+	\sum_{(i,j)\in \mathbb N^2}a_{i,j}$.
+	
+	Donc $(M\rightarrow +\infty)$, $\sum_{i=1}^N\sum_{j=1}^{+\infty}a_{i,j} \le
+	\sum_{(i,j)\in \mathbb N^2}a_{i,j}$.
+	
+	Donc $(N\rightarrow +\infty)$, $\sum_{i=1}^{+\infty}\sum_{j=1}^{+\infty}a_{i,j} \le
+	\sum_{(i,j)\in \mathbb N^2}a_{i,j}$.
+\end{demo}
+
+\part*{Séries absolument convergentes}
+
+Soit $(a_i)_{i\in I}$ une famille de réels tels que $\sum_{i\in I}|a_i|$ soit finie.
+
+On définit $a_i^+ := \max(a_i,0)$, $a_i^- := \max(-a_i, 0)$.
+
+Donc $a_i^+ - a_i^- = a_i$ et $a_i^+ + a_i^- = |a_i|$.
+
+\begin{propriete}
+	$\sum_{i\in I}a_i^+ - \sum_{i\in I}a_i^- = \sum_{k=1}^{+\infty}a_{\sigma(k)}$ et ce quel que soit $\sigma : \mathbb N \rightarrow I$ bijection.
+\end{propriete}
+
+\begin{demo}
+	$\sum_{i\in I}a_i^+ \le \sum_{i\in I} |a_i|$ donc la somme est finie. Idem pour $\sum_{i\in I}a_i^-$.
+	
+	$\sum_{k=1}^n a_{\sigma(k)} = \sum_{k=1}^n a_{\sigma(k)}^+ - \sum_{k=1}^n a_{\sigma(k)}^- \underset{n\rightarrow +\infty}{\rightarrow}
+	\sum_{k=1}^{+\infty}a_{\sigma(k)}^+ - \sum_{k=1}^{+\infty}a_{\sigma(k)}^-$
+\end{demo}
+\begin{corollaire}
+	Sous réserve de convergence absolue, on a :
+	
+	\[\sum_{k=1}^{+\infty}a_k = \sum_{k=1}^{+\infty} a_{\sigma(k)}\]
+	
+	\[\sum_{i=1}^{+\infty}\sum_{j=1}^{+\infty}a_{i,j} =
+	\sum_{j=1}^{+\infty}\sum_{i=1}^{+\infty}a_{i,j}\]
+\end{corollaire}
+
+\part*{Vocabulaire}
+
+\begin{definition}
+	Soit $X$ un ensemble. On dit que $\mathcal A \subset \mathcal P(X)$ est :
+	\begin{itemize}
+		\item une algèbre (d'ensembles) si elle est stable par union finie, intersection finie et passage au complémentaire, contient $\emptyset$ et $X$.
+		\item une tribu (ou $\sigma$-algèbre) si c'est une algèbre stable par réunion/intersection dénombrable.
+	\end{itemize}
+\end{definition}
+
+\begin{exemple}
+	\begin{itemize}
+		\item $\mathcal P(X)$ est une tribu.
+		\item $\{\emptyset, X\}$ est une tribu.
+	\end{itemize}
+\end{exemple}
+
+Si on se donne une partition finie de $X$ : $X=X_1 \sqcup X_2 \dots \sqcup X_k$, alors l'ensemble des $A \subset X$ de la forme $A=\underset{n\in I \subset \llbracket 1,k \rrbracket}{\bigcup}X_n$ est une tribu finie.
+
+\begin{lemme}
+	Toute algèbre finie est associée à une partition finie.
+\end{lemme}
+
+\begin{demo}
+	Soit $\mathcal A$ une algèbre finie.
+	
+	$\forall x \in X, A(x) := \underset{x\in A}{\underset{A\in \mathcal A}{\bigcap}} A$.
+	
+	Pour $x$ et $y$ donnés, soit $A(x) = A(y)$, soit $A(x) \cap A(y) = \emptyset$.
+	
+	Fixons $x\in X, B\in\mathcal A$.
+	\begin{itemize}
+		\item Soit $x\in B$ et alors $A(x)\subset B$.
+		\item Soit $x\in ^c\!\!B$ et alors $A(x)\subset ^c\!\!B$ i.e. $A(x)\cap B = \emptyset$
+	\end{itemize}
+	On conclut avec $B=A(y)$.
+\end{demo}
+
+\begin{definition}
+	Si $\mathcal A$ est une algèbre de $X$ et $m:\mathcal A \rightarrow [0,+\infty]$ une fonction.
+	
+	On dit que $m$ est une \emph{mesure additive} si :
+	\begin{itemize}
+		\item $m(\emptyset) = 0$
+		\item $m(A\sqcup B) = m(A) + m(B) \qquad (A\cap B = \emptyset)$
+	\end{itemize}
+\end{definition}
+
+\begin{definition}
+	Si $\mathcal T \subset \mathcal P(X)$ est une tribu, $m:\mathcal T \rightarrow [0,+\infty]$ est une \emph{mesure} si :
+	\begin{itemize}
+		\item $m(\emptyset) = 0$
+		\item $m(\underset{i\in I}{\bigsqcup}A_i) = \sum_{i\in I}m(A_i)$ pour $(A_i)_{i\in I}$ famille dénombrable disjointe.
+	\end{itemize}
+\end{definition}
+\begin{rem}
+	Toute mesure est une mesure additive.
+\end{rem}
+
+\begin{rem}
+On appelle parfois les mesures "mesures $\sigma$-additives".
+\end{rem}
+
+\begin{rem}
+	Lorsque $m:\mathcal A \rightarrow [0,+\infty]$ est une mesure additive sur une algèbre, les propriétés suivantes sont équivalentes :
+	\begin{enumerate}
+		\item Si $A_i\in\mathcal A$ sont disjoints, $(A_i)$ dénombrable, $\underset{i\in I}{\bigsqcup}A_i \in \mathcal A$, alors $m(\underset{i\in I}{\bigsqcup}A_i) = \sum_{i\in I}m(A_i)$
+		\item Si $A,A_i\in\mathcal A$, $A\subset \underset{i\in I}{\bigcup}A_i$, alors $m(A) \le \sum_{i\in I}m(A_i)$.
+	\end{enumerate}
+Dans ce cas, on dit que $m$ est $\sigma$-additive.
+\end{rem}
+
+\begin{demo}
+	$(1) \Rightarrow (2)$ :
+	
+	Soit $A_i \in \mathcal A$. On définit $\tilde{A_i}$ par : $\tilde A_1 = A_1, \dots \tilde A_n = A_n\setminus \tilde A_{n-1} \quad \forall n \ge 1$
+	
+	Alors $\bigcup A_i = \bigsqcup \tilde A_i$.
+	
+	Si $A \subset \bigcup A_i$, alors $A \subset \bigsqcup \tilde A_i$. Alors $A=\bigsqcup(A\cap\tilde A_i)$.
+	
+	Donc $m(A)=m(\bigsqcup (\tilde A_i \cap A)) \le \sum m(A_i)$.
+
+	$(2) \Rightarrow (1)$ :
+	
+	Si $A=\bigsqcup A_i \overset{(2)}{\Rightarrow} m(A) \le \sum m(A_i)$.
+	
+	$A\supset\overunderset{n}{i=1}{\bigsqcup}A_i$ quel que soit $n$.
+	
+	Donc $m(A) \ge \sum_{i=1}^n m(A_i)$. Donc ($n \rightarrow +\infty$), $m(A) \ge \sum_{i=1}^{+\infty}m(A_i)$.
+	
+\end{demo}
+
+\begin{definition}
+	Soit $f:\Omega \rightarrow X$ une application. Si $\mathcal A$ est une algèbre (ou une tribu) sur $\Omega$, alors on définit l'algèbre (tribu) image par :
+	
+\[ f_*\mathcal A = \{A\subset X, f^{-1}(A)\in \mathcal A\}\]
+	Si $\mathcal A$ est une algèbre (tribu) sur $X$, alors \[f^*\mathcal A = \{f^{-1}(A), A\in\mathcal A\}\] est une algèbre (tribu) sur $\Omega$.
+\end{definition}
+
+La vérification du fait que $f^*\mathcal A$ et $f_*\mathcal A$ est une algèbre (tribu) découle des propriétés des préimages :
+
+\begin{align*}
+	&f^{-1}(A\cap B) = f^{-1}(A)\cap f^{-1}(B) \\
+	&f^{-1}(A \cup B) = f^{-1}(A) \cup f^{-1}(B) \\
+	&f^{-1}(A \setminus B) = f^{-1}(A) \setminus f^{-1}(B) 
+\end{align*}
+
+\begin{definition}
+	Si $f:(\Omega, \mathcal A, m) \rightarrow X$ est une application, on définit la mesure image (ou la loi) comme la mesure :
+	\[ (f_*m)(Y) := m(f^{-1}(Y))\] définie sur $f_*\mathcal A$.
+\end{definition}
+
+\begin{definition}
+	$m$ est dite finie ssi $m(X) < +\infty$
+\end{definition}
+\begin{definition}
+	$m$ est dite de probabilité ssi $m(X)=1$
+\end{definition}
+
+\begin{definition}
+	$f:(\Omega,\tau) \rightarrow (X,\mathcal T)$ est dite mesurable si : \[\forall Y \in \mathcal T, f^{-1}(Y) \in \tau\] i.e.
+	\begin{align*}
+		&f_*\tau \supset \mathcal T \\
+		&f^*\mathcal T \subset \tau
+	\end{align*}
+\end{definition}
+
+\begin{exo}
+	Soit $\Omega, X$ des ensembles, $\mathcal T$ une tribu sur $X$. Soit $f:\Omega \rightarrow X$ une application, $g:\Omega\rightarrow X$ une application à valeurs dans un ensemble fini $Y$. Alors $g$ est $f^*\mathcal T$ mesurable ssi $\exists h:(X,\mathcal T) \rightarrow (Y,\mathcal P(Y))$ mesurable telle que $g=h \circ f$. i.e. "$g$ est $f$-mesurable ssi $g$ ne dépend que de $f$".
+\end{exo}
+
+\part*{Modélisation d'une expérience aléatoire finie (ex : jets de dés)}
+
+Soit $Y$ un ensemble fini représentant les issues possibles. Il y a 2 manières de représenter un tirage aléatoire sur $Y$.
+\begin{enumerate}
+	\item On se donne une mesure de probabilité sur $(Y,\mathcal P(Y))$. Pour ceci, il suffit de donner $p:Y\rightarrow[0,1]$ tel que $\sum_{y\in Y}p(y) = 1$. On note $P$ la mesure de probabilité ainsi créée.
+	\item On se donne un espace de probabilité abstrait $(\Omega,\mathcal T, \mathbb P)$ et une application mesurable $f:\Omega \rightarrow Y$ telle que $f_*\mathbb P=P$.
+\end{enumerate}
+Pour passer de 1. à 2., il suffit de prendre $\Omega = Y$, $\mathcal T = \mathcal P(Y)$, $\mathbb P = P$, $f=\mathrm {id}$.
+
+L'expérience aléatoire consistant à jeter un nombre fini $k$ de dés de valeurs possibles $Y_1, \dots, Y_k$ est simplement une expérience aléatoire à valeurs dans le produit $Y=Y_1 \times Y_2 \times \dots\times Y_k$.
+
+La description en termes de variables aléatoires consiste donc à se donner une application mesurable $f : (\Omega, \mathcal T, P) \rightarrow Y$, c'est à dire $k$ applications mesurables $f_i : (\Omega, \mathcal T, P) \rightarrow Y_i$, définies sur \emph{le même espace de probabilités}.
+
+\begin{definition}
+	La loi de $f$ (qui est une probabilité sur $Y$) est dite \emph{loi jointe}. Les lois des $f_i$ (qui sont des probabilités sur $Y_i$) sont dites \emph{lois marginales}.
+\end{definition}
+
+\begin{rem}
+	La loi jointe détermine les lois marginales, qui peuvent se décrire explicitement par $m_i(y_i)=\underset{y_1,\dots,y_{i-1},y_{i+1},\dots,y_k}{\sum} m(y_1,\dots,y_k$.
+	
+	Plus abstraitement, ce soint les mesures images $m_i=(\Pi_i)_*m_i$ où $\Pi_i : Y \rightarrow Y_i$ est la projection.
+\end{rem}
+
+\begin{rem}
+	La loi jointe est déterminée par $|Y_1|\times\dots\times |Y_k| - 1$ nombres réels ($-1$ à cause de la contrainte $\sum p = 1$).
+	
+	Les lois maginales sont déterminées par $|Y_1| + \dots + |Y_k| - k$ nombres réels, ce qui est beaucoup moins.
+\end{rem}
+
+Si on se donnes les marginales $m_1, \dots, m_k$, ilm existe de nombreuses lois jointes qui engendrent ces marginales. L'une d'entre elles est particulièrement intéressante : la loi produit $m((y1_,\dots,y_k))=m_1(y_1) \dot \dots \dot m_k(y_k)$, qui correspond (par définition) à des expériences indépendantes.
+
+\begin{definition}
+	\begin{itemize}
+		\item Les événement $A,B$ dans un espace de probabilité $(\Omega,\mathcal T, P)$ sont dits indépendants si $P(A\cap B) = P(A)P(B)$.
+		\item Si $(X_i, \mathcal T_i)_{1\le i\le k}$ sont des espaces mesurables (c'est à dire munis de tribus $\mathcal T_i$), les variables aléatoires (applications mesurables) $f_i : (\Omega,\mathcal T, P) \rightarrow (X_i,\mathcal T_i)$ sont dites \emph{indépendantes} si $\forall Z_i \in \mathcal T_i, P(f_1\in Z_1, \dots, P_k \in Z_k) = P(f_1 \in Z_i) \dot \dots \dot P(f_k \in Z_k)$
+	\end{itemize}
+\end{definition}
+
+\begin{propriete}
+	Les événements $A$ et $B$ sont indépendants ssi les variables aléatoires $\mathds{1}_A, \mathds{1}_B : (\Omega, \mathcal T, P) \rightarrow \{0,1\}$ le sont.
+\end{propriete}
+
+\begin{demo}
+	Il suffit de montrer que $\!\!^cA$ et $B$ sont indépendants (le reste est évident ou vient par symétrie).
+	\begin{align*}
+		P(\!\!^cA\cap B) &= P((\Omega \setminus A) \cap B) \\
+		&= P(B \setminus A\cap B) \\
+		&= P(B) - P(A\cap B) \\
+		&= P(B) - P(A)P(B) \\
+		&= (1-P(A))P(B) \\
+		&= P(\!\!^cA)P(B)
+	\end{align*} 
+\end{demo}
+
+\begin{definition}
+	Les événements $A_1,\dots,A_k$ sont dits indépendants si $\mathds 1_{A_1} \dots \mathds 1_{A_k} : \Omega \rightarrow \{0,1\}$ le sont.
+\end{definition}
+
+\begin{rem}
+	Il ne suffit pas d'avoir l'indépendance deux à deux ou $P(A_1 \cap \dots \cap A_k) = P(A_1) \dot \dots \dot P(A_k)$.
+\end{rem}
+
+\begin{propriete}
+	Il suffit d'avoir $P(A_{i_1} \cap \dots \cap A_{i_k}) = P(A_{i_1}) \dot \dots \dot P(A_{i_k})$, et ce $\forall \{i_1, \dots, i_k\} \subset \llbracket 1,k \rrbracket$.
+\end{propriete}
+
+\begin{demo}
+	Il faut montrer que
+	\[ (*) \quad P(B_1 \cap \dots \cap B_k) = P(B_1) \dot \dots \dot P(B_k) \forall B_i \in \{\emptyset, A_i, \!\!^cA_i, \Omega\}	\]
+	Il découle de l'hypothèse que c'est vrai pour $B_i \in \{ \emptyset, A_i, \Omega\}$.
+	
+	Il suffit donc de constater que $(*)$ implique $P\!\!^cB_1 \cap B_2 \cap \dots \cap B_k) = P(\!\!\c B_1)P(B_2) \dot \dots \dot P(B_k)$, ce qui se montre comme ce-dessus. On conclut par récurrence finie.
+\end{demo}
+
+\begin{exemple}
+	Tirage non indépendant :
+	
+	On tire $-$ chiffres dans $\llbracket 1,6 \rrbracket$, en leur imposant d'être distincts. La loi jointe est donc : $P(y_1, \dots, y_6) = \{$ \begin{align*}
+		0 &\mathrm{si non distincts} \\
+		\frac{1}{6!} &\mathrm{si distincts}
+	\end{align*}.
+\end{exemple}
+
+\end{document}
