@@ -66,9 +66,9 @@ Sous certaines conditions, $(X_n)$ est ce qu'on appelle une chaîne de Markov, q
 
 ## Chaîne de Markov
 
-Soit $\{X_n, n \in \N\}$ une suite de variables aléatoires (un processus stochastique) à valeurs dans une espace d'états $\mathcal E$ au plus dénombrable.
+Soit $\{X_n, n \in \mathbb N \}$ une suite de variables aléatoires (un processus stochastique) à valeurs dans une espace d'états $\mathcal E$ au plus dénombrable.
 
-Le processus $\{X_n, n \in \N\}$ est appelé une chaîne de Markov à temps discret sur $\mathcal E$ si pour tout $n \in \N$ pour tous $i,j,i_1,...,i_{n-1} \in E$,
+Le processus $\{X_n, n \in \mathbb N\}$ est appelé une chaîne de Markov à temps discret sur $\mathcal E$ si pour tout $n \in \mathbb N$ pour tous $i,j,i_1,...,i_{n-1} \in E$,
 
 $P(X_{n+1}=j | X_n=i, ..., X_0=i_0) = P(X_{n+1} = j | X_n = i)$
 
@@ -102,7 +102,7 @@ La **tribu fine** est la plus grosse tribu sur $\Omega$.
 
 **Exemples d'événements plus complexes** (espaces non dénombrables) :
 
-- $\Omega = \{0,1\}^\N$ : une suite infinie de lancers de pièce.
+- $\Omega = \{0,1\}^\mathbb N$ : une suite infinie de lancers de pièce.
 - A=l'événement concerne uniquement les k premiers lancers.
 - Les événements de type A ne forment pas une tribu, on considère donc la tribu engendrée (la plus petite tribu contenant les événements de type A). (Ici il s'agit de la tribu engendrée par les cylindres finis)
 
@@ -146,7 +146,7 @@ En pratique il est parfois plus judicieux d'implémenter la version avec remplac
 **Exercice :** vérification d'une multiplication matricielle :
 Meilleur qu'un algo naïf ($\mathcal O(n^3)$) : algo probabiliste. Soit $r \in \{0,1\}^n$
 
-Complexité de $ABr=Cr$ : $\athcal O(n^2)$ (cf diapo)
+Complexité de $ABr=Cr$ : $\mathcal O(n^2)$ (cf diapo)
 Proba d'erreur : $\le 1/2$ (cf diapo)
 
 ## Variables aléatoires
@@ -215,7 +215,7 @@ Si la proba d'erreur est $<1/2$, alors on peut diminuer cette proba en exécutan
 **Algorithmes de Las Vegas** : résout un problème exactement, avec une complexité moyenne finie (que l'on cherche à minimiser)
 **Exemple :** choix uniforme du pivot dans l'algorithme du tri rapide
 
-Un algorithme Monte Carlo de complexité $C_MC$ qui renvoie soit la réponse correct, soit `erreur` (avec proba au plus $p$), on peut transformer cet algo en un algorithme de type Las Vega en le répétant tant que la réponse renvoyée est `erreur`. Alors la complexité de l'algorithme Las Vegas est alors $\mathrm E(C_LV) \le C_MC/p$.
+Un algorithme Monte Carlo de complexité $C_{MC}$ qui renvoie soit la réponse correct, soit `erreur` (avec proba au plus $p$), on peut transformer cet algo en un algorithme de type Las Vega en le répétant tant que la réponse renvoyée est `erreur`. Alors la complexité de l'algorithme Las Vegas est alors $\mathrm E(C_{LV}) \le C_{MC}/p$.
 
 **Terminaison :**
 3 cas :
