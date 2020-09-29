@@ -23,6 +23,15 @@
 }
 {}
 
+\newcounter{th}
+\newenvironment{theorem}[1][]{
+\refstepcounter{th}
+\begin{tcolorbox}
+	\textbf{Théorème \theth \ #1}
+	
+	
+}{\end{tcolorbox}}
+
 \newenvironment{propriete}{
 	\begin{tcolorbox}
 		\textbf{Propriété : }
@@ -453,12 +462,12 @@ La description en termes de variables aléatoires consiste donc à se donner une
 	Les lois maginales sont déterminées par $|Y_1| + \dots + |Y_k| - k$ nombres réels, ce qui est beaucoup moins.
 \end{rem}
 
-Si on se donnes les marginales $m_1, \dots, m_k$, ilm existe de nombreuses lois jointes qui engendrent ces marginales. L'une d'entre elles est particulièrement intéressante : la loi produit $m((y1_,\dots,y_k))=m_1(y_1) \dot \dots \dot m_k(y_k)$, qui correspond (par définition) à des expériences indépendantes.
+Si on se donnes les marginales $m_1, \dots, m_k$, ilm existe de nombreuses lois jointes qui engendrent ces marginales. L'une d'entre elles est particulièrement intéressante : la loi produit $m((y1_,\dots,y_k))=m_1(y_1) \cdot \dots \cdot m_k(y_k)$, qui correspond (par définition) à des expériences indépendantes.
 
 \begin{definition}
 	\begin{itemize}
 		\item Les événement $A,B$ dans un espace de probabilité $(\Omega,\mathcal T, P)$ sont dits indépendants si $P(A\cap B) = P(A)P(B)$.
-		\item Si $(X_i, \mathcal T_i)_{1\le i\le k}$ sont des espaces mesurables (c'est à dire munis de tribus $\mathcal T_i$), les variables aléatoires (applications mesurables) $f_i : (\Omega,\mathcal T, P) \rightarrow (X_i,\mathcal T_i)$ sont dites \emph{indépendantes} si $\forall Z_i \in \mathcal T_i, P(f_1\in Z_1, \dots, P_k \in Z_k) = P(f_1 \in Z_i) \dot \dots \dot P(f_k \in Z_k)$
+		\item Si $(X_i, \mathcal T_i)_{1\le i\le k}$ sont des espaces mesurables (c'est à dire munis de tribus $\mathcal T_i$), les variables aléatoires (applications mesurables) $f_i : (\Omega,\mathcal T, P) \rightarrow (X_i,\mathcal T_i)$ sont dites \emph{indépendantes} si $\forall Z_i \in \mathcal T_i, P(f_1\in Z_1, \dots, P_k \in Z_k) = P(f_1 \in Z_i) \cdot \dots \cdot P(f_k \in Z_k)$
 	\end{itemize}
 \end{definition}
 
@@ -483,28 +492,119 @@ Si on se donnes les marginales $m_1, \dots, m_k$, ilm existe de nombreuses lois 
 \end{definition}
 
 \begin{rem}
-	Il ne suffit pas d'avoir l'indépendance deux à deux ou $P(A_1 \cap \dots \cap A_k) = P(A_1) \dot \dots \dot P(A_k)$.
+	Il ne suffit pas d'avoir l'indépendance deux à deux ou $P(A_1 \cap \dots \cap A_k) = P(A_1) \cdot \dots \cdot P(A_k)$.
 \end{rem}
 
 \begin{propriete}
-	Il suffit d'avoir $P(A_{i_1} \cap \dots \cap A_{i_k}) = P(A_{i_1}) \dot \dots \dot P(A_{i_k})$, et ce $\forall \{i_1, \dots, i_k\} \subset \llbracket 1,k \rrbracket$.
+	Il suffit d'avoir $P(A_{i_1} \cap \dots \cap A_{i_k}) = P(A_{i_1}) \cdot \dots \cdot P(A_{i_k})$, et ce $\forall \{i_1, \dots, i_k\} \subset \llbracket 1,k \rrbracket$.
 \end{propriete}
 
 \begin{demo}
 	Il faut montrer que
-	\[ (*) \quad P(B_1 \cap \dots \cap B_k) = P(B_1) \dot \dots \dot P(B_k) \forall B_i \in \{\emptyset, A_i, \!\!^cA_i, \Omega\}	\]
+	\[ (*) \quad P(B_1 \cap \dots \cap B_k) = P(B_1) \cdot \dots \cdot P(B_k) \forall B_i \in \{\emptyset, A_i, \!\!^cA_i, \Omega\}	\]
 	Il découle de l'hypothèse que c'est vrai pour $B_i \in \{ \emptyset, A_i, \Omega\}$.
 	
-	Il suffit donc de constater que $(*)$ implique $P\!\!^cB_1 \cap B_2 \cap \dots \cap B_k) = P(\!\!\c B_1)P(B_2) \dot \dots \dot P(B_k)$, ce qui se montre comme ce-dessus. On conclut par récurrence finie.
+	Il suffit donc de constater que $(*)$ implique $P\!\!^cB_1 \cap B_2 \cap \dots \cap B_k) = P(\!\!\c B_1)P(B_2) \cdot \dots \cdot P(B_k)$, ce qui se montre comme ce-dessus. On conclut par récurrence finie.
 \end{demo}
 
 \begin{exemple}
 	Tirage non indépendant :
 	
-	On tire $-$ chiffres dans $\llbracket 1,6 \rrbracket$, en leur imposant d'être distincts. La loi jointe est donc : $P(y_1, \dots, y_6) = \{$ \begin{align*}
-		0 &\mathrm{si non distincts} \\
-		\frac{1}{6!} &\mathrm{si distincts}
-	\end{align*}.
+	On tire $-$ chiffres dans $\llbracket 1,6 \rrbracket$, en leur imposant d'être distincts. La loi jointe est donc : $P(y_1, \dots, y_6) = \begin{cases}
+		0 &\mathrm{\ si\  non\  distincts} \\
+		\frac{1}{6!} &\mathrm{\ si\ distincts}
+	\end{cases}$.
+
+	Les lois marginales sont : $P_1(y_1):= \underset{y_2,\dots,y_k}{\sum} P(y_1,\dots,y_k) = \frac{5!}{6!} = \frac{1}{6}$. Les lois marginales sont donc les mêmes que pour un tirage indépendant !
+\end{exemple}
+\begin{definition}
+	On dit que $f_i,\ i\in I$ sont indépendantes si $f_i,\ i\in F$ le sont pour tout $F\subset I$ fini.
+\end{definition}
+
+\part*{Modélisation d'une suite infinie de jets dés indépendants}
+
+Donnons-nous une suite infinie d'espaces de probabilités finis $(Y_i,P_i)$ (la tribu est $\mathcal P(Y_i)$).
+
+Pour chaque $n$, on a vu que l'on peut trouver des variables aléatoires indépendantes $f_i:(\Omega_n,\mathcal T_n, P_n) \rightarrow Y_i$ de loi $P_i$.
+
+Question : peut-on prendre $(\Omega_n,\mathcal T_n, P_n)$ indépendant de $n$?
+
+\begin{theorem}
+	Il existe un espace de probabilité $(\Omega,\mathcal T, P)$ et une suite de variables aléatoires $f_i : \Omega \rightarrow Y_i$ qui sont indépendantes et de loi $P_i$.
+\end{theorem}
+
+\begin{rem}
+	Les variables aléatoires $f_i$, $i\in \mathbb N$ sont indépendantes ssi $f_1, \dots, f_n$ le sont pour tout $n$.
+\end{rem}
+
+L'hypothèse d'indépendance consiste donc à dire que, pour tout $n$ et pour tout $(y_1, \dots, y_n) \in Y_1 \times \dots \times Y_n$, l'événement $\{f_1=y_1,\dots,f_n=y_n\}$ est mesurable ()$\in\mathcal T$) et de mesure $P(f_1=y_1, \dots f_n=y_n) = P_1(y_1)\cdot\dots\cdot P_n(y_n)$.
+
+En termes de loi, ceci implique que $\{y_1\}\times \dots \{y_n\} \times Y_{n+1} \times \dots$ est mesurable sur $X:=\prod Y_i$ et que sa mesure est $m(\{y_1\}\times \dots \times Y_{n+1}) = P_1(y_1) \cdot \dots \cdot P_n(y_n)$.
+
+\section*{Introduction de l'algèbre $\mathcal A_\infty$ engendrée par les cylindres finis}
+
+Sur le produit $X = \prod Y_i$, pour $n$ fixé, les ensembles de la forme $\{y_1\}\times \dots \times \{y_n\}\times Y_{n+1} \times \dots$ forment une partition finie (ce sont les cylindres finis), qui engendre une algèbre finie $\mathcal A_n$ (qui est donc aussi une tribu).
+
+C'est l'algèbre engendrée par les $n$ premières coordonnées. En effet si $\Pi : X \rightarrow Y_1 \times \dots \times Y_n$ est la projection, alors $\mathcal A_n = \Pi^* (\mathcal P(Y_1 \times \dots \times Y_n))$.
+
+Cette algèbre décrit les parties de $X$ qui peuvent être décrites en termes des $n$ premières coordonnées.
+
+On a $\mathcal A_n \subset \mathcal A_{n+1}$. On note $\mathcal A_\infty = \underset{n\ge 1}{\bigcup} \mathcal A_n$.
+
+$\mathcal A_\infty$ est donc l'algèbre des parties de $X$ qui dépendent d'un nombre fini de coordonnées. C'est l'algèbre engendrée par les cylindres finis.
+
+Contrairement aux $\mathcal A_n$, $\mathcal A_\infty$ est infinie et ce n'est pas une tribu !
+
+L'hypothèse d'indépendance des $f_i$ implique que la loi $m$ doit être définie sur $\mathcal A_\infty$, et qu'elle y est déterminée par la relation \[ (*) \quad m(\{y_1\}\times \dots \times \{y_n\} \times Y_{n+1} \times \dots ) = P_1(y_1) \cdot\dots\cdot P(y_n)\]
+
+\begin{theorem}
+	Il existe sur $X = \prod Y_i$ une tribu $\tau$, qui contient $\mathcal A_\infty$, et une mesure $m$ sur $\mathcal T$ qui vérifie $(*)$.
+\end{theorem}
+
+On vient en fait de voir que le théorème 1. implique le théorème 2.
+Réciproquement, il suffit de prendre $\Omega = X, \mathcal T = \tau, P=m, f=\text{projection}$.
+
+Pour démontrer l'utilité du théorème 2., donnons des exemples d'ensembles qu'il est naturel de considérer et qui sont dans $\tau$ mais pas dans $\mathcal A_\infty$. On suppose $Y_i \subset \mathbb R$
+
+\begin{exemple}
+	L'ensemble $\{(y_i)\in X, \frac{y_1 + \dots y_n}{n} \rightarrow l\}$ est mesurable. En effet, il s'écrit : $\underset{k\ge 1}{\bigcap}\ \underset{n\in \mathbb N}{\bigcup}\ \underset{m \ge n}{\bigcap} \{\left| \frac{y_1+ \dots y_n}{n} - l \right| \le \frac{1}{k}\}, \text{ i.e. } \forall k \ge 1, \exists n\in \mathbb N, \forall m\ge n, \dots$. 
+	Chacun des ensembles est dans $\mathcal A_\infty$ donc l'ensemble considéré est dans $\tau$.
 \end{exemple}
 
+\section*{$\liminf$ et $\limsup$ d'ensembles}
+	Si $A_n$ est une suite d'ensembles, on note :
+	\[ \liminf A_n = \underset{n}{\bigcup}\ \underset{m\ge n}{\bigcap} A_m = \{A_i \text{ APCR}\}\]
+	\[ \limsup A_n = \underset{n}{\bigcap}\ \underset{m\ge n}{\bigcup} A_m = \{A_i \text{ infinitely often (i.o.)}\}\]
+	
+	Si $\tau$ est une tribu, que les $A_n \in \tau$, alors $\limsup A_n \in \tau$ et $\liminf A_n \in \tau$.
+	
+	\begin{propriete}
+		\begin{itemize}
+			\item $\liminf A_n \subset \limsup A_n$
+			\item $\liminf \!\!^cA_n= \!\!^c(\limsup A_n)$
+		\end{itemize}
+	\end{propriete}
+	\begin{demo}
+		$\forall m,M, \quad \underset{n\ge m}{\bigcap} A_n \subset \underset{n \ge M} A_n$.
+		Donc $\underset{n\ge m}{\bigcap} A_n \subset \limsup A_n$, donc $\liminf A_n \subset limsup A_n$
+	\end{demo}
+\begin{exo}
+	$\limsup \mathds 1_{A_n} = \mathds 1_{\limsup A_n}$
+\end{exo}
+
+\begin{exemple}
+	On considère un tirafe aléatoire indépendant $f_n \in {-1, 1}^{\mathbb N}$, ce que l'on voit comme un jeu de hasard (le joueur gagne ou perd $1$ à chaque étape). Étant donnée la richesse initiale $r_0$ et un objectif $R$, on considère l'événement \{le joueur atteint la richesse $R$ avant de se ruiner\}.
+	
+	Il s'écrit $\underset{n \ge 1}{\bigcup} \{y_1 + \dots y_n \ge -r_0 \quad \forall k < n \text{ et } y_1 + \dots + y_k = R-r_0\}$.
+	
+	C'est une réunion dénombrable d'éléments de $\mathcal A_\infty$
+\end{exemple}
+
+Le théorème 2 sera déductible du théorème suivant :
+\begin{theorem}[Hahn-Kolmogorov]
+	Soit $\mathcal A$ une algèbre d'ensembles sur $X$. Soit $\underline m$ une mesure de probabilité additive sur $\mathcal A$, qui vérifie la propriété de $\sigma$-additivité.
+	
+	Alors il existe une tribu $\tau$ contenant $\mathcal A$, et une mesure de proba $m$ sur $\tau$ qui prolonge $\underline m$. De plus, on peut prendre : $m(B) = \underset{B \subset \bigcup A_i} \ \underset{i \in \mathbb N}{\sum} \underline m (A_i)$, où le $\inf$ est pris sur les recouvrements dénombrables de $B$ par des éléments de $\mathcal A$.
+\end{theorem}
+%TODO : page 10-18%
 \end{document}
