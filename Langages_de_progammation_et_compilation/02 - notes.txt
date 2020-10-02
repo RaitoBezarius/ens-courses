@@ -1,0 +1,526 @@
+Assembleur x86_64
+
+I] Introduction
+
+Compilation : traduction d'un programme en langage machine.
+Certains langages sont:
+- interprétés (Python, COBOL, BASIC, etc.)
+- compilés en bytecode puis interprétés (OAml, Java, etc.)
+- compilés à la volée (Julia)
+- compilés vers un autre langage de haut niveau
+
+Compilateur : prend un prog P et renvoie un prog Q tq:
+	\forall x, Q(x)=P(x)
+
+Interpréteur : prend un programme P et une entrée x eet calcule la sortie (renvoie P(x))
+
+Le code compilé est en général bien plus efficace
+
+Compilateur :
+	- Correction
+	- Efficacité du code produit
+	- Sa propre efficacité
+
+Livre du dragon : le dragon symbolise la difficulté d'écrire un compilateur
+
+Deux phase globales :
+Analyse:
+	- reconnaître le programme, traduire sa signification
+	- signaler les erreurs -> peut donc échouer
+Synthèse:
+	- Production du programme dans le langage cible
+	- Utilise des langages intermédiaires
+	- N'échoue pas
+	
+Source -> suite de tokens -> arbre de syntaxe abstraite (AST) -> syntaxe abstraite + table des symboles -> langage assembleur -> langage machine -> code exécutable
+	Analyse lexicale    analyse syntaxique            analyse sémantique                      production de code       assembleur              linker
+
+
+II] Assembleur
+Rappels:
+	- binaire, TMTC
+	- entiers non signés, signés en CA2, etc.
+	- la machine fournit : opérations bit-à-bit, op de décalage, op arithmétiques
+		- décalage logique : insertion de 0 en poids faible ou fort -> multiplications/divisions rapides apr 2̃̃^{k}
+		- décalage arithmétique : réplique les bits
+	- Modèle simplifié : CPU et RAM (de l'ordre de 2^{33} bits) -> Architecture de Van Neumann
+		- /!\ L'accès à la mémorie coûte cher -->> registres
+	- En fait, plusieurs (co)processeurs, caches, virtualisation de la mémoire (MMU). Par exemple, les GPU sont bien plus performants sur la multiplication de matrices
+
+Schéma de fonctionnement sur un cycle:
+	- un registre (%rip) contient l'adresse de l'instruction à exécuter
+	- On lit le(s) octet(s) à cet endroit -> fetch
+	- On interprète ces octets comme une instruction -> decode
+	- On exécute l'instruction -> execute
+	- On modifie %rip pour passer à l'instruction suivante (juste après sauf saut)
+
+Deux grandes familles de CPU:
+CISC: (Complex Instruction Set)
+	- bcp instructions, modes d'adressage, instructions d'I/O mémoire
+	- peu de registres
+	- Par ex. : VAX, x86, PDP-11
+
+RISC: (Reduced Instruction Set)
+	- peu d'instruction, régulières
+	- très peu d'instructions I/O mémoire
+	- bcp de registres, uniformes
+	- Par ex. : Alpha, ARM, Sparc, RISC-V
+
+On s'intéressera à x86_64
+
+
+III] x86_64
+
+x86 débute en 8-bit, Intel 8080 en 1974
+Puis 16-bit, Intel 8086, 1978
+Puis 32-bit, Intel 80386, 1985
+
+Extension à 64-bit en 2000 par AMD et 2004 par Intel
+(Intel a adopté l'architecture d'AMD)
+
+Caractéristiques:
+	- Opérations sur 64-bit
+	- Il y a 16 registres : %rax, %rbx, %rcx, %rdx, %rbp, %rsp, %rsi, %rdi, %r8, %r9, ..., %r15
+	- adressage de la mémorie sur au moins 48 bits
+
+
+Fonctionnement :
+	On ne programme pas en langage machine, mais en assembleur :
+		- étiquettes symboliques
+		- allocation de données globales
+	L'assembleur compile ce langage en langage machine
+
+On utilise l'assembleur GNU, syntaxe AT&A (opérande de destination à droite)
+
+ASM :
+.text : ce qui suit est du code
+.data : ce qui suit est des données
+
+Fonctionnement des registres : On a 16 registres.
+On a aussi des alias pour accéder aux parties basses (32, 16 ou 8 bits).
+Par exemple : 63    31    15     8|7   0
+		 %rax --------------------------
+			   %eax --------------------
+					  %ax --------------
+					  %ah --------
+								%al-----
+
+Instructions : Il faut metrte des suffixes aux instructions selon la longueur des registres considérés
+	suffixe 	octets	nom
+		b 		1		byte
+		w		2		word
+		l		4		long
+		q 		8		quad
+	Pour les instructions : le suffixe "§" signifie qu'il faut ajouter le suffixe de taille (Notation maison)
+
+
+Quand les tailles des opérandes diffèrent:
+	Utiliser un suffixe différent:
+		- De plus petit vers plus grand: (extension)
+			- movzbq -> extension par des zéros
+			- movswl -> extention par copie du bit de signe (MSB)
+
+
+instruction : 
+	- mov§ :
+		- charger une constante dans un registre :
+			movq $0x2a, %rax 
+			movq $-12; %rax
+		- charger l'adresse d'un étiquette dans un registre :
+			movq $label, %rdi
+		-copier un registre dans un autre :
+			movq %rax, %rbx
+	- add§ :
+		- additionner deux registres:
+			addq %rax, %rbx (* %rbx <- %rbx + %rax *)
+		- ajouter une constante à un registre:
+			addq $2, %rbx
+	- sub§ :
+		subq %rax, %rbx #Soustrait %rax à %rbx
+	- inc§ :
+		- incrémenter un registre:
+			incq %rbx
+		- decq existe de même
+	- neg§ :
+		- négation arithmétique:
+			negq %rbx (* %rbx <- - %rbx *)
+	- opérations logiques bit-à-bit:
+		- not§
+		- or§
+		- and§
+		- xor§
+			- xorq %rax, %rax met à 0 les bits de %rax
+	- décalages logiques :
+		- sal§ : décalage à gauche:
+			sal %cl, %rbx (* décale %cl fois %rbx *)
+		- shr§ : de même à droite
+	- décalage arithmétique : 
+		- sar§ : décalage arithmétique à droite (par copîe du bit de poids le plus fort)
+	- rotation : 
+		- rol§ : barrrel shift vers la gauche
+		- ror§ : de même vers la droite
+	- lea§ : voir plus bas, dans adressage indirect (Load Effective Adress)
+	- jmp : saut à un endroit
+		jmp label #fait le jump jsuqu'au label
+		jmp *%rax # saute à l'adresse calculé, contenue dans le reistre
+	- call puts -> appelle la fonction puts de la bibliothèque C, linkée
+	- ret -> finit le programme
+
+On peut I/O la mémoire : adressage indirect
+	Par exemple:
+		movq $42, (%rax) # mem[rax] <- 42
+		incq (%rbx) 	 # mem[rbx] <- mem[rbx] + 1
+	Marche aussi si l'adresse est une étiquette:
+		incq (x)
+	Cependant:
+		La plupart des opérations n'acceptent pas plusieurs opérandes indirectes:
+			addq (%rax), (%rbx) #Va fail
+		Il faut décomposer:
+			movq (%rax), %rcx
+			addq %rcx, (%rbx)
+	
+
+Structure générale des opérandes indirectes:
+	A(B,I,S) désigne l'adresse : A + B + I * S où :
+		- A est une valeur sur 32 bits signée
+		- I vaut 0 si omis
+		- S est dans {1, 2, 4, 8} et vaut 1 si omis
+	Exemple:
+		movq -8(%rax,%rdi,4), %rbx 	# rbx <- mem[-8+rax+rdi*4]
+	Il existe une instruction pour calculer l'adresse effective :
+		leaq A(B, I, S), %rbx 	# rbx <- A + B + I*S
+	On peut s'en servir pour faire des opérations arithmétiques de base, un peu plus rapide!
+
+
+Flags:
+	Quand on effectue des opérations, le CPU positionne des flags booléens en fonction du résultat.
+	Exemples:
+		- ZF : résultat = 0
+		- CF : retenue au-delà du MSB
+		- SF : résultat négatif
+		- OF : débordement de capacité
+	Exception : lea ne fait pas de flags
+	
+	Test de flags:
+		- saut conditionnel:
+			Utilisation:
+				j** label # ** est un suffixe et label le label de l'endroit à sauter si le flag est vrai
+			Suffixes:
+				- e (ou z) : ==0
+				- ne (ou nz) : != 0
+				- s : < 0
+				- ns : >= 0
+				- g : > signé
+				- ge : >= signé
+				- l : < signé
+				- le : <= signé
+				- a, ae, b, be : équivalents en non signé 
+				
+		- positionnement à 1 (vrai) ou 0 (faux):
+			Utilisation:
+				set** %rbx # ** est un suffixe et ça met dans rbx 1 ou 0 suivant l'état du flag correspondant au suffixe
+		
+		- mov conditionnel :
+			Utilisation:
+				cmov**§ %rax, %rbx # ** est un suffixe. l'instruction mov est effectuée <=> le flag correspondant est juste
+		
+		- positionnement de drapeaux sans faire d'opération:
+			- cmp§ %rax, %rbx # positionne les flags comme si on avait fait rax - rbx
+			- test§ %rax, %rbx # positionne les flags comme ssi on avait fait and-rax, rbx)
+
+
+Pour compiler un fichier *.s:
+	- as *.s -o *.o
+	- gcc *.o -o * -no-pie
+On peut désassembler avec la commande objdump
+On peut exécuter le programme avec "gdb *". Il faut ajouter l'option "-g" en compilant (gcc) pour avoir les flags de debug
+
+Fonctionnement de gdb:
+	- break *** -> ajoute un point d'arrêt à la fonction ***
+	- s -> "step" ie. avance d'une instruction
+	- info registers -> affiche les registres
+	- x/s *** -> convertit et affiche la valeur d'étiquette *** d'hexa en ASCII
+	- finish
+
+On peut aussi utiliser Nemiver -> GUI mais un peu beugué
+
+Remarque : La machine est little-endian : les octets sont rangés en mémoireen commençant par les poids faibles
+
+
+
+
+IV] Compilation vers asm
+Constat : seulement 16 registres. -> peut ne pas suffire -> allouer de la mémoire
+Les fonctions procèdent sur le modèle de pile
+
+On matérialise la pile tout en haut de la mémoire:
+
+|------
+| Pile
+|------
+|  |
+|  v
+|
+|  ^
+|  |
+|------
+| tas (données dynamiques)
+|------
+| données statiques
+|------
+| code
+|------
+
+La pile croît dans le sens des adresses décroissantes. %rsp pointe sur le sommet de la pile
+Les données dynamiques sont dans le tas, juste au-dessus des données statiques
+
+Chaque programme a l'impression d'avoir toute la mémoire, sous la forme d'uen plage contigue d'adresse. Il s'agti de la MMU, pilotée par l'OS
+
+%rsp pointe toujours vers le sommet de la pile
+
+Instruction pour la pile:
+	- push§ :
+		pushq %rax
+		pushq $42
+	- pop§ :
+		popq %rdi
+		popq (%rbx)
+
+
+Fonctionnement:
+	Quand une fonction f (appelant, ie. caller) appelle g (appelée, ie. callee):
+		On peut pas juste faire "jmp g" car il faut ensuite revenir à f
+	
+	On utilise:
+		call g 
+	 
+	Cette instruction :
+		- empile l'adresse de l'instruction juste après le call
+		- transfère le contrôle à g
+	puis on utilise 
+		ret
+	
+	Cette instruction :
+		- dépile une adresse
+		- y transfère le contrôle
+	
+	Problème : quand g utilise des registres, ceux-ci perdent l'information déposée par f
+	CONVENTIONS:
+		- jusqu'à 6 arguments sont passés dans les registres : %rdi, %rsi, %rdx, %rcx, %r8, %r9
+		- les autres sont passés sur la pile, le cas échéant
+		- la valeur de retour est passée dans %rax
+		- Les registres %rbx, %rbp, %r12, ..., %r15 sont CALLEE-SAVED. ie. l'appelé doit les sauvegarder, ne pas les modifier (ou alors les restaurer avant de ret)
+			-> sauvegardées par le callee
+		- Les autres sont CALLER-SAVED ie. ces données n'ont pas besoin de survivre aux appels
+			-> sauvegardées par le caller, si besoin
+		- %rsp est le pointeur de pile, %rbp le pointeur de frame
+		- En entrée de fonction, (%rsp + 8) doit être un multiple de 16 #CONVENTION D'ALIGNEMENT
+			On peut le faire de plusieurs façons différentes:
+				- explicitement en ajoutant $8 à %rsp avant les appels de fonctions puis l'enlever à nouveau.
+				- gratuitement, si la sauvegarde de données dans la pile remplit la condition
+	
+	Il ne s'agit que de conventions. Mais dès qu'on utilise du code externe, c'est obligé, sous peine de plantages sévères.
+
+Il y a 4 temps, dans un appel de fonction (f appelle g):
+	1: pour f, juste avant
+	2: pour g, au début
+	3: pour g, à la fin
+	4: pour f, juste après
+
+ces temsp s'organisent autour du tableau d'activation (stack frame), segment situé au sommet de la pile, entre %rsp et %rbp
+
+Temps 1:
+	a: f passe dans %rdi, ...,%rd9 ses arguments et les autres sur la pile si besoin
+	b: f sauvegarde (dans son propre stack frame) les registres caller-saved qu'elle compte utiliser après
+	c: f exécute l'appel : call g #notamment, cela empile l'adresse immédiatement suivante
+
+Temps 2:
+	a: g sauvegarde sur la pile la valeur de %rbp puis copie %rsp dans %rbp
+			pushq %rbp
+			movq %rsp, %rbp
+	b: g alloue son stack frame (soustrait une certaine valeur au pointeur de la tête de pile)
+			subq $48, %rsp
+	c: g sauvegarde les registres callee-saved dont il aura besoin
+
+Temps 3:
+	a: g place le résultat dans %rax
+	b: g restaure les registres sauvegardés
+	c: g dépile son stack frame et restaure %rbp avec
+			leave
+		cela est équivalent à
+			movq %rbp, %rsp
+			popq %rbp
+	d: g exécute ret
+
+Temps 4:
+	a: f dépile et sauvegarde les éventuels registres caller-saved
+	b: f dépile les arguments 7...
+
+
+V] Exemple de compilation
+Allocation de registres:
+	- a, b, c sont passés dans %rdi, %rsi, %rdx
+	- le résultat est renvoyé dans %rax
+	- d, e, f sont stockés dans %r8, %rcx, %rax
+	- en cas d'appel récursif, a..f sont sauvés sur la pile car utilisés plus tard!
+	
+	| ...
+	|------
+	| adr. retour
+	|------
+	| %rax (f)
+	|------
+	| %rcx (e)
+	|------
+	| %r8 (d)
+	|------
+	| %rdx (c)
+	|------
+	| %rsi (b)
+	|------
+	| %rdi (a)       <- %rsp
+	|------
+
+
+Code:
+
+Commencer par la gestion du stack frame:
+	t:
+		subq $48, %rsp # allocation de 48 octets sur notre pile
+		...
+		addq $48, %rsp
+		ret
+
+Puis, pour compiler :
+int t(int a, int b, int c) {	
+	int f = 1;					movq $1, %rax
+	if (a) {					testq %rdi, %rdi # juste pour avoir le flag de nullité ou non sur a
+		...						jz t_return
+	}							...
+	return f;					t_return:
+;									addq $48, %rsp
+									ret
+
+Puis :
+								
+								xorq %rax, %rax # mets f à 0
+if (a) {						movq %rdi, %rcx 	^
+	int d, e=a&~b&~c;			movq %rsi, %r9		|
+	f = 0;						notq %r9			|
+	while ...					andq %r9, %rcx		| e <- a &~b&~c # On utilise temporairement le registre %r9
+}								movq %rdx, %r9		|
+								notq %r9, %rcx		V
+								...
+
+
+
+Puis :
+
+while (expr) {				L1:
+	body						... #calcul de expr dans %rcx	
+}								testq %rcx, %rcx
+								jz L2
+								... #body
+								jmp L1
+							L2:
+								... #suite
+
+
+
+Ou, mieux :						jmp L2
+							L1:
+								... #body
+							L2:
+								... #calcul de expr
+								testq %rcx, %rcx
+								jnz %rcx, L1
+
+--> On a un saut en moins -> Plus efficace
+
+while (d=e&~e) {				jmp loop_test
+	...						loop_body:
+}								...
+							loop_test:
+								movq %rcx, %r8
+								movq %rcx, %r9
+								negq %r9
+								andq %r9, %r8
+								jnz loop_body
+
+
+
+while (...) {				loop_body:
+	f += t(a-d,					movq %rdi, 0(%rsp) 	^
+		(b+d)*2,				movq %rsi, 8(%rsp)	|
+		(c+d)/2);				movq %rdx, 16(%rsp)	|
+	e -= d;						movq %r8, 24(%rsp)	| # Sauvegarde des variables a..f dans la pile
+}								movq %rcx, 32(%rsp)	|
+								movq %rax, 40(%rsp)	V
+								subq %r8, %rdi		^
+								addq %r8, %rsi		|
+								salq $1, %rsi		| # calcul des valeurs à passer à t
+								addq %r8, %rdx		|
+								shrq $1, %rdx		|
+								call t				V # appel de t
+								addq 40(%rsp), %rax	^
+								movq 32'%rsp), %rcx |
+								subq 24(%rsp), %rcx	|
+								movq 16(%rsp), %rdx	| # Restauration des valeurs sauvegardées.
+								movq 8(%rsp), %rsi	| # calcul : e -= d
+								movq 0(%rsp), %rdi	V
+
+
+
+
+int main() {				main:
+	int q;						subq $8, %rsp # alignement de la pile
+	scanf("%d", &q);			movq $input, %rdi
+	...							movq $q, %rsi
+}								xorq %rax, %rax # spécificité de certaines fonctions dont scanf
+								call scanf
+								movq (q), %rcx
+								...
+								
+								.data
+							input:
+								.string "%d"
+							q:
+								.quad 0
+
+
+
+int main() {				main:
+	...							...
+	printf("%d\n",				xorq %rdi, %rdi
+		t(~(~(0<<q),			notq %rdi
+		0, 0));					salq %cl, %rdi 	# %cl est le registre des 8 LSB de %rcx
+}								notq %rdi
+								xorq %rsi, %rsi
+								xorq %rdx, %rdx
+								call t
+								movq $msg, %rdi
+								movq %rax, %rsi
+								xorq %rax, %rax
+								call printf
+								xorq %rax, %rax,
+								addq $8, %rsp
+								ret
+								
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
