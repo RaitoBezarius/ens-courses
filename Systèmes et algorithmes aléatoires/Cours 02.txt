@@ -1,0 +1,87 @@
+
+Plan
+   - Méthode probabiliste:
+	- Argument de comptage
+	- Méthode du premier moment
+	- Méthode du second moment
+
+
+		* La méthode probabiliste *
+
+- Idée : prouver l’existence d’objets satisfaisant certaines propriétés
+
+Argument : 
+-> On dispose d’un ensemble d’objet A
+-> Objectif : trouver l’un d’entre eux qui satisfait P.
+-> On prend une loi aléatoire X sur A
+-> Si la probabilité que X respecte la propriété > 0 on a gagné
+
+Application : 
+-Coloriage des arêtes d’un graphe complet K_n en deux couleurs, rouge et bleu, de telle manière qu’il n’existe pas de clique monochrome
+-R(k) = nombre minimum de sommets tels que pour chaque coloriage des arêtes il existe une clique de taille k monochrome
+
+Théorème : Si (^n_k)2^{-(^k_2)+1}<1 alors R(k)>n
+Preuve : Il y a 2^(^n_2) coloriages possibles des arêtes de K_n. Choix uniforme des coloriage.
+	Soit i = 1,… (^n_k) une énumération des cliques de taille k
+	Soit A_i l’événement : < i est une clique monochrome>. Alors P(A_i) = 2^{-(^k_2)+1}
+	Donc P(UA_i) <= (^n_k)2^{-(^k_2)+1}.
+
+Application (suite) (Nombre de Ramsey) :
+	- On construit via monte-carlo
+	-> Colorier chaque arête uniformément et indépendamment
+	-> Vérifier qu’il n’y a pas de clique de taille k dans une graphe : O(n^k)
+	-> Proba d’échec p = P(UA_i)
+	-> Transformation en algorithme Las-Vegas. E(t) = O(n^k/((^n_k)2^{-(^k_2)+1}))
+
+Méthode du premier moment : 
+-Idée : si l’espérance d’une v.A X est µ, alors avec une proba strictement positive, X prend des valeurs inférieurs et sup à µ.
+-Théorème : P(X>=E[X])>0 et  P(X<=E[X])>0
+
+-Application 1 (MAXSAT) :
+	-> Problème : F une formule normale conjonctive ( ET_j (OU_i X_j_i) )
+	-> Question : nombre maximal de clauses satisfiables
+	-> Problème de décision associé (NP-complet)
+-Théorème : Soient F une formule à m clauses, k_i le nb de littéraux de la i-ème clause et k = min_{i=1}^m k_i.
+	Il existe une affectation des variables qui satisfait au moins ∑_{i=1}^m (1-2^{k_i})>=m(1-2^{-k}) clauses
+-Preuve : On pose Y = ∑ Y_j avec Y_j la v.a. : « la clause j est respecté ». Puis on utilise la linéarité de l’espérance
+
+	-> Ce théorème  nous donne une idée d’optimisation de l’algorithme de construction des v.a. X_i: 
+		E[Y] = E[Y|X_1 = 1]P(X_1 = 1) + E[Y|X_1 = 0]P(X_1 = 0)
+			= 1/2*(E[Y|X_1 = 1]+E[Y|X_1 = 0])
+			<= max(E[Y|X_1 = 1],E[Y|X_1 = 0])
+
+
+
+-Application 2 (Ensembles indépendants) :
+	-> Soit G = (V,E) un graphe. I \in V est un ensemble indépendant si il n’y a pas d’arête dans le graphe induit pas G sur I.
+
+-Théorème : Soit G = (V,E) un graphe connexe de n sommets et m arêtes. Si 2m/n >= 1, alors G possède un ensemble indépendant de taille au moins n^2/(4m).
+- Preuve (cf slide) : Calcul de l’espérance de I est un ensemble indépendant pour une certaine loi :
+	-> Algorithme 2 : on prend p \in [0;1]. Pour chaque sommet on le garde avec une proba 1-p.
+	-> Soit X le nb de sommets. On a E[X] = pn
+	-> Soit Y le nb d’arêtes. On a E[Y] = mp^2
+	-> On retire un sommet par arête pour obtenir un ensemble indépendant.
+	-> Il reste donc E[X-Y] = np - mp^2 sommets
+	-> On cherche p qui maximise l’espérance.
+
+Méthode du second moment :
+
+-Théorème : Soit X une v.a. sur N. Alors P(X != 0) <= E[X] (Markov pour a = 1)
+-Théorème : Soit X une v.a. sur N, alors P(X = 0) <= Var(X)/E[X]^2
+-Preuve : Tchebychev
+
+-Application aux graphes aléatoires (Erdös-Rényi):
+	-> Graphes aléatoires (Erdös-Rényi). Soit n \in N et 0<=p<=1. L’espace G(n,p) est l’espace des graphes non orientés avec n sommet et où chaque arête a une probabilité p d’exister, indépendamment des autres.
+	-> Soit Gn,p un élément de G(n,p).
+	-> On peut étudier les comportement asymptotique pour p = cte ou p = p(n)
+	
+Def : Fonctions seuil :
+	Pour la propriété A, une fonction seuil est une fonction g(n) telle que 
+	(i) si lim p(n)/g(n) = 0 alors P(Gn,p satisfait A) = 0
+	(ii) si lim g(n)/p(n) = 0 alors P(Gn,p satisfait A) = 1
+
+-Théorème : Si A = « contient une clique de taille 4 », alors la fonction seuil est n^{-2/3} (cf slide je sais plus). 
+-Preuve : exo à faire à la maison
+
+Def : coefficients multinomiaux : (^n_{k1;k2;k3;…}) = (^n_k1)(^{n-k1}_k2)(^{n-k1-k2}_k3)…
+	
