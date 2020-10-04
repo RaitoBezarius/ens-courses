@@ -604,7 +604,142 @@ Le théorème 2 sera déductible du théorème suivant :
 \begin{theorem}[Hahn-Kolmogorov]
 	Soit $\mathcal A$ une algèbre d'ensembles sur $X$. Soit $\underline m$ une mesure de probabilité additive sur $\mathcal A$, qui vérifie la propriété de $\sigma$-additivité.
 	
-	Alors il existe une tribu $\tau$ contenant $\mathcal A$, et une mesure de proba $m$ sur $\tau$ qui prolonge $\underline m$. De plus, on peut prendre : $m(B) = \underset{B \subset \bigcup A_i} \ \underset{i \in \mathbb N}{\sum} \underline m (A_i)$, où le $\inf$ est pris sur les recouvrements dénombrables de $B$ par des éléments de $\mathcal A$.
+	Alors il existe une tribu $\tau$ contenant $\mathcal A$, et une mesure de proba $m$ sur $\tau$ qui prolonge $\underline m$. De plus, on peut prendre : $m(B) = \underset{B \subset \bigcup A_i} \inf \  \underset{i \in \mathbb N}{\sum} \underline m (A_i)$, où le $\inf$ est pris sur les recouvrements dénombrables de $B$ par des éléments de $\mathcal A$.
 \end{theorem}
-%TODO : page 10-18%
+
+Pour démontrer le théorème 2, on va appliquer le théorème 3 avec $\mathcal A = \mathcal A_\infty$, et $\underline m$ la mesure additive déterminée par $\underline m (\{y_1\}\times \dots \times \{y_n\} \times Y_{n+1} \times \dots) = P_1(y_1) \dots P_n(y_n)$.
+
+Il nous suffit donc de vérifier que cette mesure additive a la propriété de $\sigma$-additivité.
+
+\begin{propriete}
+	Toute mesure additive sur $\mathcal A_\infty$ est $\sigma$-additive.
+\end{propriete}
+
+\begin{demo}
+	Soient $A \in \mathcal A_\infty$ et $A_i \in \mathcal A_infty$ tel que $A \subset \underset i \bigcup A_i$, alors $\exists n, A \subset \bigcup_{i=1}^n A_i$.
+	
+	\begin{itemize}
+		\item méthode savante : c'est la compacité de $A$ dans $X$ muni de la topologie produit (les $A_i$ sont ouverts et compacts)
+		\item à la main :
+		On pose $B_n = A \setminus \bigcup_{i=1}^n A_n$. On veut montrer que $\exists n, B_n = \emptyset$, sachant que $\underset {n\ge 0}\bigcap B_n = \emptyset$.
+		
+		On suppose que $B_n \ne \emptyset, \forall n$. On note $B_n(y_1) := \Pi_1^{-1}(y_1) \cup B_n$, ce sont les éléments de $B_n$ qi commencent par $y_1$.
+		
+		Pour chaque $y_1$, $n \mapsto B_n(y_1)$ est décroissante. Comme $B_n = \underset {y_1 \in Y_1} \bigcup B_n(y_1)$ (union finie) (et $B_n \ne \emptyset$), il existe $y_1$ tel que les $B_n(y_1)$ sont tous non vides.
+		
+		On fixe maintenant un tel $y_1$ et on reprend le même raisonnement sur $y_2$, puis... On obtient de la sorte une suite $y$.
+		
+		Ainsi, il existe une suite $(y_1, \dots) \in B_n \forall n$ car $\forall n, \exists k_n, B_n\in\mathcal A_{k_n}$.
+		
+		Ainsi, $\forall n, B_n \ni y$ donc $\bigcap B_n \ne \emptyset$. Absurde.
+	\end{itemize}
+\end{demo}
+
+\begin{propriete}
+	Dans le contexte du théorème d'Hahn-Kolmogorov, $m^* : \mathcal P(X) \rightarrow [0,\infty]$ est une \emph{mesure extérieure}, c'est à dire que $m^*(\emptyset) = 0$, $m^*$ est croissante, et $m^*\left(\underset{i\in \mathbb N} \bigcup Z_i\right) \le \underset{i\in\mathbb N}\sum m^*(Z_i), \forall Z_i$.
+\end{propriete}
+
+\begin{demo}
+	Démontrons la dernière propriété. Fixons $\varepsilon > 0$. Pour tout $i$, il existe un recouvrement $A_{i,j}, j\in \mathbb N$ de $Z_i$ tel que $\underset j \sum \underline m(A_{i,j}) \ge m^*(Z_i) \ge \underset j \sum \underline m (A_{i,j}) - \varepsilon 2^{-i}$, alors $A_{i,j}, i\in \mathbb N, j \in \mathbb N$ est un recouvrement de $\bigcup Z_i$, et $m^*(\bigcup Z_i) \le \underset {i,j} \sum \underline m (A_{i,j}) \le \underset {i \ge 1} \sum (m^*(Z_i) + \varepsilon 2^{-1}) \le \varepsilon + \underset {i \ge 1} \sum m^*(Z_i)$.
+\end{demo}
+
+\begin{demo}
+	\emph{Démonstration du théorème d'Hahn-Kolmogorov}
+	Deux étapes : \begin{enumerate}
+		\item $m^*|_{\mathcal A} = \underline m$
+		Si $A \subset \underset i \bigcup A_i$, alors $\underline m (A) \le \sum \underline m (A_i)$ par $\sigma$-additivité de $\underline m$. En prenant l'inf, on obtient $\underline m(A) \le m^*(A)$. L'inégalité réciproque s'obtient en considérant le recouvrement trivial $A_1 = A, A_2=A_3 = \dots = \emptyset$.
+		\item On dit que $Y \subset X$ est mesurable si, pour tout $\varepsilon > 0, \exists A \in \mathcal A$ tel que $m^*(Y \Delta A) \le \varepsilon$. Alors l'ensembre $\mathcal T$ des parties mesurables est une algèbre.
+		\begin{demo}
+			\begin{itemize}
+				\item si $m^*(Y \Delta A) \le \varepsilon$, alors $m^*(^c\!\!Y \cap ^c\!\!A) \le \varepsilon$, donc $\mathcal T$ est stable par complément.
+				\item Soient $Y, Z$ mesurables et $A, B$ tels que $m^*(Y \Delta A) \le \varepsilon, m^*(Z \Delta B) \le \varepsilon$ alors $m^*((Y \cup Z) \Delta (A \cup B)) \le 2\varepsilon$ car $(Y \cup Z)  \Delta (A \cup B) \subset (Y \Delta A) \cup (Z \Delta B)$.
+			\end{itemize}
+		\end{demo}
+		\item $m^*$ est une mesure additive sur $\mathcal T$.
+		\begin{demo}
+			$Y, Z$ disjoints, $A,B$ comme ci-dessus. 
+			
+			$(A\cap B) = (Y \cup (A \setminus Y)) \cap (Z \cup (B \setminus Z)) \subset Y \cap Z \cup (B \setminus Z) \cup (A \setminus Y)$ 
+			
+			donc $\underline m (A \cap B) \le 2\varepsilon$
+			
+			$A \cup B = (Y \cup (A \setminus Y)) \cup (Z \cup (B \setminus Z)) \subset Y \cup Z \cup (A \setminus Y) \cup (B \setminus Z)$
+			
+			$\underline m (A \cup B) \le m^*(Y \cup Z) +2\varepsilon$
+			
+			et $\underline m (A \cup B) = \underline m(A) + \underline m(B) - \underline m(A \cap B) \ge \underline m(A) + \underline m(B) -2\varepsilon \ge m^*(Y) - \varepsilon + m^*(Z) - \varepsilon - 2\varepsilon$.
+			
+			Finalement, $m^*(Y) + m^*(Z) \le m^*(Y \cup Z) + 6\varepsilon$ 
+		\end{demo}
+	Comme $m^*$ est une mesure extérieure et une mesure additive sur l'algèbre $\mathcal T$, elle a la propriété de $\sigma$-additivité.
+	\item $\mathcal T$ est une tribu.
+	\begin{demo}
+		$Y_i \in \mathcal T$. On veut montrer que $Y_\infty := \underset i \bigcup Y_i \in \mathcal T$. On peut supposer que les $Y_i$ sont disjoints. Alors $\forall n, m^*(\underset{i = 1}{\overset{n} \bigsqcup} Y_i) = \underset{i = 1}{\overset{n} \sum} m^*(Y_i) \le m^*(X) = 1$. Donc la série $\sum m^*(Y_i)$ converge, donc $\forall \varepsilon, \exists n, \underset{i = n+1}{\overset{+\infty} \sum} m^*(Y_i) \le \varepsilon$.
+					
+		Alors en posant $Z= \underset{i = 1}{\overset{n} \bigcup} Y_i$, on a $m^*(Y_\infty \setminus Z) \le \varepsilon$, $Z \subset Y_\infty$. Ensuite, on prend $A \in \mathcal A$ tel que $m^*(A\setminus Z) \le \varepsilon, m^*(Z\setminus A) \le \varepsilon$. On obtient $A \setminus Y_\infty \subset A \setminus Z, Y_\infty \setminus A \subset (Z \setminus A) \cup (Y_\infty \setminus Z)$.
+	\end{demo}
+	\end{enumerate}
+\end{demo}
+
+\textbf{Complément :} on aurait pu donner une autre preuve du théorème 3 basée sur un résultat général sur les mesures extérieures. Lorsque $m^*$ est une mesure extérieure, on dit que $Y \subset X$ est $m^*$-mesurable si
+
+$\forall Z \subset X, m^*(Z) = m^*(Z \cap Y) + m^*(Z \cap ^c\!\!Y)$.
+
+\begin{theorem}[Carathéodory]
+	Si $m^*$ est une mesure extérieure, l'ensemble $\mathcal T$ des parties $m^*$-mesurables est une tribu, et $m^*|_{\mathcal T}$ est une mesure.
+\end{theorem}
+\begin{rem}
+	Dans le cas du théorème de Hahn, la tribu $\mathcal T$ est la même que celle introduite dans la démonstration précédente.
+\end{rem}
+
+\begin{demo}
+	\emph{Carathéodory $\Rightarrow$ Hahn-Kolmogorov}
+	
+	Il suffit de montrer que les éléments de $\mathcal A$ sont $m^*$-mesurables, et que $m^*|_{\mathcal A} = \underline m$.
+	\begin{itemize}
+		\item $m^*(A) \le \underline m(A) \forall A \in \mathcal A$
+		\item $m^*(A) \ge \underline m (A) \forall A \in \mathcal A$. En effet, si $A \subset \underset i \bigcup A_i$, on peut supposer les $A_i$ disjoints. Alors par $\sigma$-additivité de $\underline m$ sur $\mathcal A$ : $\underline m(A) = \underset i \sum \underline m(A_i) \ge m^*(A)$.
+		\item Soit $A \in \mathcal A$ et $Zin \mathcal P(X)$. On considère un recouvrement $A_i$ de $Z$.
+		
+		$\underset i \sum \underline m(A_i) = \underset i \sum \underline m (A_i \cap A) + \underline m(A_i \cap ^c\!\!A) \ge m^*(Z \cap A) + m^*(Z \cap ^c\!\!A)$.
+		
+		On prend l'inf : $m^*(Z) \ge m^*(Z \cap A) + m^*(Z \cap ^c\!\!A)$. L'autre inégalité découle de la sous-additivité.
+	\end{itemize}
+\end{demo}
+
+\begin{demo}
+	\emph{Carathéodory}
+	
+	\begin{enumerate}
+		\item $\mathcal T$ est une algèbre. 
+		\begin{demo} On a $\emptyset \in \mathcal T, X \in \mathcal T$, et stabilité par complément de manière triviale.
+		
+		$A,B \in \mathcal T \Rightarrow \forall Y, m^*(Y) = m^*(Y\cap A) + m^*(Y \cap ^c\!\!A) = m^*(Y \cap A \cap B) + m^*(Y \cap A \cap ^c\!\!B) + m^*(Y \cap ^c\!\!A \cap ^c\!\!B) + m^*(Y \cap ^c\!\!A \cap B)$.
+		
+		\begin{rem}
+			$^c\!\!(A \cap B) = (^c\!\!B \cap A) \cup (B \cap ^c\!\!A) \cup (^c\!\!A \cap ^c\!\!B)$
+		\end{rem}
+		Donc $m^*(Y) \ge m^*(Y \cap (B \cup A)) + m^*(Y \cap ^c\!\!(B \cap A))$
+		\end{demo}
+		\item $m^*$ est additive sur $\mathcal T$
+		\begin{demo}
+			$A,B \in \mathcal T$, $A\cap B = \emptyset$.
+			
+			$m^*(A\cup B) = m^*((A\cup B)\cap A) + m^*((A \cup B) \cap ^c\!\!A) = m^*(A) + m^*(B)$
+		\end{demo}
+		\item $\mathcal T$ est une tribu.
+		\begin{demo}
+			soit $A_n$ une suite d'éléments deux à deux disjoints de $\mathcal T$. Posons $B_n =\bigcup_{k=1}^n A_n$ et $B_\infty = \bigcup_{k=1}^\infty A_n$.
+			
+			$\forall Y \subset X, m^*(Y \cap B_n) = m^*(Y \cap B_n \cap A_n) + m^*(Y \cap B_n \cap ^c\!\!A_n) = m^*(Y \cap A_n) + m^*(Y \cap B_{n-1})$.
+			
+			Donc $m^*(Y\cap B_n) = \sum_{k=1}^n m^*(Y \cap A_k)$.
+			
+			Alors $m^*(Y) = m^*(Y) = m^*(Y \cap B_n) + m^*(Y \cap ^c\!\!B_n) \ge \sum_{k=1}^n m^*(Y \cap A_k) + m^*(Y \cap ^c\!\!B_{infty})$.
+			
+			À la limite : $m^*(Y) \ge \sum_{n=1}^\infty m^*(Y \cap A_n) + m^*(Y \cap ^c\!\!B_{\infty})$
+		\end{demo}
+	\end{enumerate}
+\end{demo}
+
 \end{document}
