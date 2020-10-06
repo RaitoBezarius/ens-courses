@@ -12,10 +12,20 @@
 \usepackage{dsfont}
 \usepackage{tcolorbox}
 \usepackage{stmaryrd}
+\usepackage[left=3.00cm, right=3.00cm, top=1.50cm, bottom=1.50cm]{geometry}
 
 
 \title{Intégration et probabilités}
 \date{}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathcal T}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\eps}{\varepsilon}
 
 \newenvironment{definition}{
 	
@@ -32,9 +42,9 @@
 	
 }{\end{tcolorbox}}
 
-\newenvironment{propriete}{
+\newenvironment{propriete}[1][]{
 	\begin{tcolorbox}
-		\textbf{Propriété : }
+		\textbf{Propriété #1 : }
 }
 {\end{tcolorbox}}
 
@@ -60,9 +70,9 @@
 	}
 	{\end{tcolorbox}}
 
-\newenvironment{lemme}{
+\newenvironment{lemme}[1][]{
 	\begin{tcolorbox}
-		\textbf{Lemme : }
+		\textbf{Lemme #1 : }
 	}
 	{\end{tcolorbox}}
 
@@ -334,7 +344,7 @@ Si on se donne une partition finie de $X$ : $X=X_1 \sqcup X_2 \dots \sqcup X_k$,
 	Fixons $x\in X, B\in\mathcal A$.
 	\begin{itemize}
 		\item Soit $x\in B$ et alors $A(x)\subset B$.
-		\item Soit $x\in ^c\!\!B$ et alors $A(x)\subset ^c\!\!B$ i.e. $A(x)\cap B = \emptyset$
+		\item Soit $x\in B^c$ et alors $A(x)\subset B^c$ i.e. $A(x)\cap B = \emptyset$
 	\end{itemize}
 	On conclut avec $B=A(y)$.
 \end{demo}
@@ -476,14 +486,14 @@ Si on se donnes les marginales $m_1, \dots, m_k$, ilm existe de nombreuses lois 
 \end{propriete}
 
 \begin{demo}
-	Il suffit de montrer que $\!\!^cA$ et $B$ sont indépendants (le reste est évident ou vient par symétrie).
+	Il suffit de montrer que $A^c$ et $B$ sont indépendants (le reste est évident ou vient par symétrie).
 	\begin{align*}
-		P(\!\!^cA\cap B) &= P((\Omega \setminus A) \cap B) \\
+		P(A^c\cap B) &= P((\Omega \setminus A) \cap B) \\
 		&= P(B \setminus A\cap B) \\
 		&= P(B) - P(A\cap B) \\
 		&= P(B) - P(A)P(B) \\
 		&= (1-P(A))P(B) \\
-		&= P(\!\!^cA)P(B)
+		&= P(A^c)P(B)
 	\end{align*} 
 \end{demo}
 
@@ -501,10 +511,10 @@ Si on se donnes les marginales $m_1, \dots, m_k$, ilm existe de nombreuses lois 
 
 \begin{demo}
 	Il faut montrer que
-	\[ (*) \quad P(B_1 \cap \dots \cap B_k) = P(B_1) \cdot \dots \cdot P(B_k) \forall B_i \in \{\emptyset, A_i, \!\!^cA_i, \Omega\}	\]
+	\[ (*) \quad P(B_1 \cap \dots \cap B_k) = P(B_1) \cdot \dots \cdot P(B_k) \forall B_i \in \{\emptyset, A_i, A^c_i, \Omega\}	\]
 	Il découle de l'hypothèse que c'est vrai pour $B_i \in \{ \emptyset, A_i, \Omega\}$.
 	
-	Il suffit donc de constater que $(*)$ implique $P\!\!^cB_1 \cap B_2 \cap \dots \cap B_k) = P(\!\!\c B_1)P(B_2) \cdot \dots \cdot P(B_k)$, ce qui se montre comme ce-dessus. On conclut par récurrence finie.
+	Il suffit donc de constater que $(*)$ implique $P (B^c_1 \cap B_2 \cap \dots \cap B_k) = P(B^c_1)P(B_2) \cdot \dots \cdot P(B_k)$, ce qui se montre comme ce-dessus. On conclut par récurrence finie.
 \end{demo}
 
 \begin{exemple}
@@ -571,7 +581,7 @@ Pour démontrer l'utilité du théorème 2., donnons des exemples d'ensembles qu
 	Chacun des ensembles est dans $\mathcal A_\infty$ donc l'ensemble considéré est dans $\tau$.
 \end{exemple}
 
-\section*{$\liminf$ et $\limsup$ d'ensembles}
+\section*{Quelques résultats d'extension des mesures}
 	Si $A_n$ est une suite d'ensembles, on note :
 	\[ \liminf A_n = \underset{n}{\bigcup}\ \underset{m\ge n}{\bigcap} A_m = \{A_i \text{ APCR}\}\]
 	\[ \limsup A_n = \underset{n}{\bigcap}\ \underset{m\ge n}{\bigcup} A_m = \{A_i \text{ infinitely often (i.o.)}\}\]
@@ -581,7 +591,7 @@ Pour démontrer l'utilité du théorème 2., donnons des exemples d'ensembles qu
 	\begin{propriete}
 		\begin{itemize}
 			\item $\liminf A_n \subset \limsup A_n$
-			\item $\liminf \!\!^cA_n= \!\!^c(\limsup A_n)$
+			\item $\liminf A^c_n= (\limsup A_n)^c$
 		\end{itemize}
 	\end{propriete}
 	\begin{demo}
@@ -593,7 +603,7 @@ Pour démontrer l'utilité du théorème 2., donnons des exemples d'ensembles qu
 \end{exo}
 
 \begin{exemple}
-	On considère un tirafe aléatoire indépendant $f_n \in {-1, 1}^{\mathbb N}$, ce que l'on voit comme un jeu de hasard (le joueur gagne ou perd $1$ à chaque étape). Étant donnée la richesse initiale $r_0$ et un objectif $R$, on considère l'événement \{le joueur atteint la richesse $R$ avant de se ruiner\}.
+	On considère un tirage aléatoire indépendant $f_n \in {-1, 1}^{\mathbb N}$, ce que l'on voit comme un jeu de hasard (le joueur gagne ou perd $1$ à chaque étape). Étant donnée la richesse initiale $r_0$ et un objectif $R$, on considère l'événement \{le joueur atteint la richesse $R$ avant de se ruiner\}.
 	
 	Il s'écrit $\underset{n \ge 1}{\bigcup} \{y_1 + \dots y_n \ge -r_0 \quad \forall k < n \text{ et } y_1 + \dots + y_k = R-r_0\}$.
 	
@@ -651,7 +661,7 @@ Il nous suffit donc de vérifier que cette mesure additive a la propriété de $
 		\item On dit que $Y \subset X$ est mesurable si, pour tout $\varepsilon > 0, \exists A \in \mathcal A$ tel que $m^*(Y \Delta A) \le \varepsilon$. Alors l'ensembre $\mathcal T$ des parties mesurables est une algèbre.
 		\begin{demo}
 			\begin{itemize}
-				\item si $m^*(Y \Delta A) \le \varepsilon$, alors $m^*(^c\!\!Y \cap ^c\!\!A) \le \varepsilon$, donc $\mathcal T$ est stable par complément.
+				\item si $m^*(Y \Delta A) \le \varepsilon$, alors $m^*(Y^c \cap A^c) \le \varepsilon$, donc $\mathcal T$ est stable par complément.
 				\item Soient $Y, Z$ mesurables et $A, B$ tels que $m^*(Y \Delta A) \le \varepsilon, m^*(Z \Delta B) \le \varepsilon$ alors $m^*((Y \cup Z) \Delta (A \cup B)) \le 2\varepsilon$ car $(Y \cup Z)  \Delta (A \cup B) \subset (Y \Delta A) \cup (Z \Delta B)$.
 			\end{itemize}
 		\end{demo}
@@ -683,7 +693,7 @@ Il nous suffit donc de vérifier que cette mesure additive a la propriété de $
 
 \textbf{Complément :} on aurait pu donner une autre preuve du théorème 3 basée sur un résultat général sur les mesures extérieures. Lorsque $m^*$ est une mesure extérieure, on dit que $Y \subset X$ est $m^*$-mesurable si
 
-$\forall Z \subset X, m^*(Z) = m^*(Z \cap Y) + m^*(Z \cap ^c\!\!Y)$.
+$\forall Z \subset X, m^*(Z) = m^*(Z \cap Y) + m^*(Z \cap Y^c)$.
 
 \begin{theorem}[Carathéodory]
 	Si $m^*$ est une mesure extérieure, l'ensemble $\mathcal T$ des parties $m^*$-mesurables est une tribu, et $m^*|_{\mathcal T}$ est une mesure.
@@ -701,9 +711,9 @@ $\forall Z \subset X, m^*(Z) = m^*(Z \cap Y) + m^*(Z \cap ^c\!\!Y)$.
 		\item $m^*(A) \ge \underline m (A) \forall A \in \mathcal A$. En effet, si $A \subset \underset i \bigcup A_i$, on peut supposer les $A_i$ disjoints. Alors par $\sigma$-additivité de $\underline m$ sur $\mathcal A$ : $\underline m(A) = \underset i \sum \underline m(A_i) \ge m^*(A)$.
 		\item Soit $A \in \mathcal A$ et $Zin \mathcal P(X)$. On considère un recouvrement $A_i$ de $Z$.
 		
-		$\underset i \sum \underline m(A_i) = \underset i \sum \underline m (A_i \cap A) + \underline m(A_i \cap ^c\!\!A) \ge m^*(Z \cap A) + m^*(Z \cap ^c\!\!A)$.
+		$\underset i \sum \underline m(A_i) = \underset i \sum \underline m (A_i \cap A) + \underline m(A_i \cap A^c) \ge m^*(Z \cap A) + m^*(Z \cap A^c)$.
 		
-		On prend l'inf : $m^*(Z) \ge m^*(Z \cap A) + m^*(Z \cap ^c\!\!A)$. L'autre inégalité découle de la sous-additivité.
+		On prend l'inf : $m^*(Z) \ge m^*(Z \cap A) + m^*(Z \cap A^c)$. L'autre inégalité découle de la sous-additivité.
 	\end{itemize}
 \end{demo}
 
@@ -714,32 +724,196 @@ $\forall Z \subset X, m^*(Z) = m^*(Z \cap Y) + m^*(Z \cap ^c\!\!Y)$.
 		\item $\mathcal T$ est une algèbre. 
 		\begin{demo} On a $\emptyset \in \mathcal T, X \in \mathcal T$, et stabilité par complément de manière triviale.
 		
-		$A,B \in \mathcal T \Rightarrow \forall Y, m^*(Y) = m^*(Y\cap A) + m^*(Y \cap ^c\!\!A) = m^*(Y \cap A \cap B) + m^*(Y \cap A \cap ^c\!\!B) + m^*(Y \cap ^c\!\!A \cap ^c\!\!B) + m^*(Y \cap ^c\!\!A \cap B)$.
+		$A,B \in \mathcal T \Rightarrow \forall Y, m^*(Y) = m^*(Y\cap A) + m^*(Y \cap A^c) = m^*(Y \cap A \cap B) + m^*(Y \cap A \cap B^c) + m^*(Y \cap A^c \cap B^c) + m^*(Y \cap A^c \cap B)$.
 		
 		\begin{rem}
-			$^c\!\!(A \cap B) = (^c\!\!B \cap A) \cup (B \cap ^c\!\!A) \cup (^c\!\!A \cap ^c\!\!B)$
+			$(A \cap B)^c = (B^c \cap A) \cup (B \cap A^c) \cup (A^c \cap B^c)$
 		\end{rem}
-		Donc $m^*(Y) \ge m^*(Y \cap (B \cup A)) + m^*(Y \cap ^c\!\!(B \cap A))$
+		Donc $m^*(Y) \ge m^*(Y \cap (B \cup A)) + m^*(Y \cap (B \cap A)^c)$
 		\end{demo}
 		\item $m^*$ est additive sur $\mathcal T$
 		\begin{demo}
 			$A,B \in \mathcal T$, $A\cap B = \emptyset$.
 			
-			$m^*(A\cup B) = m^*((A\cup B)\cap A) + m^*((A \cup B) \cap ^c\!\!A) = m^*(A) + m^*(B)$
+			$m^*(A\cup B) = m^*((A\cup B)\cap A) + m^*((A \cup B) \cap A^c) = m^*(A) + m^*(B)$
 		\end{demo}
 		\item $\mathcal T$ est une tribu.
 		\begin{demo}
 			soit $A_n$ une suite d'éléments deux à deux disjoints de $\mathcal T$. Posons $B_n =\bigcup_{k=1}^n A_n$ et $B_\infty = \bigcup_{k=1}^\infty A_n$.
 			
-			$\forall Y \subset X, m^*(Y \cap B_n) = m^*(Y \cap B_n \cap A_n) + m^*(Y \cap B_n \cap ^c\!\!A_n) = m^*(Y \cap A_n) + m^*(Y \cap B_{n-1})$.
+			$\forall Y \subset X, m^*(Y \cap B_n) = m^*(Y \cap B_n \cap A_n) + m^*(Y \cap B_n \cap A_n^c) = m^*(Y \cap A_n) + m^*(Y \cap B_{n-1})$.
 			
 			Donc $m^*(Y\cap B_n) = \sum_{k=1}^n m^*(Y \cap A_k)$.
 			
-			Alors $m^*(Y) = m^*(Y) = m^*(Y \cap B_n) + m^*(Y \cap ^c\!\!B_n) \ge \sum_{k=1}^n m^*(Y \cap A_k) + m^*(Y \cap ^c\!\!B_{infty})$.
+			Alors $m^*(Y) = m^*(Y) = m^*(Y \cap B_n) + m^*(Y \cap B^c_n) \ge \sum_{k=1}^n m^*(Y \cap A_k) + m^*(Y \cap B^c_{infty})$.
 			
-			À la limite : $m^*(Y) \ge \sum_{n=1}^\infty m^*(Y \cap A_n) + m^*(Y \cap ^c\!\!B_{\infty})$
+			À la limite : $m^*(Y) \ge \sum_{n=1}^\infty m^*(Y \cap A_n) + m^*(Y \cap B^c_{\infty})$
 		\end{demo}
 	\end{enumerate}
 \end{demo}
+
+On peut cependant se poser la question de l'unicité de $m^*$ dans Hahn-Kolmogorov.
+
+\begin{theorem}
+	Si $\mu : B \rightarrow [0,1]$ est une mesure sur une tribu $B \subset \A$, $\mu|_\A = \underline m$, alors $\mu=m^*$ sur $\T \cap B$.
+\end{theorem}
+
+\begin{rem}
+	Il existe une plus petite tribu contenant $\A$ ($\underset{\T \subset \A,\ \T \text{ tribu}}{\bigcap} \T$. Sur cette tribu, il existe une unique mesure prolongeant $\underline m$.
+\end{rem}
+
+\begin{demo}
+	\begin{enumerate}
+		\item Si $B \subset \underset i \bigcup A_i, A_i \in \A_i, B \in \B$, alors $\mu(B) \le \underset i \sum \mu(A_i) = \underset i \sum \underline m(A_i)$. En prenant l'inf sur les familles $A_i$, on conclut $\mu \le m^*|_\B$
+		\item Comme $\mu(B) \le 1- \mu(B^c)$, si $B \in \T$, on a $A-m^*(B^c) = m^*(B)$ donc $\mu(b) \ge m^*(B)$ et donc $\mu(B) = m^*(B) si B\in \T$
+	
+	\end{enumerate}
+\end{demo}
+
+\section*{Loi des grands nombres}
+
+On se donne $Y \subset \R$ fini, une mesure de probabilité $p$ sur $Y$, et une suite finie $f_{i,i\in\N} : \Omega \rightarrow Y$ de variables aléatoires iid suivant la loi $p$. L'existence d'une telle suite découle des théorèmes de la section précédente.
+
+\begin{definition}
+	Si $f : \Omega \rightarrow \R$ est une variable aléatoire prenant un nombre fini de valeurs, on note $E(f) = \underset{y \in f(\Omega)} \sum yP(f=y)$ l'espérance de $f$.
+\end{definition}
+
+Dans notre contexte on note $e := E(f)$.
+
+On définit $S_n = \frac{f_1 + \dots + f_n} n : \Omega \rightarrow \R$. Chacune des variables aléatoires $S_n$ prend un nombre fini de valeurs, mais les variables $S_n$ ne sont pas indépendantes.
+
+On veut montrer les trois énoncés suivants :
+
+\begin{theorem}[Loi faible des grands nombres]
+	$P(\left| \frac{S_n} n -e \right| \ge \eps) \rightarrow 0$	
+\end{theorem}
+
+\begin{theorem}[Loi forte des grands nombres]
+	$P (\frac {S_n} n \rightarrow e) = 1$
+\end{theorem}
+
+\begin{theorem}
+	$\forall \alpha > \frac 1 2, \quad P(\frac {S_n - ne} {n^\alpha} \rightarrow 0) = 1$
+\end{theorem}
+
+\subsection*{Quelques outils de théorie de la probabilité}
+
+Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres outils.
+
+\begin{theorem}[Inégalité de Markov]
+	Si $f$ est une variable aléatoire positive, 
+	\[ \forall a \in \R^+_*, \quad P(f > a) \le \frac {E(f)} a \]
+\end{theorem}
+
+\begin{demo}
+	On écrit la définition de $E(f)$, on coupe la somme en deux selon $y>a$ ou $y \le a$, on majore brutalement et on conclut.
+\end{demo}
+
+\begin{theorem}[Inégalité de Bienaymé-Tchebychev]
+	\[ \forall a \in \R^+_*, \quad P(|f-E(f))| > a) \le \frac {Var(f)} {a^2} \]
+\end{theorem}
+
+\begin{demo}
+	On élève l'événement au carré, on conclut par Markov.
+\end{demo}
+
+\begin{propriete}
+	$E(XY) := E(X)E(Y) + Cov(X,Y)$,
+	
+	$Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$
+\end{propriete}
+
+\begin{demo}
+	Il suffit de l'écrire.
+\end{demo}
+
+\begin{lemme}
+	Si $X$ et $Y$ sont deux variables aléatoires indépendantes, $Cov(X,Y) = 0$.
+\end{lemme}
+\begin{demo}
+	Trivial.
+\end{demo}
+
+\begin{propriete}[Convergence monotone]
+	Soit $(\Omega, \T, m)$ un espace mesuré.
+	
+	Si $(A_n)$ est une suite décroissante et que $m(A_1)$ est fini, alors $m(\underset {n\in\N} \bigcap A_n) = \lim m(A_n)$.
+	
+	Si $(A_n)$ est une suite croissante, alors $m(\underset {n\in\N} \bigcup A_n) = \lim m(A_n)$.
+\end{propriete}
+
+\begin{demo}
+	On pose $B_n = A_n \setminus A_{n-1}$, et par double passage à la limite, la propriété sur les suites croissantes est immédiate. Le résultat sur les suites décroissantes vient du passage au complémentaire.
+\end{demo}
+
+\begin{lemme}[Fatou ensembliste]
+	\begin{itemize}
+		\item $m(\liminf A_n) \le \liminf m(A_n)$
+		\item Si $m$ est finie, $m(\limsup A_n) \ge \limsup m(A_n)$
+		\item Si $m$ est finie et $\limsup A_n = \liminf A_n = A$, alors $m(A_n) \rightarrow A$
+	\end{itemize}
+\end{lemme}
+
+\begin{demo}
+	On pose $B_n = \underset {m \ge n} \bigcap A_m$. C'est une suite croissante.
+	
+	$m(B_n) \rightarrow m(\underset n \bigcup B_n) = m(\liminf A_n)$
+	
+	$m(B_n) \le m(A_n)= \Rightarrow \liminf m(A_n) \le m(\liminf A_n)$
+\end{demo}
+
+\begin{lemme}[Premier lemme de Borel-Cantelli]
+	Si $\underset {n\ge 0} \sum m(A_n)$ est finie, alors $m(\limsup A_n) = 0$.
+\end{lemme}
+
+\begin{demo}
+	$B_n := \underset {m\ge n} A_m$.
+	
+	$m(B_n) \le \sum_{m \ge n}^\infty m(A_n) \rightarrow 0$ (reste de série convergente)
+	
+	Or, $\lim m(B_n) = m(\limsup A_n) = 0$.
+\end{demo}
+
+\begin{theorem}[Inégalité de Kolmogorov]
+	$P( \underset {A \le k \ le n} \max |\tilde{S_k}| \ge a) \le \frac {n Var(f)} {a^2}$
+\end{theorem}
+
+\begin{demo}
+	$T(\omega) :=$ le premier temps pour lequel $|\tilde{S_n} \ge a$. $T(\omega) \in \N \cup \{+\infty\}$
+	
+	$(T = k) = \{|\tilde{S_1}| < a \} \cap \dots \cap \{|\tilde{S_{n-1}}| < a \} \cap \{|\tilde{S_n}| \ge a \} \in \A_k$.
+	
+	$T$ est ainsi un \emph{temps d'arrêt}.
+	
+	$\begin{aligned}
+		Var \tilde {S_n} &= E(\tilde {S_n^2}) \ge \sum_{k=1}^n E(S_n^2 \mathds 1_{\{T=k\}}) \\
+		&= \sum_{k=1}^n E((\tilde{S_n} + \tilde{S_k} - \tilde{S_k}) \mathds 1_{\{T=k\}}) \\
+		&= \sum_{k=1}^n E(\tilde{S_k^2} \mathds 1_{\{T=k\}}) + \sum_{k=1}^n E((\tilde{S_n} - \tilde{S_k})\tilde{S_k} \mathds 1_{\{T=k\}}) \\
+		&\ge \sum_{k=1}^n a^2P(T=k) + 0 + 0 (*) \\
+		&\ge a^2 P(M_n \ge a)
+	\end{aligned}$
+et $(*) : \tilde{S_n} - \tilde{S_k} = \tilde{f_{k+1}} + \dots + \tilde{f_n}$. Or $\tilde{S_k} \mathds 1_{\{T=k\}}$ ne dépend que des $k$ premières valeurs (indépendance).
+\end{demo}
+
+\begin{rem}
+	Illustration de la notion de temps d'arrêt :
+	
+	On considère un jeu de hasard : une suite $f_i$ de v.a. i.i.d. à valeurs dans $\{-1, 1\}$, avec $P(1) =p$.
+	
+	Supposons que le joueur choisit un temps $T(\omega)$ pour miser. Peut-il optimiser sa probabilité de gain $P(f_{T(\omega)}(\omega) = 1)$ ?
+	
+	On peut choisir $T(\omega)$ le premier temps tel que $f_{T(\omega)} = 1$, mais cela nécessite de connaître tous les tirages.
+	
+	En réalité, on ne dispose pas de l'almanach des sports, on n'a que l'information des $k-1$ premiers tirages, i.e. $\{T=k\} \in \A_{k-1}$, c'est un temps d'arrêt.
+	
+	\begin{propriete}
+		Si $T$ vérifie cette condition, $P(f_{T(\omega)}(\omega)=1) = p$.
+	\end{propriete}
+	\begin{demo}
+		$P(f_{T(\omega)}(\omega)=1) = \sum_{k=1}^\infty P((T=k) \cap )f_k =1))$. On conclut par indépendance.
+	\end{demo}
+\end{rem}
+
+\subsection*{Démonstrations des lois des grands nombres}
 
 \end{document}
