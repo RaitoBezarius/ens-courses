@@ -462,7 +462,7 @@ La description en termes de variables aléatoires consiste donc à se donner une
 \end{definition}
 
 \begin{rem}
-	La loi jointe détermine les lois marginales, qui peuvent se décrire explicitement par $m_i(y_i)=\underset{y_1,\dots,y_{i-1},y_{i+1},\dots,y_k}{\sum} m(y_1,\dots,y_k$.
+	La loi jointe détermine les lois marginales, qui peuvent se décrire explicitement par $m_i(y_i)=\underset{y_1,\dots,y_{i-1},y_{i+1},\dots,y_k}{\sum} m(y_1,\dots,y_k)$.
 	
 	Plus abstraitement, ce soint les mesures images $m_i=(\Pi_i)_*m_i$ où $\Pi_i : Y \rightarrow Y_i$ est la projection.
 \end{rem}
@@ -783,15 +783,15 @@ On définit $S_n = \frac{f_1 + \dots + f_n} n : \Omega \rightarrow \R$. Chacune 
 On veut montrer les trois énoncés suivants :
 
 \begin{theorem}[Loi faible des grands nombres]
-	$P(\left| \frac{S_n} n -e \right| \ge \eps) \rightarrow 0$	
+	\[P\left(\left| \frac{S_n} n -e \right| \ge \eps\right) \rightarrow 0\]
 \end{theorem}
 
 \begin{theorem}[Loi forte des grands nombres]
-	$P (\frac {S_n} n \rightarrow e) = 1$
+	\[P \left(\frac {S_n} n \rightarrow e\right) = 1\]
 \end{theorem}
 
 \begin{theorem}
-	$\forall \alpha > \frac 1 2, \quad P(\frac {S_n - ne} {n^\alpha} \rightarrow 0) = 1$
+	\[\forall \alpha > \frac 1 2, \quad P\left(\frac {S_n - ne} {n^\alpha} \rightarrow 0\right) = 1\]
 \end{theorem}
 
 \subsection*{Quelques outils de théorie de la probabilité}
@@ -912,6 +912,81 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 	\end{demo}
 \end{rem}
 
+\begin{theorem}[Inégalité de Hoeffding]
+	\[ P\left( \left| \tilde S_n \right| \ge a \right) \le 2 \exp (-\frac{2a^2}{Cn}), \qquad C = (\max f - \min f)^2\]
+\end{theorem}
+
+\begin{lemme}
+	Pour $\tilde f$ une v.a. centrée prenant un nombre fini de valeurs, on a : 
+	\[ E\left( e^{\theta \tilde f} \right) \le e^{C\theta^2/8}, \qquad C=(\max \tilde f - \min \tilde f)^2\]
+\end{lemme}
+
+\begin{demo}[lemme]
+	On pose $g(\theta):=\ln(E(e^{\theta\tilde f}))$. $g$ est $\mathcal C^\infty$.
+	
+	On a : $g(0) = 0$, $g'(\theta) = \frac{E(\tilde f e^{\theta\tilde f})}{E(e^{\theta \tilde f})}$ donc $g'(0) = E(\tilde f) = 0$.
+	
+	Au voisinage de $\theta = 0$, il existe une constance $c$ telle que $g(\theta) \le c\theta^2$.
+	
+	$g''(\theta) = \frac{E(\tilde f^2 e^{\theta \tilde f}) E(e^{\theta\tilde f}) - E(\tilde f e^{\theta\tilde f})^2} {E(\theta e^{\theta\tilde f})^2}$
+	
+	Ceci est la variance de la loi de proba sur $\tilde Y$ donnée par $P_\theta(\tilde y) = \frac{P(\tilde y)e^{\theta\tilde f}}{E(e^{\theta \tilde f})}$.
+	
+	En effet, $g''(\theta) = E \left(  \frac{\tilde f^2 e^{\theta\tilde f}} {E(e^{\theta \tilde f})} \right) - E \left( \tilde f \frac{e^{\theta\tilde f}}{E(e^{\theta\tilde f})} \right)^2$.
+	
+	Si $g$ est une v.a. prenant un nombre fini de valeurs, alors $Var(g) \le (\max g - \min g)^2/4$. On remarque que la variance est invariante à translation de $g$ près, donc on peut supposer $\max g = - \min g$. Or, $Var(g) = E(g^2) - E(g)^2 \le E(g^2) \le (\max g)^2 \le (\max g - \min g)^2/4$.
+	
+	Ainsi, par l'inégalité des accroissements finis, comme $g''(\theta) \le \frac C 4$, on a $g(\theta) \le \frac C 8 \theta^2$
+	
+	Donc $E(e^{\theta\tilde f}) \le \exp\left( \frac{C\theta^2} 8 \right)$
+\end{demo}
+
+\begin{demo}[Hoeffding]
+	$P(\tilde S_n \ge a) = P(e^{theta\tilde S_n} \ge e^{\theta a}) \le e^{-a\theta}E(e^{\theta\tilde S_n})$ par Markov.
+	
+	$E(e^{\theta\tilde S_n}) = E(\prod e^{\theta\tilde f_i}) = \prod E(e^{\theta\tilde f_i}) = E(e^{\theta\tilde f})^n$.
+	
+	$P(\tilde S_n \ge a) \le e^{-a\theta} E(e^{\theta\tilde f})^n \le \exp \left(\frac {nC\theta^2} 8 - \theta a \right)$.
+	
+	On optimise par rapport à $\theta$ ($\theta = \frac{4a}{nC}$), et on conclut.
+\end{demo}
+
+\begin{rem}
+	\textbf{Intérêt de ces inégalités en statistiques}
+	
+	Bienaymé-Tchebychev : $P(|\tilde S_n| \ge a) \le \frac{nVar(f)}{a^2}$
+	
+	Hoeffding : $P(|\tilde S_n| \ge a) \le 2\exp(-\frac{2a^2}{nC})$
+	
+	Dans les deux cas, on note une décroissance en $\frac n {a^2}$.
+
+	Exemple d'application : sondage. La population peut avoir deux avis : $Y = \{ 0, 1\}$. On cherche à estimer par un sondage quelle est la proportion $p$ de la population qui a l'avis $1$ ($p=P(1)$).
+	
+	On interprète un sondage comme étant une suite finie de variable aléatoires iid $f_1, \dots, f_n$ tirées suivant la loi ci-dessus.
+	
+	On s'attend à ce que $\frac {S_n} n \approx p$. Les inégalités rappelées ci-dessus nous donnent des majorations de $P\left(\left|\frac{S_n} n - p \right| \ge \eps \right)$. Dans ce contexte, Hoeffding donne de meilleures estimations.
+	
+	Exemple de valeurs numériques :
+	
+	\begin{tabular}{|c|c||c|}
+		\hline
+		n & $\eps$ & Résultat \\
+		\hline
+		1000 & 5\% & $p=1,3$\% \\
+		\hline
+		1000 & 1\% & $n\eps^2 =1$, on ne peut rien conclure \\
+		\hline
+	\end{tabular}
+
+	La première ligne indique que la probabilité d'être à plus de 5\% d'erreur est d'au plus 1,3\%.
+	
+	\textbf{Intervalle de confiance :}
+	
+	Ici, on fixe $p$ la probabilité d'erreur, et on cherche $\eps$, c'est à dire, par Hoeffding, $\eps \le \sqrt{\frac 1 {2n} \ln\left(\frac 2 p \right)}$. Par exemple, pour $n=1000$, $p=5\%$, on obtient $\eps=4,"\%$.
+	
+	En général, avec ces données, on donne $\eps = 3\%$. Cette disparité vient de la non-optimalité de l'inégalité de Hoeffding, et par le fait qu'il existe des modèles plus précis (approcher cette binomiale par une gaussienne grâce au théorème central limite par exemple).
+\end{rem}
+
 \subsection*{Démonstrations des lois des grands nombres}
 
 \begin{demo}[Loi faible des grands nombres]
@@ -954,8 +1029,42 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 		&\le \frac{M_{k(n)^r}}{k(n)^{\alpha r}} \cdot \frac{k(n)^{\alpha r}}{(k(n) -1)^{\alpha r}}
 	\end{align*}
 	Le premier terme tend vers 0, le second vers 1, ce qui conclut la preuve.
+\end{demo}
 
+\begin{demo}[Inégalité de Hoeffding $\Rightarrow$ théorème 3]
+	$P(|\tilde S_n| \ge \eps n^\alpha) \le 2\exp \left( \frac{-2\eps^2n^{2\alpha -1}}{C} \right)$
 	
+	C'est le terme général d'une série convergente, donc d'après le 1er lemme de Borel-Cantelli :
+	
+	$P(|\tilde S_n| \ge \eps n^\alpha \text{ i.o.})$ ie $\frac{\tilde S_n}{n^\alpha} \rightarrow 0 \text{ p.p.}$.
+\end{demo}
+
+\section*{Estimations inférieures}
+
+On suppose que les variables aléatoires prennent au moins deux valeurs avec probabilité non nulle.
+
+\begin{theorem}
+	\[ P((S_n) \text{ bornée} ) = 0\]
+\end{theorem}
+
+\begin{theorem}
+	\[ P(\limsup \frac{\tilde S_n}{\sqrt n} = +\infty ) = 1 \]
+\end{theorem}
+
+\begin{theorem}[Loi du logarithme itéré]
+	Presque partout, on a:
+	\[ \limsup \frac{\tilde S_n}{\sqrt{2(Var(f))n \ln \ln n}} = 1\]
+\end{theorem}
+
+\begin{demo}[Théorème 13]
+	On se donne $a\ne 0$, $P(a) > 0$.
+	 
+	\textbf{\quad Affirmation :} Pour tout $k\in\N$, il existe une infinité de $n\in\N$ tels que $f_n = a, \dots, f_{n+k} = a$.
+	\begin{demo}
+		D'après le premier lemme de Borel-Cantelli ... %TODO : cours du 13/10
+	\end{demo}
+	
+	On en déduit immédiatement le caractère non borné de la suite $(S_n)$
 \end{demo}
 
 \end{document}
