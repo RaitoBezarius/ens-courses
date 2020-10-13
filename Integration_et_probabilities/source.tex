@@ -27,6 +27,10 @@
 \newcommand{\B}{\mathcal B}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\comp}[1]{#1^\complement}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\indep}{\perp \!\!\! \perp}
+\renewcommand{\Im}{\mathrm{Im }}
 
 \newenvironment{definition}{
 	
@@ -808,7 +812,7 @@ Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres 
 \end{demo}
 
 \begin{theorem}[Inégalité de Bienaymé-Tchebychev]
-	\[ \forall a \in \R^+_*, \quad P(|f-E(f))| > a) \le \frac {Var(f)} {a^2} \]
+	\[ \forall a \in \R^+_*, \quad P(|f-E(f))| > a) \le \frac {\var(f)} {a^2} \]
 \end{theorem}
 
 \begin{demo}
@@ -816,9 +820,9 @@ Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres 
 \end{demo}
 
 \begin{propriete}
-	$E(XY) := E(X)E(Y) + Cov(X,Y)$,
+	$E(XY) := E(X)E(Y) + \cov (X,Y)$,
 	
-	$Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$
+	$\var(X+Y) = \var(X) + \var(Y) + 2\cov (X,Y)$
 \end{propriete}
 
 \begin{demo}
@@ -826,7 +830,7 @@ Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres 
 \end{demo}
 
 \begin{lemme}
-	Si $X$ et $Y$ sont deux variables aléatoires indépendantes, $Cov(X,Y) = 0$.
+	Si $X$ et $Y$ sont deux variables aléatoires indépendantes, $\cov(X,Y) = 0$.
 \end{lemme}
 \begin{demo}
 	Trivial.
@@ -873,7 +877,7 @@ Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres 
 \end{demo}
 
 \begin{theorem}[Inégalité de Kolmogorov]
-	$P( \underset {A \le k \ le n} \max |\tilde S_k| \ge a) \le \frac {n Var(f)} {a^2}$
+	$P( \underset {A \le k \ le n} \max |\tilde S_k| \ge a) \le \frac {n \var(f)} {a^2}$
 \end{theorem}
 
 \begin{demo}
@@ -884,7 +888,7 @@ Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres 
 	$T$ est ainsi un \emph{temps d'arrêt}.
 	
 	$\begin{aligned}
-		Var \tilde S_n &= E(\tilde S_n^2) \ge \sum_{k=1}^n E(S_n^2 \mathds 1_{\{T=k\}}) \\
+		\var \tilde S_n &= E(\tilde S_n^2) \ge \sum_{k=1}^n E(S_n^2 \mathds 1_{\{T=k\}}) \\
 		&= \sum_{k=1}^n E((\tilde S_n + \tilde S_k - \tilde S_k) \mathds 1_{\{T=k\}}) \\
 		&= \sum_{k=1}^n E(\tilde S_k^2 \mathds 1_{\{T=k\}}) + \sum_{k=1}^n E((\tilde S_n - \tilde S_k)\tilde S_k \mathds 1_{\{T=k\}}) \\
 		&\ge \sum_{k=1}^n a^2P(T=k) + 0 + 0 (*) \\
@@ -934,7 +938,7 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 	
 	En effet, $g''(\theta) = E \left(  \frac{\tilde f^2 e^{\theta\tilde f}} {E(e^{\theta \tilde f})} \right) - E \left( \tilde f \frac{e^{\theta\tilde f}}{E(e^{\theta\tilde f})} \right)^2$.
 	
-	Si $g$ est une v.a. prenant un nombre fini de valeurs, alors $Var(g) \le (\max g - \min g)^2/4$. On remarque que la variance est invariante à translation de $g$ près, donc on peut supposer $\max g = - \min g$. Or, $Var(g) = E(g^2) - E(g)^2 \le E(g^2) \le (\max g)^2 \le (\max g - \min g)^2/4$.
+	Si $g$ est une v.a. prenant un nombre fini de valeurs, alors $\var(g) \le (\max g - \min g)^2/4$. On remarque que la variance est invariante à translation de $g$ près, donc on peut supposer $\max g = - \min g$. Or, $\var(g) = E(g^2) - E(g)^2 \le E(g^2) \le (\max g)^2 \le (\max g - \min g)^2/4$.
 	
 	Ainsi, par l'inégalité des accroissements finis, comme $g''(\theta) \le \frac C 4$, on a $g(\theta) \le \frac C 8 \theta^2$
 	
@@ -954,7 +958,7 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 \begin{rem}
 	\textbf{Intérêt de ces inégalités en statistiques}
 	
-	Bienaymé-Tchebychev : $P(|\tilde S_n| \ge a) \le \frac{nVar(f)}{a^2}$
+	Bienaymé-Tchebychev : $P(|\tilde S_n| \ge a) \le \frac{n\var(f)}{a^2}$
 	
 	Hoeffding : $P(|\tilde S_n| \ge a) \le 2\exp(-\frac{2a^2}{nC})$
 	
@@ -967,16 +971,17 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 	On s'attend à ce que $\frac {S_n} n \approx p$. Les inégalités rappelées ci-dessus nous donnent des majorations de $P\left(\left|\frac{S_n} n - p \right| \ge \eps \right)$. Dans ce contexte, Hoeffding donne de meilleures estimations.
 	
 	Exemple de valeurs numériques :
-	
-	\begin{tabular}{|c|c||c|}
-		\hline
-		n & $\eps$ & Résultat \\
-		\hline
-		1000 & 5\% & $p=1,3$\% \\
-		\hline
-		1000 & 1\% & $n\eps^2 =1$, on ne peut rien conclure \\
-		\hline
-	\end{tabular}
+	\begin{center}
+		\begin{tabular}{|c|c||c|}
+			\hline
+			n & $\eps$ & Résultat \\
+			\hline
+			1000 & 5\% & $p=1,3$\% \\
+			\hline
+			1000 & 1\% & $n\eps^2 =1$, on ne peut rien conclure \\
+			\hline
+		\end{tabular}
+	\end{center}
 
 	La première ligne indique que la probabilité d'être à plus de 5\% d'erreur est d'au plus 1,3\%.
 	
@@ -991,7 +996,7 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 
 \begin{demo}[Loi faible des grands nombres]
 	
-	$P(\left|\frac {S_n} n - e \right| \ge \alpha) = P(|S_n - E(S_n)| \ge n\alpha) \le \frac{Var(S_n)}{n^2\alpha^2} = \frac{n Var(f)}{n^2\alpha^2} = \frac{Varf}{n\alpha^2}$
+	$P(\left|\frac {S_n} n - e \right| \ge \alpha) = P(|S_n - E(S_n)| \ge n\alpha) \le \frac{\var(S_n)}{n^2\alpha^2} = \frac{n \var(f)}{n^2\alpha^2} = \frac{\var(f)}{n\alpha^2}$
 \end{demo}
 
 \begin{demo}[Loi forte des grands nombres]
@@ -1012,11 +1017,11 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 
 \begin{demo}[Inégalité de Kolmogorov $\Rightarrow$ théorème 3]
 	
-	$P(\frac{M_n}{n^\alpha} \ge \eps) \le \frac{Var(f)}{n^{2\alpha -1}\eps^2}$ où $M_n = \underset{1\le k \le n}\max |\tilde S_k|$
+	$P(\frac{M_n}{n^\alpha} \ge \eps) \le \frac{\var(f)}{n^{2\alpha -1}\eps^2}$ où $M_n = \underset{1\le k \le n}\max |\tilde S_k|$
 	
 	On fixe $R\in\N$ tel que $(2\alpha -1)r > 1$.
 	
-	\[P(\frac{M_{n^r}}{n^{r\alpha}} \ge \eps) \le \frac{Var(f)}{\eps^2 n^{(2\alpha - 1)r}}\]
+	\[P(\frac{M_{n^r}}{n^{r\alpha}} \ge \eps) \le \frac{\var(f)}{\eps^2 n^{(2\alpha - 1)r}}\]
 	
 	C'est le terme général d'une série convergente, donc par le premier lemme de Borel-Cantelli, on en déduit que $P(\frac{M_{n^r}}{n^{r\alpha}} \ge \eps \text{ i.o.}) = 0$, et donc que p.p., $\frac{M_{n^r}}{n^{r\alpha}} \rightarrow 0$.
 	
@@ -1043,6 +1048,8 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 
 On suppose que les variables aléatoires prennent au moins deux valeurs avec probabilité non nulle.
 
+\subsection*{Quelques estimations inférieures}
+
 \begin{theorem}
 	\[ P((S_n) \text{ bornée} ) = 0\]
 \end{theorem}
@@ -1053,18 +1060,119 @@ On suppose que les variables aléatoires prennent au moins deux valeurs avec pro
 
 \begin{theorem}[Loi du logarithme itéré]
 	Presque partout, on a:
-	\[ \limsup \frac{\tilde S_n}{\sqrt{2(Var(f))n \ln \ln n}} = 1\]
+	\[ \limsup \frac{\tilde S_n}{\sqrt{2(\var(f))n \ln \ln n}} = 1\]
 \end{theorem}
+
+\subsection*{Quelques résultats utiles}
+
+\begin{lemme}[2nd lemme de Borel-Cantelli]
+	Si $(A_n)$ est une suite d'événements indépendants, telle que $\underset n \sum P(A_n) = + \infty$, alors $P(\limsup A_n) = 1$.
+\end{lemme}
+
+\begin{rem}
+	Si $(A_n)$ est une suite d'événements indépendants, alors d'après les deux lemmes de Borel-Cantelli : $P(\limsup A_n) \in \{0,1\}$.
+\end{rem}
+
+\begin{demo}[Second lemme de Borel-Cantelli]
+	\begin{align*}
+		&B_n := \{f_n=a, \dots, f_{n+k}=a\} \\
+		&P(B_n) =\underset {\sum = +\infty} {\underbrace{P(f=a)^k}} \\
+		\text{Par BC2 ($(B_n)$ indépendants), } &P(B_n \text{ i.o.}) = 1 \\
+		\text{Donc } &P(B_n \text{ i.o.}) = 1
+	\end{align*}
+\end{demo}
+
+\begin{lemme}
+	$\forall p, \exists C, \forall n, P_p(S_n=k)\ge \frac 1 {C\sqrt n} \exp{\left( -nC\left| \frac nk n -p\right|^2 \right)}$
+\end{lemme}
+
+\begin{demo}
+	On cherche en fait à faire une estimation de la loi binomiale $P_p(S_n=k) = \frac{n!}{k!(n-k)!} p^k (1-p)^{n-k}$
+	
+	$\frac{P_p(S_n=k)}{P_{\frac n k}(S_n=k)} = \frac{p^k(1-p)^{n-k}}{\left(\frac n k\right)^k \left(1- \frac n k\right)^{n-k}} = \exp{\left( -nh\left(\frac k n, p\right)\right)}$ où $h(s,p) = s\ln\left(\frac s p \right) +(1-s)\ln\left(\frac{1-s}{1-p}\right)$.
+	
+	En particulier, comme $h$ est $\mathcal C^2$ sur un compact, $h(s,p) \le C|s-p|^2$ (à $p$ fixé).
+	
+	$P_p(S_n=k) \ge P_{\frac k n}(S_n=k)\exp\left( -n \left| \frac k n -p\right|^2\right)$
+	
+	Il reste à estimer $P_{\frac k n}(S_n=k) = \frac{n!}{k!(n-k)!}\left(\frac k n\right)^k \left( \frac {n-k} n \right)^{n-k}$.
+	
+	On conclut par Striling.
+\end{demo}
+
+\begin{propriete}
+	$\forall A > 0, \exists \delta > 0, \forall n\in\N, P(\tilde S_n \ge A\sqrt n) \ge \delta$
+\end{propriete}
+
+\begin{demo}
+	
+	$\begin{aligned}
+	P(\tilde S_n \ge A\sqrt n) \overset {\tilde S_n = S_n - np} =& \underset{k\ge np + A\sqrt n} \sum P(S_n=k) \\
+	\ge & \underset{np + A\sqrt n \le k \le np +(A+\frac 1 2) \sqrt n} \sum P(S_n=k) \\
+	\ge & \sqrt n \frac 1 {C\sqrt n} \exp \left(-nC \frac {(A+\frac 1 2)^2} n \right) \\
+	=& \underset{\delta} {\underbrace{\frac 1 C \exp\left( -C(A + \frac 1 2)^2 \right)}}
+	\end{aligned}$
+\end{demo}
+
+\subsection*{Démonstration des théorèmes 13-15}
 
 \begin{demo}[Théorème 13]
 	On se donne $a\ne 0$, $P(a) > 0$.
 	 
 	\textbf{\quad Affirmation :} Pour tout $k\in\N$, il existe une infinité de $n\in\N$ tels que $f_n = a, \dots, f_{n+k} = a$.
 	\begin{demo}
-		D'après le premier lemme de Borel-Cantelli ... %TODO : cours du 13/10
+		On démontre cette affirmation en passant au complémentaire.
+		
+		$B_n := \comp{A_n}$. Les $(B_n)$ sont indépendants.
+		
+		On veut montrer que $P(\liminf B_n) = 0$ i.e. $P(B_n \text{ APCR}) = 0$.
+		
+		Or, $\liminf B_n = \underset {n\in\N} \bigcup \  \underset{m\ge n}\bigcap B_m$. Il suffit alors de montrer que $P(\underset{m\ge n}\bigcup B_m) = 0$.
+		
+		$P(\underset{m=n}{\overset l \bigcap} B_m) \overset{\indep} = \underset{m=n} {\overset l \prod} P(B_m) = \underset{m=n}{\overset l \prod}(1-P(A_m)) \overset{1-x \le e^{-x}} \le e^{-\underset{m=n}{\overset l \sum} P(A_m)} \underset{l\rightarrow +\infty} \longrightarrow 0$.
+		
+		Donc $P(\underset{m\ge n} \bigcap B_m) = 0$.
 	\end{demo}
 	
 	On en déduit immédiatement le caractère non borné de la suite $(S_n)$
+\end{demo}
+
+\begin{demo}[Théorème 14]
+	On suppose $A$ "assez grand" (dans un sens qui se précisera dans le corps de la preuve).
+	
+	On considère la sous-suite $n_k$ telle que $n_1=1$ et $n_{k+1}=n_k+4n_k^2$.
+	
+	$P\left( \left|\tilde S_{n_{k+1}} - \tilde S_{n_k} \right| \ge a \right) = P\left( \left|\tilde S_{n_{k+1} - n_k} \right| \ge a\right)$.
+	
+	On considère les événements $B_k = \left\{ \tilde S_{n_{k+1}} - \tilde S_{n_k} \ge A\sqrt{n_{k+1} - n_k} \right\} = \left\{ \tilde S_{4n_k} \ge 2An_k \right\}$.
+	
+	$B_k$ dépend de $f_{n_k+1} \dots f_{n_{k+1}}$ donc les $(B_k)$ sont indépendants.
+	
+	Comme $P(B_k) \ge \delta$, d'après BC2, $P(\limsup B_k) = 1$.
+	
+	Pour un point $\omega \in B_k \text{ i.o.}$, on a donc une infinité de $k$ tels que
+	
+	$\begin{aligned}
+		\tilde S_{n_{k+1}} &\ge \tilde S_{n_k} +2An_k \\
+		&\ge n_k(2A+\min f)
+		(\text{pour } A \ge |min f|) &\ge An_k
+		\end{aligned}$
+	
+	Or, $n_{k+1} \le 16n_k^2$ donc $n_k \ge \frac {\sqrt{n_{k+1}}} 4$. Donc $\tilde S_{n_{k+1}} \ge \frac A 4 \sqrt{n_{k+1}}$ pour une infinité de $k$. Donc $\limsup \frac {\tilde S_n} {\sqrt n} \ge \frac A 4$. Donc $P(\limsup \frac{\tilde S_n}{\sqrt n} = \infty) = 1$.
+\end{demo}
+
+\subsection*{Quelques extensions}
+
+On a montré avec le second lemme de Borel-Cantelli l'existence de séquences qui apparaissent presque partout. Il se peut malgré tout que le temps d'attente soit très long.
+
+\begin{lemme}[Estimation du temps d'attente]
+	$a\in \Im f, P(a) > 0$. D'après le second lemme de Borel-Cantelli, la valeur $a$ est prise une infinité de fois.
+	
+	Soit $T$ le premier temps pour lequel $f_T=a$. Alors $E(T) = \frac 1 {P(a)}$
+\end{lemme}
+
+\begin{demo}
+	On montre facilement que $T$ suit une loi géométrique, et en utilisant $E(T) = \underset{k\ge 1} \sum P(T\ge k)$, on conclut rapidement.
 \end{demo}
 
 \end{document}
