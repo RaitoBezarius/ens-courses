@@ -1,0 +1,293 @@
+Lecture 3
+
+Plan :
+	- chained hash tables
+	- designing hash functions
+	- open adressing
+	- cuckoo hashing
+	- rolling hash functions
+
+Applications :
+	Sorting sets and dictionnaries.
+
+Simplest implementation :
+	Array-based implementation.
+	Array of the size of the universe U.
+	Each cell indexed by the key points to the value
+
+	Time : search, insert and delete key/value in O(1)
+	Space : 0(|U|)
+		-> problem : U can be very large
+
+Chained hash tables :
+	Let h be a fonction from U to [|1; t|]
+	We will store the pointer to the value denoted by key k_i in the cell h(k_i)
+	It might have collisions!
+
+	Idea : use chained lists:
+		In each cell will be stored a pointer to a chained list, capable of containing the values of multiple keys, in case of a collision.
+
+		Time : insertion in O(1). searching/deletion in O(|List(h(k_i)|) (assuming h can be computed in O(1))
+
+		In the worst case, search and deletion cost O(n) time.
+			BUT if h satisfies certain assumptions, we can expect a much better time complexity.
+
+	Analysis :
+		Given the universe U of keys, we want to upper-bound E[T_search(n)] (n is the number of keyx used)
+
+	Assumption :
+		h satisfies the Simple Uniform Hashing Assumption (SUHA) : "h equally distributes the keys into the table slots"
+
+
+
+	THEOREM :
+		Assuming SUHA and that h(x) can be computed in O(1), E[T_search(n)] = O(1+n/|T|)     (|T| = t)
+
+	PROOF:
+		Suppose that a random variable X can only have values in [|1; t|]
+		We define : Pr[X=i] = Sum_{s in S, X(s)=i}{Pr[s]}
+		Also remember E (expected value) is a linear function
+
+		1) unsuccesful search :
+			k_1, ..., k_n are the keys in dict.
+			We perform an unsuccesful search for a key k.
+			The number of comparisons is: X_1 + ... X_n
+			Where X_i = 1 if h(k) = h(k_i); 0 otherwise
+
+			E[X] = Sum_{i}{E[X_i]} = Sum_{i}{Pr[X_i = 1]} = n/|T| by SUHA
+
+		2) succesful search :
+			suppose keys wer introduce in the order k_1, ..., k_n
+			Consider a succesful search for k_i.
+			k_i appears before any of k_1, ..., k_i-1 that are in the same list
+				and after any of k_i+1, ..., k_n that are in the same list.
+
+			The number of comparisons to search for k_i if therefore:
+				Y_i = 1 + X_i+1 + ... + X_n
+			Once more, under SUHA, E[X_j] = 1/|T|
+
+			The exptected time is thus:
+				(1/n) * Sum_{i}{E[Y_i]} = 1 + (1/n) * Sum_{i}{(n-i)/|T|} = O(1 + n/|T|)
+
+
+Designing hash functions :
+	It depends of the nature of keys. For integers, we have come heuristics.
+
+	1) Division method :
+		h(k) = k mod m
+		It is better to choose m to be prime and avoid exponents of 2.
+
+	2) multiplication method :
+		h(k) = floor(m * (k*A (mod 1)))
+			where k*A (mod 1) = k*A - floor(k*A)
+
+		A is chosen in [0;1]
+
+
+
+	Universal hashing :
+		If we fix the hash function h, an adversary can always find a probability distribution on the universe of keys for which our function will be "bad"
+
+		Let H = {h : U -> [|0; m-1|]} be a finite family of hash functions.
+		It is called universal if :
+
+			Forall k_1 != k_2 in U :
+				|{h in H such that h(k_1)=h(k_2)}| <= |H|/m
+			In other words, if we chose h in H at random, the probability of a collision between k_1 and k_2 is at most 1/m
+
+		THEOREM :
+			Let h ba a hash function chosen uniformly at random from a universal family of hash function.
+			Suppose that h(k) can be computed in O(1) and that there are n keys.
+			Then the expected search time for hashig with chaining is O(1 + n/m) (m is the size of the table)
+
+		PROOF : similar the the theorem following the SUHA
+
+
+	Designing such a family :
+		Let p be a prime such that U is a subset of [|0; p-1|]
+		We define :
+			H = {h_a,b : k -> ((a*k + b) mod p) mod m | a in Z*, b in Z}
+
+		THEOREM :
+			H is a universal family of hash functions.
+
+		PROOF :
+			let k_1 != k_2 two keys and l1 = h_a,b(k_1) and l_2 = h_a,b(k_2) . We have l_1 != l_2.
+			The number of such pairs if p(p - 1)
+
+			Moreover : we can compute a and b, given l_1, l_2
+
+			Hence there is a 1-to-1 mapping between (a, b) and (l_1, l_2)
+
+			We can therefore upper-bound the number of (l_1, l_2) for which there is a collision.
+				The number of h in H such that h(k1) = h(k2) is equal to
+					|{(l_1, l_2) : l_1 != l_2, l_1 = l_2 mod m}| <= p(p-1)/m = |H|/m QED
+
+
+Open adressing :
+	Elements are stored in the table.
+	Insertion(x) : probe the hash table until we find x or an empty slot. If we find an empty slot, insert x there.
+	To define which slots to probe, we use a hash function that depends on the key and the probe number
+
+	search(x) : probe the hash table until we find either x (-> True) or an empty slot (-> False)
+
+	The efficiency depends a lot on the hash function. We will assume that h is uniform
+		ie. the probe sequence of a key is likely to be any of the m! permutations of the slots.
+		It gives good results but is hard to implement. In practice, we use heuristics.
+
+		Heuristic hash function :
+
+			1) Linear probing :
+				h(k, i) = (h'(k) + i) mod m
+				-> easy to implement but suffers from primary clustering
+					ie. is there is a collision for h', the probe sequences will be the same...
+
+			2) Quadratic probing :
+				h(k,i) = (h'(k) + c1 * i + c2 * i²) mod m
+				-> A bit harder but less primary clustering -> BUT secondary clustering.
+				Must choose c1 and c2 carefully
+
+			3) Double hashing :
+				h(k, i) = (h'(k) + i*h''(k)) mod m
+				-> To use the whole table, h''(k) must be relatively prime to m.
+
+
+	THEOREM :
+		Given an open-adress hashtable with load factor a = n/m < 1.
+		The expected number of probes in an unsuccesful search if at most 1/(1-a), assuming uniform hashing.
+
+
+	PROOF :
+		We define : Ai = ith probe occurs and the slot is occupied.
+
+		Pr[# of probes >= i] = Pr{A1 n A2 n ... n Ai-1] = Pr[Ai] * Pr[A2|A1] * ... * Pr[Ai-1|A1 n ... Ai-2]
+
+		We have :
+			Pr[A1] = n/m = a (n cells out of m are occupied)
+			Pr[A2|A1] = (n - 1) / (m - 1)    (We can hit on the the remaining n-1 elements in m-1 cells)
+			...
+			Pr[Ai-1|A1 n ... Ai-2] = (n - i + 2)/(m - i + 2)
+
+		When mutliplying the factorsd, we get :
+			Pr[# of probes >= i] <=(n/m)^{i - 1} = a^{i-1}
+
+		E[number of probes] = Sum(Pr[# of probes >= i] <= Sum of a^{i - 1} = 1/(1-a) QED
+
+
+	COROLLARY :
+		The expected number of probes during insertion(x) is at most 1/(1 - a), assuming uniform hashing.
+
+
+	THEOREM :
+		The expected number of probes during a succesful search is at most (1/a) * log(1/(1 - a))
+		Assuming uniform hashing and assuming each key in the table is equaly likely to be searched for.
+
+
+	PROOF :
+		A succesful search for x probes the same sequence of sltos as insertion(x)
+
+		if x is the i-th item inserted into the table, insertion(x) probes <= 1/(1 - i/m) slots in expectation.
+
+		Therefore, the expected time of a succesful search is at most :
+
+		(1/n) * Sum_{i}{m/(m - i)} = (m/n) * Sum_{i}{1/(m - i)} <= (m/n) * log(m/(m - n)) hence the result. (comapraison série-intégrale)
+
+
+
+Cuckoo Hashing :
+	Pretty recent : 2001
+	Question : Can we design a hashing scheme with search time constant in the worst case?
+	Perfect hashing : use a hashing function that has no collision.
+
+	Principle :
+		Assume h1, h2 : U -> [|1; |T||] satisfy SUHA.
+		We give ourselves a table T
+		Invariant : We store an element x either in h1(x) or h2(x)
+
+		Search for x : compare x with both cells
+
+		Main idea :
+			Try to put x into cell h1(x). If it is empty, we're done.
+			Otherwise, we replace the element with x and repeat with that element
+
+		Analysis :
+			We represent the table as a graph.
+			The nodes are the cells and there is an edge from a to b iff there is an x such that a=h1(x) and b=h2(x)
+
+			LEMMA :
+				Suppose  [T[ >= c * n for some constant c > 1.
+				For any i,j, the probability that there exists a path from i to j of length l >= 1 is at most 1/(c^l * |T|)
+
+			PROOF : by induction on l
+				Pr[h1/2(x)=y] = 1/|T| by SUHA.
+				Therefore :
+				Pr[there is an edge from i to j] = 2n/|T|² <= 1/(c*|T|)
+
+				For l >= 1, there must exist k such that there is a path of length l-1 from i to k and an edge from k to j.
+
+				Pr[there is a path from i to j] = |T| * 1/(c^l-1 * |T|) * 1/(c * |T|) hence the result.
+
+
+			We define :
+				Bucket of x : all cells that can be reached either from h1(x) or h2(x).
+				x, y are in the same bucket <=> there is a path from {h1(x), h2(x)} to {h1(y), h2(y)}
+
+				Pr[x,y are in the same bucket] <= 4 * Sum_{l = 1 to infty}{1/(c^l * |T|)} = 4/((c-1) * |T|)
+
+			So the expected bucket size of x is at most 4/(c-1)
+			Therefore (in absence os rehash), the expected insertion time is constant!
+
+
+			Probability of a rehash ?
+				We need one if we can't find an empty slot after n trials.
+				--> There is a cycle in the graph.
+				And there is a cycle (path from i to itself) with probability <= 4/(c-1) <= 1/2
+				There are to rehashes with probability <= 1/2², etc.
+
+				When rehashing, we need a O(n) time.
+
+				The expected time for insertion is :
+					(1/n) * O(n) * (Sum of 1/2^i) = O(1)
+
+
+Rolling hash functions :
+	--> Pattern matching
+	input : pattern (string of length m) and a text (strign of length n) with m <n
+	output : all occurences of the pattern in the text
+
+	Karp-Rabin fingerprint :
+		The K-R fingerprint of a string S = s1.s2...sm is defined as follows :
+		F(s1.s2...sm) = Sum_{i = 1 to m}{si * r^(m-i) mod p}
+			Where p is a prime and r a random integer in |Fp (random remainder modulo p)
+
+		it's a good hash function :
+			- if S = T, F(S) = F(T)
+			- if S != T with same length, F(S) != F(T) with a high probability (if p large enough)
+				if sigma is the size of the alphabet, have p = max(sigma, m^c} where c>1 some constant
+
+				Then F(S) = F(T) iff r is a root of Sum_{i}{(si - ti) * X^(m-i)}  which is a polynomial over |Fp
+
+				The number of such roots is at most m.
+				The probability of such an event is hence at most m/p <= 1/m^(c-1)
+
+	Karp-Rabin algorithm :
+		Compute the fingerprint of the pattern.
+		Compare it with the fingerprint of each m-length substring of the text.
+		This algorithm never misses an occurence. But false positives can happen.
+
+
+	Computing of the fingerprint
+		We have :
+			F(s1...sj+1) = F(s1...sj) * r + sj+1 mod p
+
+			We can hence compute the fingerprint of the first m-length substring in O(1) per letter
+
+			F(s2...sm+1) = (F(s1...sm) - s1 * r^m) * r + sm+1 mod p
+
+			We can hence compute the fingerprint of the (i+1)-th m-length substring in O(1)
+
+	Metrics of the algorithm :
+		O(1) time per letter
+		O(1) extra space
+		reports all occurences of the pattern
+		has small false-positve error
