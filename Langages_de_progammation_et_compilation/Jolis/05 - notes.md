@@ -1,5 +1,10 @@
-
-# **ANALYSE SYNTAXIQUE**
+---
+title: Compil Lecture 5
+author: Constantin Gierczak--Galle
+header-includes: |
+    \usepackage{stmaryrd}
+abstract: Analyse syntaxique et menhir
+---
 
 # DEFINITIONS
 **Objectif** : Reconnaître les phrases appartenant à la syntaxe du langage. Son entrée est le flot de _tokens_ et sa sortie un arbre de syntaxe abstraite ie. passer de `fun` `x` `->` `(` `x` `+` `1` `)` à `Fun("x", App(App(Op +, Var "x") 1))`.

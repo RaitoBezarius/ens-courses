@@ -1,4 +1,10 @@
-# **Sémantique des langages**
+---
+title: Compil Lecture 3
+author: Constantin Gierczak--Galle
+header-includes: |
+    \usepackage{stmaryrd}
+abstract: Sémantique des langages de programmation
+---
 
 
 # I] Présentation

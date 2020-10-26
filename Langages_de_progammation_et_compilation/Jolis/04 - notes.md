@@ -1,5 +1,10 @@
-## Analyse lexicale
-
+---
+title: Compil Lecture 4
+author: Constantin Gierczak--Galle
+header-includes: |
+    \usepackage{stmaryrd}
+abstract: Analyse lexicale et ocamllex
+---
 
 # **I] INTRODUCTION**
 L'**analsye lexicale** est le découpage d'un texte en "mots". On parle de _lexèmes_ (tokens).
