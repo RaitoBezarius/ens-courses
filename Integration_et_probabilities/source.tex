@@ -1,7 +1,7 @@
 % !TeX spellcheck = fr-FR
 
 
-\documentclass[10pt,a4paper,notitlepage ]{article}
+\documentclass[10pt,a4paper,notitlepage ]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
@@ -12,11 +12,12 @@
 \usepackage{dsfont}
 \usepackage{tcolorbox}
 \usepackage{stmaryrd}
-\usepackage[left=3.00cm, right=3.00cm, top=1.50cm, bottom=1.50cm]{geometry}
+\usepackage[left=2.00cm, right=2.00cm, top=1.50cm, bottom=1.50cm]{geometry}
 
 
 \title{Intégration et probabilités}
-\date{}
+\date{Premier semestre 2020}
+\author{Paul Fournier et Constantin Vaillant-Tenzer, d'après le cours de Patrick Bernard}
 
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
@@ -87,11 +88,16 @@
 
 \begin{document}
 	\maketitle
-	\part*{Introduction}
+	
+	\tableofcontents
+	
+\chapter{Préliminaires}
+
+\section{Introduction}
 	Références : 
 	\begin{itemize}
 		\item \textsc{Billingsley}, \textit{Probabiliy and measure}
-		\item \textsc{Kolmogorov \& Fomin}, tome 2 
+		\item \textsc{Kolmogorov \& Fomin}, tome 2 
 	\end{itemize}
 	Motivations :
 	\begin{itemize}
@@ -109,13 +115,13 @@ Par exemple :
 
 On se demande alors comment définir la surface d'une partie du plan.
 
-Méthode 1 : à la Riemann. On approxime avec un quadrillage. On compte le nombre de carrés qui intersectent l'ensemble considéré, puis on conclut en passant à la limite quand le côté du quadrillage tend vers $0$.
+\emph{Méthode 1 :} à la Riemann. On approxime avec un quadrillage. On compte le nombre de carrés qui intersectent l'ensemble considéré, puis on conclut en passant à la limite quand le côté du quadrillage tend vers $0$.
 
-Méthode 2 : on pose $\lambda(A) := \underset{(R_i)}{\inf} \sum_{i=1}^{\infty}  \lambda(R_i)$ où $R_i$ est une suite de rectangles recouvrant $A$.
+\emph{Méthode 2 :} on pose $\lambda(A) := \underset{(R_i)}{\inf} \sum_{i=1}^{\infty}  \lambda(R_i)$ où $R_i$ est une suite de rectangles recouvrant $A$. \\
 
 À noter : les deux méthodes ont des cas pathologiques différents.
 
-\part*{Ensembles dénombrables}
+\section{Ensembles dénombrables}
 
 \begin{definition}
 	Un ensemble est dénombrable ssi il est en bijection avec $\mathbb N$
@@ -158,7 +164,7 @@ On crée de manière analogue une sous-suite injective de $x$ de même image que
 	Pour tout $i$, il existe $b_i : \mathbb N \rightarrow A_i$ bijection. (nb : ceci requiert en fait l'axiome du choix dénombrable)
 	Alors$ \begin{aligned}
 		(i,j) &\mapsto b_i(j) \\
-		\mathbb N ^2 & \rightarrow \underset{i}{\bigcup} A_i
+		\mathbb N ^2 & \rightarrow \underset{i}{\bigcup} A_i
 	\end{aligned}$ est surjective.
 
 Donc $\underset{i}{\bigcup}A_i$ est au plus dénombrable.
@@ -192,7 +198,7 @@ Donc $\underset{i}{\bigcup} A_i$ est dénombrable.
 \end{itemize}
 \end{exo}
 
-\part*{$\limsup$ et $\liminf$}
+\section{$\limsup$ et $\liminf$}
 
 \begin{definition}
 	
@@ -231,12 +237,12 @@ Ainsi, si $l$ est valeur d'adhérence de $x_n$, alors $\liminf x_n \le l \le \li
 	On choisit $k_n \ge n$ tel que $s_n - \frac{1}{n} \le x_{k_n} \le s_n$. $n \mapsto x_{k_n}$ converge vers $\limsup x_n$.
 \end{demo}
 
-\part*{Familles sommables}
+\section{Familles sommables}
 
 On pose $(a_i)_{i\in I}$ famille de nombres positifs.
 
 \begin{definition}
-	$\sum_{i \in I} a_i := \underset{F \subset I \mathrm{fini}}{\sup}\sum_{i \in F}a_i$
+	$\sum_{i \in I} a_i := \underset{F \subset I \mathrm{fini}}{\sup}\sum_{i \in F}a_i$
 \end{definition}
 \begin{propriete}
 	Si $\sum_{i \in I} a_i$ est fini, alors $\{i \in I, a_i\neq 0\}$ est au plus dénombrable.
@@ -244,7 +250,7 @@ On pose $(a_i)_{i\in I}$ famille de nombres positifs.
 
 \begin{demo}
 	$\{i\in I, a_i \in \mathbb R \setminus \{0\}\} \subset \underset{k \in \mathbb N}{\bigcup}
-	\underset{\# \le k\sum_{i\in I} a_i}{\underbrace{\{i \in I, a_i \ge \frac{1}{k}\}}}$
+	\underset{\# \le k\sum_{i\in I} a_i}{\underbrace{\{i \in I, a_i \ge \frac{1}{k}\}}}$
 \end{demo}
 
 À partir de maintenant, on considérera $I$ dénombrable.
@@ -289,7 +295,7 @@ En particulier dans le cas $I=\mathbb N^2, (a_{i,j})_{(i,j)\in I}\in \mathbb R_+
 	\sum_{(i,j)\in \mathbb N^2}a_{i,j}$.
 \end{demo}
 
-\part*{Séries absolument convergentes}
+\section{Séries absolument convergentes}
 
 Soit $(a_i)_{i\in I}$ une famille de réels tels que $\sum_{i\in I}|a_i|$ soit finie.
 
@@ -316,7 +322,8 @@ Donc $a_i^+ - a_i^- = a_i$ et $a_i^+ + a_i^- = |a_i|$.
 	\sum_{j=1}^{+\infty}\sum_{i=1}^{+\infty}a_{i,j}\]
 \end{corollaire}
 
-\part*{Vocabulaire}
+\chapter{Probabilités}
+\section{Vocabulaire}
 
 \begin{definition}
 	Soit $X$ un ensemble. On dit que $\mathcal A \subset \mathcal P(X)$ est :
@@ -448,7 +455,7 @@ La vérification du fait que $f^*\mathcal A$ et $f_*\mathcal A$ est une algèbre
 	Soit $\Omega, X$ des ensembles, $\mathcal T$ une tribu sur $X$. Soit $f:\Omega \rightarrow X$ une application, $g:\Omega\rightarrow X$ une application à valeurs dans un ensemble fini $Y$. Alors $g$ est $f^*\mathcal T$ mesurable ssi $\exists h:(X,\mathcal T) \rightarrow (Y,\mathcal P(Y))$ mesurable telle que $g=h \circ f$. i.e. "$g$ est $f$-mesurable ssi $g$ ne dépend que de $f$".
 \end{exo}
 
-\part*{Modélisation d'une expérience aléatoire finie (ex : jets de dés)}
+\section{Modélisation d'une expérience aléatoire finie (ex : jets de dés)}
 
 Soit $Y$ un ensemble fini représentant les issues possibles. Il y a 2 manières de représenter un tirage aléatoire sur $Y$.
 \begin{enumerate}
@@ -536,7 +543,7 @@ Si on se donnes les marginales $m_1, \dots, m_k$, ilm existe de nombreuses lois 
 	On dit que $f_i,\ i\in I$ sont indépendantes si $f_i,\ i\in F$ le sont pour tout $F\subset I$ fini.
 \end{definition}
 
-\part*{Modélisation d'une suite infinie de jets dés indépendants}
+\section{Modélisation d'une suite infinie de jets dés indépendants}
 
 Donnons-nous une suite infinie d'espaces de probabilités finis $(Y_i,P_i)$ (la tribu est $\mathcal P(Y_i)$).
 
@@ -556,7 +563,7 @@ L'hypothèse d'indépendance consiste donc à dire que, pour tout $n$ et pour to
 
 En termes de loi, ceci implique que $\{y_1\}\times \dots \{y_n\} \times Y_{n+1} \times \dots$ est mesurable sur $X:=\prod Y_i$ et que sa mesure est $m(\{y_1\}\times \dots \times Y_{n+1}) = P_1(y_1) \cdot \dots \cdot P_n(y_n)$.
 
-\section*{Introduction de l'algèbre $\mathcal A_\infty$ engendrée par les cylindres finis}
+\section{Introduction de l'algèbre $\mathcal A_\infty$ engendrée par les cylindres finis}
 
 Sur le produit $X = \prod Y_i$, pour $n$ fixé, les ensembles de la forme $\{y_1\}\times \dots \times \{y_n\}\times Y_{n+1} \times \dots$ forment une partition finie (ce sont les cylindres finis), qui engendre une algèbre finie $\mathcal A_n$ (qui est donc aussi une tribu).
 
@@ -586,10 +593,10 @@ Pour démontrer l'utilité du théorème 2., donnons des exemples d'ensembles qu
 	Chacun des ensembles est dans $\mathcal A_\infty$ donc l'ensemble considéré est dans $\tau$.
 \end{exemple}
 
-\section*{Quelques résultats d'extension des mesures}
+\section{Quelques résultats d'extension des mesures}
 	Si $A_n$ est une suite d'ensembles, on note :
 	\[ \liminf A_n = \underset{n}{\bigcup}\ \underset{m\ge n}{\bigcap} A_m = \{A_i \text{ APCR}\}\]
-	\[ \limsup A_n = \underset{n}{\bigcap}\ \underset{m\ge n}{\bigcup} A_m = \{A_i \text{ infinitely often (i.o.)}\}\]
+	\[ \limsup A_n = \underset{n}{\bigcap}\ \underset{m\ge n}{\bigcup} A_m = \{A_i \text{ infinitely often (i.o.)}\}\]
 	
 	Si $\tau$ est une tribu, que les $A_n \in \tau$, alors $\limsup A_n \in \tau$ et $\liminf A_n \in \tau$.
 	
@@ -661,7 +668,7 @@ Il nous suffit donc de vérifier que cette mesure additive a la propriété de $
 \begin{demo}[Démonstration du théorème d'Hahn-Kolmogorov]
 	Deux étapes : \begin{enumerate}
 		\item $m^*|_{\mathcal A} = \underline m$
-		Si $A \subset \underset i \bigcup A_i$, alors $\underline m (A) \le \sum \underline m (A_i)$ par $\sigma$-additivité de $\underline m$. En prenant l'inf, on obtient $\underline m(A) \le m^*(A)$. L'inégalité réciproque s'obtient en considérant le recouvrement trivial $A_1 = A, A_2=A_3 = \dots = \emptyset$.
+		Si $A \subset \underset i \bigcup A_i$, alors $\underline m (A) \le \sum \underline m (A_i)$ par $\sigma$-additivité de $\underline m$. En prenant l'inf, on obtient $\underline m(A) \le m^*(A)$. L'inégalité réciproque s'obtient en considérant le recouvrement trivial $A_1 = A, A_2=A_3 = \dots = \emptyset$.
 		\item On dit que $Y \subset X$ est mesurable si, pour tout $\varepsilon > 0, \exists A \in \mathcal A$ tel que $m^*(Y \Delta A) \le \varepsilon$. Alors l'ensembre $\mathcal T$ des parties mesurables est une algèbre.
 		\begin{demo}
 			\begin{itemize}
@@ -743,7 +750,7 @@ $\forall Z \subset X, m^*(Z) = m^*(Z \cap Y) + m^*(Z \cap \comp Y)$.
 		\begin{demo}
 			soit $A_n$ une suite d'éléments deux à deux disjoints de $\mathcal T$. Posons $B_n =\bigcup_{k=1}^n A_n$ et $B_\infty = \bigcup_{k=1}^\infty A_n$.
 			
-			$\forall Y \subset X, m^*(Y \cap B_n) = m^*(Y \cap B_n \cap A_n) + m^*(Y \cap B_n \cap \comp{A_n}) = m^*(Y \cap A_n) + m^*(Y \cap B_{n-1})$.
+			$\forall Y \subset X, m^*(Y \cap B_n) = m^*(Y \cap B_n \cap A_n) + m^*(Y \cap B_n \cap \comp{A_n}) = m^*(Y \cap A_n) + m^*(Y \cap B_{n-1})$.
 			
 			Donc $m^*(Y\cap B_n) = \sum_{k=1}^n m^*(Y \cap A_k)$.
 			
@@ -772,7 +779,7 @@ On peut cependant se poser la question de l'unicité de $m^*$ dans Hahn-Kolmogor
 	\end{enumerate}
 \end{demo}
 
-\section*{Loi des grands nombres}
+\section{Loi des grands nombres}
 
 On se donne $Y \subset \R$ fini, une mesure de probabilité $p$ sur $Y$, et une suite finie $f_{i,i\in\N} : \Omega \rightarrow Y$ de variables aléatoires iid suivant la loi $p$. L'existence d'une telle suite découle des théorèmes de la section précédente.
 
@@ -798,7 +805,7 @@ On veut montrer les trois énoncés suivants :
 	\[\forall \alpha > \frac 1 2, \quad P\left(\frac {S_n - ne} {n^\alpha} \rightarrow 0\right) = 1\]
 \end{theorem}
 
-\subsection*{Quelques outils de théorie de la probabilité}
+\subsection{Quelques outils de théorie de la probabilité}
 
 Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres outils.
 
@@ -812,7 +819,7 @@ Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres 
 \end{demo}
 
 \begin{theorem}[Inégalité de Bienaymé-Tchebychev]
-	\[ \forall a \in \R^+_*, \quad P(|f-E(f))| > a) \le \frac {\var(f)} {a^2} \]
+	\[ \forall a \in \R^+_*, \quad P(|f-E(f))| > a) \le \frac {\var(f)} {a^2} \]
 \end{theorem}
 
 \begin{demo}
@@ -883,7 +890,7 @@ Pour démontrer ces résultats, on va avoir besoin d'un certain nombre d'autres 
 \begin{demo}
 	$T(\omega) :=$ le premier temps pour lequel $|\tilde S_n \ge a$. $T(\omega) \in \N \cup \{+\infty\}$
 	
-	$(T = k) = \{|\tilde S_1| < a \} \cap \dots \cap \{|\tilde S_{n-1}| < a \} \cap \{|\tilde S_n| \ge a \} \in \A_k$.
+	$(T = k) = \{|\tilde S_1| < a \} \cap \dots \cap \{|\tilde S_{n-1}| < a \} \cap \{|\tilde S_n| \ge a \} \in \A_k$.
 	
 	$T$ est ainsi un \emph{temps d'arrêt}.
 	
@@ -958,9 +965,9 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 \begin{rem}
 	\textbf{Intérêt de ces inégalités en statistiques}
 	
-	Bienaymé-Tchebychev : $P(|\tilde S_n| \ge a) \le \frac{n\var(f)}{a^2}$
+	Bienaymé-Tchebychev : $P(|\tilde S_n| \ge a) \le \frac{n\var(f)}{a^2}$
 	
-	Hoeffding : $P(|\tilde S_n| \ge a) \le 2\exp(-\frac{2a^2}{nC})$
+	Hoeffding : $P(|\tilde S_n| \ge a) \le 2\exp(-\frac{2a^2}{nC})$
 	
 	Dans les deux cas, on note une décroissance en $\frac n {a^2}$.
 
@@ -992,11 +999,11 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 	En général, avec ces données, on donne $\eps = 3\%$. Cette disparité vient de la non-optimalité de l'inégalité de Hoeffding, et par le fait qu'il existe des modèles plus précis (approcher cette binomiale par une gaussienne grâce au théorème central limite par exemple).
 \end{rem}
 
-\subsection*{Démonstrations des lois des grands nombres}
+\subsection{Démonstrations des lois des grands nombres}
 
 \begin{demo}[Loi faible des grands nombres]
 	
-	$P(\left|\frac {S_n} n - e \right| \ge \alpha) = P(|S_n - E(S_n)| \ge n\alpha) \le \frac{\var(S_n)}{n^2\alpha^2} = \frac{n \var(f)}{n^2\alpha^2} = \frac{\var(f)}{n\alpha^2}$
+	$P(\left|\frac {S_n} n - e \right| \ge \alpha) = P(|S_n - E(S_n)| \ge n\alpha) \le \frac{\var(S_n)}{n^2\alpha^2} = \frac{n \var(f)}{n^2\alpha^2} = \frac{\var(f)}{n\alpha^2}$
 \end{demo}
 
 \begin{demo}[Loi forte des grands nombres]
@@ -1009,8 +1016,8 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 	On note $M = \max |f|$. Soit $k(n)$ tel que $k(n)^2 \le n < (k(n) + 1)^2$.
 	
 	\begin{align*}
-		\left| \frac{S_n - nE(f)} n \right| &\le \frac{|S_{k(n)^2} - k(n)^2E(f)| + (n-k(n)^2)(M+E(f))}{k(n)^2} \\
-		&\le \left| \frac {S_{k(n)^2} - k(n)^2E(f)}{k(n)^2} \right| + \frac{(k(n)^2 +1) - k(n)^2}{k(n)^2} (M + E(f))
+		\left| \frac{S_n - nE(f)} n \right| &\le \frac{|S_{k(n)^2} - k(n)^2E(f)| + (n-k(n)^2)(M+E(f))}{k(n)^2} \\
+		&\le \left| \frac {S_{k(n)^2} - k(n)^2E(f)}{k(n)^2} \right| + \frac{(k(n)^2 +1) - k(n)^2}{k(n)^2} (M + E(f))
 	\end{align*}
 	Chacun des termes tend vers $0$, ce qui achève la preuve.
 \end{demo}
@@ -1023,14 +1030,14 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 	
 	\[P(\frac{M_{n^r}}{n^{r\alpha}} \ge \eps) \le \frac{\var(f)}{\eps^2 n^{(2\alpha - 1)r}}\]
 	
-	C'est le terme général d'une série convergente, donc par le premier lemme de Borel-Cantelli, on en déduit que $P(\frac{M_{n^r}}{n^{r\alpha}} \ge \eps \text{ i.o.}) = 0$, et donc que p.p., $\frac{M_{n^r}}{n^{r\alpha}} \rightarrow 0$.
+	C'est le terme général d'une série convergente, donc par le premier lemme de Borel-Cantelli, on en déduit que $P(\frac{M_{n^r}}{n^{r\alpha}} \ge \eps \text{ i.o.}) = 0$, et donc que p.p., $\frac{M_{n^r}}{n^{r\alpha}} \rightarrow 0$.
 	
-	Mais $\frac{M_{n^rr}}{n^{r\alpha}} \rightarrow 0 \Rightarrow \frac{\tilde S_n}{n^\alpha} \rightarrow 0$.
+	Mais $\frac{M_{n^rr}}{n^{r\alpha}} \rightarrow 0 \Rightarrow \frac{\tilde S_n}{n^\alpha} \rightarrow 0$.
 	
 	En effet, soit $k(n)$ tel que $(k(n) -1)^r \le n < k(n)^r$. Alors,
 	\begin{align*}
 		\frac{\tilde S_n}{n^\alpha} &\le \frac{M_{k(n)^r}}{n^\alpha} \\
-		& = \frac{M_{k(n)^r}}{k(n)^{\alpha r}} \cdot \frac{k(n)^{\alpha r}}{n^\alpha} \\
+		& = \frac{M_{k(n)^r}}{k(n)^{\alpha r}} \cdot \frac{k(n)^{\alpha r}}{n^\alpha} \\
 		&\le \frac{M_{k(n)^r}}{k(n)^{\alpha r}} \cdot \frac{k(n)^{\alpha r}}{(k(n) -1)^{\alpha r}}
 	\end{align*}
 	Le premier terme tend vers 0, le second vers 1, ce qui conclut la preuve.
@@ -1044,11 +1051,11 @@ et $(*) : \tilde S_n - \tilde S_k = \tilde f_{k+1} + \dots + \tilde f_n$. Or $\t
 	$P(|\tilde S_n| \ge \eps n^\alpha \text{ i.o.})$ ie $\frac{\tilde S_n}{n^\alpha} \rightarrow 0 \text{ p.p.}$.
 \end{demo}
 
-\section*{Estimations inférieures}
+\section{Estimations inférieures}
 
 On suppose que les variables aléatoires prennent au moins deux valeurs avec probabilité non nulle.
 
-\subsection*{Quelques estimations inférieures}
+\subsection{Quelques estimations inférieures}
 
 \begin{theorem}
 	\[ P((S_n) \text{ bornée} ) = 0\]
@@ -1063,7 +1070,7 @@ On suppose que les variables aléatoires prennent au moins deux valeurs avec pro
 	\[ \limsup \frac{\tilde S_n}{\sqrt{2(\var(f))n \ln \ln n}} = 1\]
 \end{theorem}
 
-\subsection*{Quelques résultats utiles}
+\subsection{Quelques résultats utiles}
 
 \begin{lemme}[2nd lemme de Borel-Cantelli]
 	Si $(A_n)$ est une suite d'événements indépendants, telle que $\underset n \sum P(A_n) = + \infty$, alors $P(\limsup A_n) = 1$.
@@ -1114,7 +1121,7 @@ On suppose que les variables aléatoires prennent au moins deux valeurs avec pro
 	\end{aligned}$
 \end{demo}
 
-\subsection*{Démonstration des théorèmes 13-15}
+\subsection{Démonstration des théorèmes 13-15}
 
 \begin{demo}[Théorème 13]
 	On se donne $a\ne 0$, $P(a) > 0$.
@@ -1161,7 +1168,7 @@ On suppose que les variables aléatoires prennent au moins deux valeurs avec pro
 	Or, $n_{k+1} \le 16n_k^2$ donc $n_k \ge \frac {\sqrt{n_{k+1}}} 4$. Donc $\tilde S_{n_{k+1}} \ge \frac A 4 \sqrt{n_{k+1}}$ pour une infinité de $k$. Donc $\limsup \frac {\tilde S_n} {\sqrt n} \ge \frac A 4$. Donc $P(\limsup \frac{\tilde S_n}{\sqrt n} = \infty) = 1$.
 \end{demo}
 
-\subsection*{Quelques extensions}
+\subsection{Quelques extensions}
 
 On a montré avec le second lemme de Borel-Cantelli l'existence de séquences qui apparaissent presque partout. Il se peut malgré tout que le temps d'attente soit très long.
 
@@ -1174,5 +1181,319 @@ On a montré avec le second lemme de Borel-Cantelli l'existence de séquences qu
 \begin{demo}
 	On montre facilement que $T$ suit une loi géométrique, et en utilisant $E(T) = \underset{k\ge 1} \sum P(T\ge k)$, on conclut rapidement.
 \end{demo}
+
+\chapter{Intégration}
+
+\section{Quelques remarques sur les tribus}
+
+On a déjà défini la tribu la plus petite possible. 
+
+\begin{definition}
+Si $\mathbf{B} \subset \mathbf{P} (X)$, on appelle tribu engendrée par $\mathbf{B}$ la plus petite tribu contenu $\mathbf{B}$.
+\end{definition}
+
+\begin{lemme}
+Elle existe car une intersection de tribus est une tribu.
+\end{lemme}
+
+\begin{demo}
+Soit $\mathbf{A}_{i, i \in \mathbf{I}}$ des tribus sur X. Alors $\mathbf{A} = \cap _ {i \in \mathbf{I}}$ est une tribu. \\
+Soit en effet $A_n \in \mathbf{A}$, alors \\
+$\forall i, \forall n, A_n \in \mathbf{A}_i $, donc pour tout $i$, l'union des $A_n$ appartient à $\mathbf{A} _i$. Donc l'union, des $A_n$ appartient à l'intersection des $\mathbf{A} _i$.
+\end{demo}
+
+Avec ce vocabulaire, on a le théorème :
+
+\begin{theorem}
+Soit $\mathbf{A}$ une algèbre des parties de X et $\underline{m}$ une mesure de probabilités additive sur $\mathbf{A}$, qui de plus est $\sigma$ -additive. Alors, il existe une unique mesure de probabilité $m$ sur $\tau$, la tribu engendrée par $\mathbf{A}$.
+\end{theorem}
+
+On peut, de la même façon, définir l'algèbre engendrée par $\mathbf{B}$ . L'algèbre engendré est inclus dans la tribu engendrée. \\
+On peut définir l'algèbre engendrée de façon plus explicite : \\
+On note $\mathbf{B}' = \lbrace B \subset X ; b \in \mathbf{B} ou ^c B \in \mathbf{B} \rbrace $. \\
+L'algèbre engendrée est l'ensemble des unions finies d'intersections finies d'éléments de $\mathbf{B}'$. Il suffit en effet de vérifier que cette famille d'ensemble est stable par union, intersection et complémentaire. \\
+La stabilité par union est claire et tautologique. \\
+Montrons la stabilité par intersection : 
+
+\begin{demo}
+$A = \cup _ i \cap _i B_ij $, $\tilde A  = \cup_k \cap _ l \tilde B_kl $ et  \\
+
+\begin{align*}
+A \cap A &= (\cup _i  * ) ( \cup _ k * ) \\
+&= \cup_{i,k} \left( \left( \cap_j B_{ij} \right) \cap \left( \cap_l B_{kl} \right) \right) \\
+&= \cup _{i,k} \left( \cap_{j,l} B_{ij} \cap B_{kl} \right) 
+\end{align*}
+
+est une union finie d'intersections finies donc le complémentaire de l'union des intersections des $B_{ij}$ qui est l'intersection de l'union des complémentaires des $B_{ij}$ est une intersection finie d'éléments de notre ensemble et donc est dedans. \\
+
+\end{demo}
+
+Il est plus difficile de décrire les éléments de la tribu engendrée, notamment car l'ensemble des unions dénombrables d'intersections dénombrables n'est pas stable par intersection dénombrable. 
+
+\begin{propriete}
+Soit $f$ une application de $( \Omega , \tau ) $ dans $ X $ et soit $\mathbf{B} \subset \tau $ engendrant $\tau$. \\
+Si $f^-1 (B)\in \tau , \forall B \in \mathbf{B}$ , alors $f$ est mesurable.
+\end{propriete}
+
+\begin{demo}
+On considère l'ensemble $\epsilon$ des partitions de $X$ dont la pré-image par $f$ est mesurable. $ \epsilon = \lbrace Y \in \mathcal{P} (X) f^-1(Y) \in \tau \rbrace $. 
+On a déjà démontré que c'est une tribu (notée $l_* \tau$. Cette tribu contient $\mathcal{B}$, donc elle contient $\tau$. 
+
+\end{demo}
+
+\begin{propriete}
+Les parties de $\R$ suivantes engendrent la même tribu.
+\begin{enumerate}
+\item Les intervalle ;
+\item Les intervalles fermées ;
+\item Les intervalles ouverts ;
+\item les ouverts ;
+\item Les fermées ;
+\item Les intervalles $( - \infty , a ], a \in \mathbb{D} $ (ou n'importe quel ensemble dense).
+\end{enumerate}
+
+On l'appelle la tribu Borélienne.
+
+\end{propriete}
+
+\begin{demo}
+
+On note $\tau _i $ la tribu engendrée par (1).   \\
+
+La tribu engendrée par les ouverts contient les fermés, donc $\tau _5 \subset \tau _4 $ et de même, nous avons l'autre inclusion, donc égalité. \\
+
+L'inclusion de $\tau _2 $ dans $\tau _1$ est claire. Montrons que tout intervalle est dans $\tau _2$. Tout intervalle est une réunion dénombrable d'intervalles fermés, donc appartient à $\tau _2$. \\
+
+$\tau _3 = \tau _1$ car tout intervalle est une intersection dénombrable d'intervalles ouverts. Réciproquement, tout ouvert est une union dénombrable d'intervalles ouvrets. \\
+
+$\forall a < b [a,b] = \cap _n ] -  \infty , b_n ] - \cup _n ] - \infty , a_n ]$ où $b_n$ tend décroissement vers $b$ et $a_n$ tend croissante vers $a$ sans jamais l'atteindre. 
+
+\end{demo}
+
+\begin{propriete}
+Sur [0, 1[, les trois tribus suivantes sont les mêmes : 
+\begin{enumerate}
+\item La tribu engendrée par les intervalles ;
+\item La tribu engendrée par les $[0, a], a \in \mathbb{D} \cap [0,1[ $ ;
+\item La tribu $\lbrace B \cap [0,1[, B \in \mathcal{Borel} (\R ) \rbrace = i* \mathcal{Borel} $ où $i$, application de $[0,1[$ dans $\mathbb{R}$ est l'inclusion.
+\end{enumerate}
+
+\end{propriete}
+
+\begin{definition}
+Soit $f_i : \Omega \longrightarrow (X_i , \tau _i ) , i \in \mathcal{I} $ une famille d'applications. \\
+La tribu engendrée par les $(f_i ) _{ i \in \mathcal{I} }$ est la tribu de $\Omega$ engendrée par l'union sur $i \in \mathcal{I} $ des $f_i * ( \tau _i ) $ . C'est la plus petite tribu pour laquelle toutes les applications $f_i$ sont mesurables.
+\end{definition}
+
+\begin{definition}[Tribu produit]
+
+Soit $(X_i , \tau _i )$ des espaces mesurables, $i \in \mathcal{I} $.  \\
+La tribu produit sur $\Omega := \prod \limits _i X_i $ est la tribu engendrée par les projections de $\Omega$ sur les $X_i$.
+
+\end{definition}
+
+Autrement dit, c'est par définition la tribu engendrée par les cylindres $Z_i \times \prod \limits_{j \neq i} X_j $, avec $Z_i \in \tau _i $. 
+
+\begin{rem}
+
+Si $\mathcal{I}$ est fini ou dénombrable, la tribu produit est la tribu engendrée par le produit des $Z_i$. 
+
+\end{rem}
+
+\begin{rem}
+Si l'ensemble $\mathcal{I} $ n'est pas dénombrable, les ensembles de la tribu produit ne dépendent que d'une famille dénombrable de coordonnées, c'est-à-dire qu'il existe une décomposition 
+$\mathcal{I} = \mathcal{I}_1 \cup \mathcal{I}_2 $ 
+avec $\mathcal{I}_1 $ dénombrable et 
+$\Pi_{ \mathcal{I}_2} \Omega \rightarrow \Pi_{\mathcal{I}_2} X_i $ vérifie 
+$\Pi (A) = Pi_{ \mathcal{I}_2} X_i $.
+\end{rem}
+
+\begin{propriete}
+
+Si $f : \Omega \longleftarrow (X_i , \tau _i )$ et \\
+$ F : \Omega \longrightarrow ( \prod X_i , \prod \tau _i ) $ l'application dont les $f_i$ sont les coordonnées, alors la tribu engendrée par les $f_i$ est $F* (\prod \tau _i ) $.
+
+\end{propriete}
+
+\begin{propriete}
+
+L'application $F : ( \Omega , \tau ) \longrightarrow ( \prod X_i , \prod \tau_i ) $ est mesurable si et seulement si ses coordonnées le sont.
+
+\end{propriete}
+
+
+\subsection{Tribus de $\R ^d$}
+
+$d \leq 1 $ \\
+
+\begin{theorem}
+Les tribus suivantes sont identiques :
+\begin{enumerate}
+\item Les tribus engendrées par les fermées ;
+\item Les tribus engendrées par les ouverts ;
+\item Le produit des tribus boréliennes ;
+\item La tribu engendrée par les produits d'intervalles ;
+\item La tribu engendrée par les produits des $( - \infty , a_i ], a_i \in \mathbb{D} $ (ou n'importe quel ensemble dense).
+\item La tribu engendrée par les produits d'intervalles ouverts. 
+\end{enumerate}
+
+On l'appelle la tribu borélienne de $\R ^d $.
+
+\end{theorem}
+
+\begin{rem}
+
+C'est un cas particulier de la tribu produit $\tau _3 $. \\
+C'est un cas particulier de la tribu borélienne sur un espace métrique en général, on appelle tribu borélienne la tribu engendrée par les ouverts.
+
+\end{rem}
+
+\begin{demo}
+
+Tout ouvert est la réunion d'une famille dénombrable de pavés ouverts. Donc $\tau _6 = \tau _1 $.  \\
+
+$\tau _3$ est engendrée par les ensembles  $\prod _1 ^{-1} (Z) , Z \subset \mathbb{R}$ borélien. Donc $\tau _3$ contient tous les pavés.
+
+La tribu $\tau _4 $ engendrée par les produits d'intervalle contient la tribu produit $\tau _3$. \\
+
+$( \Pi _i ) * \tau _3 $ est la figure de $\mathbb{R}$ qui contient les intervalles et donc elle contient Borel. Donc $\tau _4$ contient $\Pi _u^{-1} $ Pour tout $i$ et pour tout $B$ borélien. Donc $\tau _4$ contient la tribu produit.
+\end{demo}
+
+\section{La mesure de Lebesgue sur $\R$}
+
+Soit $\mathcal{B}$ la tribu borélienne sur $\R$.
+
+\begin{theorem}
+Il existe une unique mesure $\lambda : B \rightarrow [0, + \infty ] $ telle que 
+$\lambda ( [a,b] = b-a \ \forall a \leq b $.
+\end{theorem} 
+
+C'est la mesure de Lebesgue. 
+
+\begin{rem}
+$\lambda$ n'est pas une mesure finie. Mais elle est $\sigma$-finie : on peut recouvrir $\R$ par un nombre dénombrable d'ensemble de mesure finie, par exemple $[-n;n] $, ou $[n,n+1]$.
+\end{rem}
+
+On va commencer par construire la mesure de Lebesgue sur $[0, 1]$. 
+
+\begin{theorem}
+Il existe une unique mesure borélienne $\lambda : B \rightarrow [0, 1] $ telle que $\lambda ( [a,b] = b-a \ \forall a \leq b $ dans $[0;1]$..
+\end{theorem}
+
+\begin{demo}
+
+On considère l'algèbre $\mathcal{A}$ engendrée par les intervalles $[a,b[$, c'est-à-dire les réunions finies d'intervalles de ce type. On peut supposer cette réunion disjointe. \\
+
+On a une mesure additive $\underline{\lambda} : \ \mathcal{A} \rightarrow [0,1]  $ donnée par la somme des longueurs. On peut essayer d'appliquer le théorème d'extension de Hahn - Kolmogorov pour étendre $\underline{\lambda} $ en une mesure borélienne $\lambda$. Ceci implique l'unicité de $\lambda$. \\
+
+On peut montrer l'existence par deux méthodes : ou bien on montre que $\underline{\lambda} $ est $\sigma$-additive sur $\mathcal{A}$, \emph{ce qui n'est pas vrai pour toute mesure additive sur $\mathcal{A}$} ; ou bien, ce que nous allons faire :
+
+On pose 
+
+$$Y := \lbrace 0,1, \ldots , 9 \rbrace $$
+$$\Omega = Y ^{\N} $$
+
+
+\begin{align*}
+f : \Omega &\longrightarrow [0,1[ \\
+(y_i) &\longmapsto \sum \limits_{i=1}^\infty y_i 10^{-I} 
+\end{align*}
+
+
+On met sur $\omega$ la probabilité $\mathbb{P}$ qui est le produit des lois uniformes sur Y. Alors $f_i \mathbb{P} $ est la mesure cherchée.
+Il suffit de vérifier que pour tout $a \in \mathbb{D} $, $f^{-1} \left( [0,a]  \right) $ est mesurable et que 
+$\mathbb{P} \left( f^{-1} \left( [0,a]  \right) \right) = a $ avec $ a = 0, a_1 a_2 \ldots a_k $. \\
+
+$\lbrace f \leq a \rbrace = \lbrace y_1 < a_1 \rbrace \cup \lbrace y_1 = a_1 \rbrace \cap \lbrace y_2 < a_2 \rbrace \cup \dots \cup \lbrace y = a \rbrace $ \\
+
+Ceci implique que $\lbrace f \leq a \rbrace$ est dans $d_{\infty} $ et $P (f \leq a ) = a_1 \times 10^{-1} + \ldots + a_k \times 10 ^ {-K} + 0 = a $.
+
+\end{demo}
+
+\subsection{Retour à $\R$}
+
+Si $\lambda $ est une mesure sur $\R$, alors pour tout $B \in \mathcal{B}$, $\lambda (B) = \sum \limits_{n \in \mathbb{Z} } \lambda (B \cap [n, n+1[ ) $ \\
+
+Notons temporairement $P$ la mesure de Lebesgue sur $[n , n+1 [ $, alors on dit avoir :
+\begin{equation*}
+\lambda (B) = \sum \limits_{n \in \mathbb{Z} }P (B \cap [n, n+1[ )
+\end{equation*}
+
+
+Il reste à vérifier que la formule ci-dessus définit bien une mesure sur $\R$, l'autre propriété étant facile à vérifier. \\
+
+Soit $B_k $ une suite de boréliens disjoints de $\R$ : 
+
+\begin{propriete}
+
+$\lambda$ est invariante par translation : c'est-à-dire que pour toute translation $\tau$, $\tau _* \lambda = \lambda $. 
+
+\end{propriete}
+
+\begin{demo}
+
+$\left( \tau _* \lambda \right) \left( [a,b] \right)  = \lambda \left( \tau^{-1}  \left( [a,b] \right) \right) = b-a $ \\
+
+D'où le résultat désiré par unicité.
+
+\end{demo}
+
+\begin{propriete}
+
+Soit $\mu $ une mesure borélienne sur $\R$, invariante par translation telle que $\mu ([0,1[ )< \infty $, alors $\mu = \mu ([0,1[ ) - \lambda )$.
+
+\end{propriete}
+
+Démonstration à recopier
+
+\section{Mesure de probabilité sur $\R$} 
+
+Si P est une mesure de probabilité sur $\R$, on définit sa \emph{fonction de répartition} : $f(t) = P ( ]- \infty , t ] ) $.
+
+\begin{propriete}
+
+La fonction de répartition est 
+
+\begin{itemize}
+\item croissante ;
+\item continue à droite ;
+\item De limite nulle en moins l'infini et de limite unitaire en plus l'infini.
+\end{itemize}
+
+\end{propriete}
+
+\begin{theorem}
+Si $f$ est une fonction vérifiant les trois propriétés ci-dessus, alors il existe une unique probabilité borélienne P dont $f$ est la fonction de répartition.
+\end{theorem}
+
+\begin{demo}
+
+Une première méthode est que l'on doit avoir $P(]s,t[ = f(t) - f(s) $ , donc que c'est une mesure additive sur $\mathcal{A}$, ce qui implique une extension. \\
+
+Une deuxième méthode est d'obtenir P comme la loi d'une variable aléatoire. On définit donc : 
+
+$$g(\omega) := inf \lbrace x \in \R ; f(x) \geq \omega \rbrace$$
+
+
+avec $\omega \in ]0,1[$. \\
+
+La condition 3 implique que pour tout $\omega$ dans $]0,1[$, $g(\omega ) \in \R$ et $g$ est croissante, donc pour tout $t \in \mathbb{R} $, $ g(f(t)) \leq t$. 
+
+\end{demo}
+
+\begin{lemme}
+Toute fonction croissante de $]0,1[$ dans $\R$ est mesurable 
+\end{lemme}
+
+\begin{demo}
+
+Si I est un intervalle de $\mathbb{R}$, alors $ g^-1 (I) $ est un intervalle car si $x,y \in g^-1 (I) $ alors $[x,y] \in f^-1 (I) $. Comme les intervalles engendrent la tribu, on conclut que $g$ est mesurable. 
+
+\end{demo}
+
+Il reste à vérifier que $g_*  \lambda $ a bien $f$ comme fonction de répartition. Dans le cas où $f$ est inversible ($f$ est continue et strictement croissante ), alors $g = f^-1$.
+
+
+
 
 \end{document}
