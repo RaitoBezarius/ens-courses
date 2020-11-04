@@ -1,0 +1,120 @@
+Divide and conquer
+
+Plan :
+	- Divide and conquer
+	- Analysis of recursive algorithms
+	- Master theorem
+	- FFT
+
+Recurrences:
+Three methods to get the asymptotic of T(n) given its recursive definition:
+	- Substitution methods
+	- Recursion-tree method
+	- Master method
+
+Example :
+	T(1) = const
+	T(n) = T(ceil(n/2)) + T(floor(n/2)) + f(n)
+
+Substitution method :
+	Guess the form of the asymptotic and prove it using inference
+	There's no recipe for finding the form
+
+Recursion-tree method :
+	This method can help finding the asymptotic formula
+	Example :
+		T(n) = 3*T(floor(n/3)) + n²
+		Simplification:
+			T(n) = 3*T(n/3) + n²
+			n = 3^k
+	Build the tree corresponding to the recurvive application of the function.
+	Then, just add up the terms in the nodes of that tree.
+	Finally, verrify that complexity usign the substitution method
+
+
+
+Master theorem :
+	"The big hammer of analysis of recursive algorithms"
+
+	Definition :
+		T(n) = a*T(n/b) + f(n), where a ≥ 1, b > 1, f asymptotically positive
+		We define r = log_b(a)
+
+		1) if f(n) = O(n^{r-e}) for some e > 0, then T(n) = THETA(n^r)
+
+		2) if f(n) = THETA(n^r) then T(n) = THETA(n^r * log(n))
+
+		3) if f(n) = OMEGA(n^{r+e}) for some e > 0, and if a*f(n/b) ≤ c*f(n) for some constant c < 1 and n sufficiently large,
+			T(n) = THETA(f(n))
+			(The condition with c is called the regularity condition)
+
+		It works even if we have floor or ceiling functions inside the recursive call to T
+
+		NB : The Master Theorem doesn't cover all cases for f :/
+
+	Proof:
+		Plan :
+			- analyse the recurrence T(n) = a*T(n/b) + f(n) assuming n = b̂k -> We first don't worry about ceil or floor functions
+			- extend the analysis to all positive n
+
+		1) We define T(n) = THETA(1)
+			Then T(n) = THETA(n̂r)
+			-> proven using the recursion tree
+				T(n) = f(n) + a*f(n/b) + ... + a^{log_b(n)}*THETA(1) = THETA(n^r) + \sum_{k = 0}^{log_b(n) - 1}{a^k * f(n/b^k)}
+			We replace the bound for f in each of the three cases, perform a huge and abominable simplification and that's it!
+
+		2) Extension to all integers n
+			If there's a floor in the recursive call to T, the upper bounds still hold.
+			If there's a ceil, the lower bounds still hold
+
+			For the floor, we try and get a lower bound:
+				we define : 	n_0 = n
+								n_k = floor(n_{k-1} / b)
+
+				We have : n_k ≥ n/b^k - b/(b - 1) ≥ n/2b^k
+
+	Example : merge sort
+		T(1) = const
+		T(n) = T(floor(n/2)) + T(ceil(n/2)) + c*n
+		-> case 2 with a=2, b=2
+		thus T(n) = O(n * log(n))
+
+
+
+Applications :
+	- Matrix multiplication
+		The naive attempt is obviously in O(n^3)
+		Dividing all matrices in 4 identically shaped matrices and naively computing the product still yields a O(n^3) time
+		- Strassen's algorithm :
+			We define 7 auxilliary matrices.
+			Then, we get the submatrices of the result by linear combinations of these T_i
+			-> T(n) = 7*T(n/2) + THETA(n^2) = O(n^2.8074)
+
+	- FFT for fast multiplication of polynomials
+		We consider P and Q n-degree polynomials
+		Naively : O(n²) time
+
+		Quick reminder :
+			We can represent a polynomial using two representations:
+				- coefficients
+				- point-value : {(x_0, P(x_0)); ... ; (x_n-1, P(x_n-1))} where all x_i are distinct
+
+		We compute the point-value representation of both polynomials
+		We define w2n = (2n)-th complex root of unity
+
+		Principle :
+			- Use FFT th compute the point-value representation of P and Q, in O(n * log(n))
+			- point-wies multiplication, in O(n)
+			- Use inverse FFT to deduce the coefficient representation of P*Q, in O(n * log(n))
+
+		FFT :
+			- assume n = 2^j
+			- P(x= = xPodd(x²) + Peven(x²)
+			- We evaluate Podd and Peven at (wn^0)^2, ... (wn^n-1)^2 recursively, using the halving formula on the complex roots of unity
+			- We combine the results to compute {P(wn^0), ..., P(wn^n-1)}
+			Thus, T(n) = 2*T(n/2) + THETA(n)
+
+		inverse FFT:
+			We just need to multiply the multiplied point-value vector by the inverse of the Vandermonde value of wn
+
+			Theorem : Vn^-1[j, k] = (wn^-kj)/n
