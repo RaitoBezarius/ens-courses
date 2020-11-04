@@ -1488,9 +1488,184 @@ Si I est un intervalle de $\mathbb{R}$, alors $ g^-1 (I) $ est un intervalle car
 
 \end{demo}
 
+
+Il reste à vérifier que $g_*  \lambda $ a bien $f$ comme fonction de répartition. Dans le cas où $f$ est inversible ($f$ est continue et strictement croissante ), alors $g = f^-1$.
+
+\begin{propriete}
+Si $f$, $g$ sont mesurables et $a \in \R$, alors $f+g$, $af$, $fg$, $\max (f,g)$, $\min (f,g)$ sont mesurables.
+\end{propriete}
+
+\begin{demo}
+On prend $\R ^2$ muni de la tribu borélienne.
+
+$(f,g) : \Omega \longrightarrow \R ^2 $ est mesurable. Donc si $h : \R ^2 \rightarrow \R $, alors 
+
+\end{demo}
+
+\begin{rem}
+Cette propriété s'étend aux fonctions à valeurs dans $[ - \infty , + \infty ]$. 
+\end{rem} 
+
+\begin{rem}
+$f : \Omega \longrightarrow [ - \infty , + \infty ] $ est mesurable ssi les préimage $f^{-1}  (I)$ sont mesurables ou si $f^{-1}  (\R)$ l'est.
+\end{rem} 
+
+\begin{propriete}[Les limites de suite de fonctions mesurables sont mesurables]
+Soit $f_n$ une suite de fonctions mesurables à valeurs dans $ [ - \infty , + \infty ] $, alors $\sup f_n$, $\inf f_n$, $\limsup f_n$ ,$\liminf f_n$ sont mesurables (donc aussi $\lim f_n $ si elle existe).
+\end{propriete}
+
+\begin{demo}
+$\lbrace sup f_n a \rbrace = \cup_n \lbrace f_n > a \rbrace $ est mesurable. 
+
+$\liminf f_n = \sup_n \left( \inf_{k \geq n} f_k  \right)$
+
+Souvent on oubliera cette vérification. Mais attention !
+
+\end{demo}
+
+\begin{rem}
+Si $f_\alpha $est une famille quelconque de fonctions mesurables, $\sup_\alpha f_\alpha $ n'est pas forcément mesurable. 
+\end{rem} 
+
+Par exemple, si on prend $f(x) = 1$ si $x=0$ et 0 sinon. 
+
+Toute fonction $g : \R \rightarrow ]0,1[ $ est le sup d'une famille de fonction $f(x-a) +b$.
+
+\begin{propriete}
+Si $f : \Omega \rightarrow [0, + \infty ]$ est mesurables, alors $f$ est limite croissante d'une suite $f_n$ de fonctions positives qui prennent un nombre fini de valeurs réelles [fonctions simples].
+\end{propriete}
+
+\begin{demo}
+Pour chaque $n$, on pose $f_n = \dfrac{k}{2^n}$si $k \leq 4^n$ et $f \in \left[\dfrac{k}{2^n} , \dfrac{k+1}{2^n} \right[ $.
+
+$f_n = 2^n$ si $f \geq 2^n$.
+
+alors : $f_n$ est croissante, $f_n \leq f$, $f_n \geq f - \frac{1}{2^n} $. Sauf si $f \geq 2^n$. Dans tous les cas, $f_n$ tend vers $f$ quand $n$ tend vers l'infini. 
+\end{demo}
+
+\begin{propriete}
+Si $f : \Omega \rightarrow \R$ est mesurables, alors $f$ est limite uniforme d'une suite $f_n$ de fonctions positives qui prennent un nombre dénombrable de valeurs.
+\end{propriete}
+
+\section{Intégrale d'une fonction positive}
+
+\subsection{Si $f$ prend un nombre fini de valeurs}
+
+\begin{equation}
+\int f dm \ := \sum \limits_{y \in Im(f)} y m(f=y)
+\end{equation}
+
+C'est une somme finie. Elle est bien définie à valeur dans $[0, \infty] $ si $f  \geq 0$ ou à valeurs réelles en général. \\
+
+On va noter $\mathbf{S}$ l'ensemble des fonctions mesurables réelles prenant un nombre fini de valeurs et $\mathbf{S}^+$ celles qui sont positives.
+
+\begin{propriete}
+Si $m$ est finie, alors $f \in \mathbf{S} \longmapsto \int f dm $ est linéaire. Et en général, 
+
+\begin{equation}
+\forall m , \forall a,b \geq 0, \ \forall f, g \in \mathbf{S} ^+ , \ \int (af + by) = a \int f + b \int g
+\end{equation}
+\end{propriete}
+
+\begin{definition}
+Pour $f : \Omega \rightarrow [0,+ \infty ]$ mesurable, 
+\end{definition}
+
+\begin{propriete}
+\begin{equation}
+0 \leq f \leq \tilde f \Rightarrow \int f \leq \int \tilde{f}
+\end{equation} 
+
+\begin{equation}
+0 \leq f $et$ \int f dm \ = 0 \Rightarrow m(f>0) = 0 
+\end{equation}
+
+On dit alors que $f = 0$ preque partout.
+
+\begin{equation}
+f = 0 \ pp \ , f \geq 0 \Rightarrow \int f dm = 0
+\end{equation}
+
+\begin{equation}
+\int _A f dm_A = \int_\Omega f \mathbb{1}_A dm
+\end{equation}
+\end{propriete}
+
+\begin{demo}
+
+Deuxième point :
+\begin{align*}
+0 &= \int f dm \\
+&\geq \int \varepsilon 1 _{ \lbrace f \geq \varepsilon \rbrace } dm \\
+&=\varepsilon m (f \geq \varepsilon )
+\end{align*}
+
+Donc $\forall \varepsilon > 0 , m( f\geq \varepsilon ) = 0$ 
+
+Troisième point
+
+on prend l'intersection sur $\varepsilon = \frac{1}{n}$
+
+$\Rightarrow m ( f>0) = 0 $ car $\lbrace f \geq 0}$
+
+Quatrième point :
+
+Si $g$ est simple sur $\Omega$, 
+
+\begin{align*}
+\int_A f dm_A = \sum \limits_{y \in \Im y} y m_A (g=y) = \sum \limits_y y m (A \cap \lbrace \rbrace $
+\end{align*}
+
+\end{demo}
+
+\begin{theorem}[Théorème de convergence monotone]
+Si $f_n$ est une suite de fonctions mesurables positives coissante, alors :
+
+$$\int f_n \rightarrow \int \liminf f_n dm $$
+
+\end{theorem}
+
+On peut voir ce théoème comme un analogue du théorème de convergence donnée au début du cours. On pourrait se ramener au truc précédent en disant que les intégrales positives sont les trucs étudiés, mais nous ne nous sommes pas encore donné un cadre rigoureux pour cela.
+
+\begin{demo}
+$f_n \leq f$, donc $\forall n, \ \int f_M \leq f$, donc $\lim \int f_n \leq \int f $.
+
+Il faut démontrer que $\lim \int f_n \geq f$.
+
+On se fixe $\lambda \in ]0,1[, \lambda g $ et on définit une suite de fonction 
+
+$g_n := \lambda g $ si $f_n \geq \lambda y $ et vaut 0 si $f_n < \lambda y$.
+
+$g_n \leq f_n , g_n$ est croissante et $g_n \rightarrow \lambda y$
+
+On avait démontré le théorème de convergence monotone pour les fonctions simples.   
+
+On a montré que $\forall \lambda \in ]0, 1[$, $\lim \int f_n \geq \int \lambda y = \lambda \int g $, en prenant le sup sur $\lambda$,
+
+$$ \forall $$
+\end{demo}
+
+\begin{theorem}[Lemme de fatou]
+Soit $f_n : \Omega \rightarrow [0, + \infty ] $ une suite de fonctions mesurables. Alors $\int \liminf f_n \leq \liminf \int f_n $.
+\end{theorem}
+
+\begin{rem}
+\begin{enumerate}
+\item Voir le lemme de Fatou ensembliste;
+\item Sur $\R$, $f_n (x) =n \left( \dfrac{1}{n e^(-nx)^2} \right) $ (on prendre la fonction chapeau).
+\end{enumerate}
+
+Ce dernier point fonctionne car on a choisit la bonne mesure de scaling. 
+\end{rem}
+
+\begin{demo}
+$g_n = \inf \limits_{k \geq n } f_k$
+
+$g_n$ est croissante, et en posant $f :=\liminf f_n$, par le théorème de convergence monotone, 
+
+$\int g_n \rightarrow \int f$
+
+et $g_n \leq f_n$ donc  $\liminf \int f_n \geq \lim \int g_n = \int f $.
+\end{demo}
+
 Il reste à vérifier que $g_*  \lambda $ a bien $f$ comme fonction de répartition. Dans le cas où $f$ est inversible ($f$ est continue et strictement croissante ), alors $g = f^{-1}$.
-
-
-
-
-\end{document}
