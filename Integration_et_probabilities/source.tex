@@ -1,3 +1,6 @@
+% !TeX spellcheck = fr-FR
+
+
 \documentclass[10pt,a4paper,notitlepage ]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -5,12 +8,14 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{wasysym}
 \usepackage{graphicx}
 \usepackage{dsfont}
 \usepackage{tcolorbox}
 \usepackage{stmaryrd}
 \usepackage[left=2.00cm, right=2.00cm, top=1.50cm, bottom=1.50cm]{geometry}
 
+\everymath{\displaystyle}
 
 \title{Intégration et probabilités}
 \date{Premier semestre 2020}
@@ -23,16 +28,21 @@
 \newcommand{\T}{\mathcal T}
 \newcommand{\A}{\mathcal A}
 \newcommand{\B}{\mathcal B}
+\newcommand{\dd}{\ \mathrm d}
+\newcommand{\1}{\mathds 1}
+\newcommand{\LL}{\mathcal L}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\comp}[1]{#1^\complement}
 \newcommand{\var}{\mathrm{Var}}
 \newcommand{\cov}{\mathrm{Cov}}
 \newcommand{\indep}{\perp \!\!\! \perp}
 \renewcommand{\Im}{\mathrm{Im }}
+\newcommand{\borel}{\mathrm{Borel}}
+\newcommand{\prob}{\mathbb P}
 
-\newenvironment{definition}{
+\newenvironment{definition}[1][]{
 	
-	\textbf{Définition : }
+	\textbf{Définition #1 : }
 }
 {}
 
@@ -81,7 +91,7 @@
 
 \newenvironment{rem}{
 	
-	\textbf{Remarque :}}{}
+		\textbf{Remarque :}}{}
 
 \begin{document}
 	\maketitle
@@ -1186,7 +1196,7 @@ On a montré avec le second lemme de Borel-Cantelli l'existence de séquences qu
 On a déjà défini la tribu la plus petite possible. 
 
 \begin{definition}
-Si $\mathbf{B} \subset \mathbf{P} (X)$, on appelle tribu engendrée par $\mathbf{B}$ la plus petite tribu contenu $\mathbf{B}$.
+Si $\mathcal{B} \subset \mathcal{P} (X)$, on appelle tribu engendrée par $\mathcal{B}$ la plus petite tribu contenu $\mathcal{B}$.
 \end{definition}
 
 \begin{lemme}
@@ -1194,134 +1204,133 @@ Elle existe car une intersection de tribus est une tribu.
 \end{lemme}
 
 \begin{demo}
-Soit $\mathbf{A}_{i, i \in \mathbf{I}}$ des tribus sur X. Alors $\mathbf{A} = \cap _ {i \in \mathbf{I}}$ est une tribu. \\
-Soit en effet $A_n \in \mathbf{A}$, alors \\
-$\forall i, \forall n, A_n \in \mathbf{A}_i $, donc pour tout $i$, l'union des $A_n$ appartient à $\mathbf{A} _i$. Donc l'union, des $A_n$ appartient à l'intersection des $\mathbf{A} _i$.
+Soit $\A_{i, i \in I}$ des tribus sur X. Alors $A = \underset{i \in I} \bigcap \A_i $ est une tribu.
+
+Soit en effet $(A_n) \in \A^\N$, alors $\forall i, \forall n, \quad A_n \in \A_i $, donc pour tout $i$, l'union des $A_n$ appartient à $A_i$. Donc l'union, des $A_n$ appartient à l'intersection des $\A_i$.
 \end{demo}
 
 Avec ce vocabulaire, on a le théorème :
 
 \begin{theorem}
-Soit $\mathbf{A}$ une algèbre des parties de X et $\underline{m}$ une mesure de probabilités additive sur $\mathbf{A}$, qui de plus est $\sigma$ -additive. Alors, il existe une unique mesure de probabilité $m$ sur $\tau$, la tribu engendrée par $\mathbf{A}$.
+Soit $\A$ une algèbre des parties de X et $\underline{m}$ une mesure de probabilités additive sur $\A$, qui de plus est $\sigma$-additive. Alors, il existe une unique mesure de probabilité $m$ sur $\tau$, la tribu engendrée par $\A$.
 \end{theorem}
 
-On peut, de la même façon, définir l'algèbre engendrée par $\mathbf{B}$ . L'algèbre engendré est inclus dans la tribu engendrée. \\
-On peut définir l'algèbre engendrée de façon plus explicite : \\
-On note $\mathbf{B}' = \lbrace B \subset X ; b \in \mathbf{B} ou ^c B \in \mathbf{B} \rbrace $. \\
-L'algèbre engendrée est l'ensemble des unions finies d'intersections finies d'éléments de $\mathbf{B}'$. Il suffit en effet de vérifier que cette famille d'ensemble est stable par union, intersection et complémentaire. \\
-La stabilité par union est claire et tautologique. \\
+On peut, de la même façon, définir l'algèbre engendrée par $\B$.  L'algèbre engendré est inclus dans la tribu engendrée.
+
+On peut définir l'algèbre engendrée de façon plus explicite : on note $\B' = \lbrace B \subset X ; B \in \B \text{ ou } \comp B \in \B \rbrace $. L'algèbre engendrée est l'ensemble des unions finies d'intersections finies d'éléments de $\B'$. Il suffit en effet de vérifier que cette famille d'ensemble est stable par union, intersection et complémentaire. 
+\begin{itemize}
+	\item La stabilité par union est tautologique.
+	\item De même pour la stabilité par complémentaire une fois qu'on a mointré la stabilité par intersection.
+\end{itemize}
+
 Montrons la stabilité par intersection : 
 
 \begin{demo}
-$A = \cup _ i \cap _i B_ij $, $\tilde A  = \cup_k \cap _ l \tilde B_kl $ et  \\
+$A = \bigcup _ i \bigcap _j B_{ij} $, $\tilde A  = \bigcup_k \bigcap _ l \tilde B_{kl} $ et 
 
 \begin{align*}
-A \cap A &= (\cup _i  * ) ( \cup _ k * ) \\
-&= \cup_{i,k} \left( \left( \cap_j B_{ij} \right) \cap \left( \cap_l B_{kl} \right) \right) \\
-&= \cup _{i,k} \left( \cap_{j,l} B_{ij} \cap B_{kl} \right) 
+A \bigcap A &= (\bigcup _i \varhexstar ) ( \cup _ k \varhexstar ) \\
+&= \bigcup_{i,k} \left( \left( \bigcap_j B_{ij} \right) \cap \left( \bigcap_l B_{kl} \right) \right) \\
+&= \bigcup _{i,k} \left( \bigcap_{j,l} B_{ij} \cap B_{kl} \right) 
 \end{align*}
 
-est une union finie d'intersections finies donc le complémentaire de l'union des intersections des $B_{ij}$ qui est l'intersection de l'union des complémentaires des $B_{ij}$ est une intersection finie d'éléments de notre ensemble et donc est dedans. \\
-
+est une union finie d'intersections finies donc le complémentaire de l'union des intersections des $B_{ij}$ qui est l'intersection de l'union des complémentaires des $B_{ij}$ est une intersection finie d'éléments de notre ensemble et donc est dedans.
 \end{demo}
 
 Il est plus difficile de décrire les éléments de la tribu engendrée, notamment car l'ensemble des unions dénombrables d'intersections dénombrables n'est pas stable par intersection dénombrable. 
 
 \begin{propriete}
-Soit $f$ une application de $( \Omega , \tau ) $ dans $ X $ et soit $\mathbf{B} \subset \tau $ engendrant $\tau$. \\
-Si $f^-1 (B)\in \tau , \forall B \in \mathbf{B}$ , alors $f$ est mesurable.
+Soit $f:(\Omega,\T) \rightarrow X$ une application et soit $\B \subset \T $ engendrant $\T$. \\
+Si $f^{-1} (B)\in \T , \forall B \in \B$ , alors $f$ est mesurable.
 \end{propriete}
 
 \begin{demo}
-On considère l'ensemble $\epsilon$ des partitions de $X$ dont la pré-image par $f$ est mesurable. $ \epsilon = \lbrace Y \in \mathcal{P} (X) f^-1(Y) \in \tau \rbrace $. 
-On a déjà démontré que c'est une tribu (notée $l_* \tau$. Cette tribu contient $\mathcal{B}$, donc elle contient $\tau$. 
+On considère l'ensemble $\eps$ des partitions de $X$ dont la pré-image par $f$ est mesurable. $ \eps = \lbrace Y \in \mathcal P (X), \ f^{-1}(Y) \in \T \rbrace $. 
+On a déjà démontré que c'est une tribu (notée $f_* \T$. Cette tribu contient $\B$, donc elle contient $\T$. 
 
 \end{demo}
 
 \begin{propriete}
 Les parties de $\R$ suivantes engendrent la même tribu.
-\begin{enumerate}
-\item Les intervalle ;
-\item Les intervalles fermées ;
-\item Les intervalles ouverts ;
-\item les ouverts ;
-\item Les fermées ;
-\item Les intervalles $( - \infty , a ], a \in \mathbb{D} $ (ou n'importe quel ensemble dense).
-\end{enumerate}
-
-On l'appelle la tribu Borélienne.
+	\begin{enumerate}
+		\item Les intervalle ;
+		\item Les intervalles fermées ;
+		\item Les intervalles ouverts ;
+		\item les ouverts ;
+		\item Les fermées ;
+		\item Les intervalles $] - \infty , a ], a \in \mathbb{D} $ (ou n'importe quel ensemble dense dans $\R$).
+	\end{enumerate}
+On l'appelle la tribu Borélienne, et on la note $\borel(\R)$.
 
 \end{propriete}
 
 \begin{demo}
 
-On note $\tau _i $ la tribu engendrée par (1).   \\
+On note $\T_i $ la tribu engendrée par (1).
 
-La tribu engendrée par les ouverts contient les fermés, donc $\tau _5 \subset \tau _4 $ et de même, nous avons l'autre inclusion, donc égalité. \\
+La tribu engendrée par les ouverts contient les fermés, donc $\T_5 \subset \T_4 $ et de même, nous avons l'autre inclusion, donc égalité. 
 
-L'inclusion de $\tau _2 $ dans $\tau _1$ est claire. Montrons que tout intervalle est dans $\tau _2$. Tout intervalle est une réunion dénombrable d'intervalles fermés, donc appartient à $\tau _2$. \\
+L'inclusion de $\T_2 $ dans $\T_1$ est claire. Montrons que tout intervalle est dans $\T_2$. Tout intervalle est une réunion dénombrable d'intervalles fermés, donc appartient à $\T_2$.
 
-$\tau _3 = \tau _1$ car tout intervalle est une intersection dénombrable d'intervalles ouverts. Réciproquement, tout ouvert est une union dénombrable d'intervalles ouvrets. \\
+$\T_3 = \T_1$ car tout intervalle est une intersection dénombrable d'intervalles ouverts. Réciproquement, tout ouvert est une union dénombrable d'intervalles ouvrets.
 
-$\forall a < b [a,b] = \cap _n ] -  \infty , b_n ] - \cup _n ] - \infty , a_n ]$ où $b_n$ tend décroissement vers $b$ et $a_n$ tend croissante vers $a$ sans jamais l'atteindre. 
-
+$\forall a < b, [a,b] = \bigcap_n ]-\infty, b_n ] \setminus \bigcup_n ]-\infty, a_n ]$ où $b_n$ tend en décroissant vers $b$ et $a_n$ tend en croissant vers $a$ sans jamais l'atteindre. 
 \end{demo}
 
 \begin{propriete}
-Sur [0, 1[, les trois tribus suivantes sont les mêmes : 
+Sur $[0, 1[$, les trois tribus suivantes sont les mêmes : 
 \begin{enumerate}
 \item La tribu engendrée par les intervalles ;
 \item La tribu engendrée par les $[0, a], a \in \mathbb{D} \cap [0,1[ $ ;
-\item La tribu $\lbrace B \cap [0,1[, B \in \mathcal{Borel} (\R ) \rbrace = i* \mathcal{Borel} $ où $i$, application de $[0,1[$ dans $\mathbb{R}$ est l'inclusion.
+\item La tribu $\lbrace B \cap [0,1[,\ B \in \borel(\R) \rbrace = \iota^*(\borel(\R)) $ où $\iota:[0,1[\rightarrow \R$ est l'inclusion ($\iota(A) = A\cap [0,1[$).
 \end{enumerate}
 
 \end{propriete}
 
 \begin{definition}
-Soit $f_i : \Omega \longrightarrow (X_i , \tau _i ) , i \in \mathcal{I} $ une famille d'applications. \\
-La tribu engendrée par les $(f_i ) _{ i \in \mathcal{I} }$ est la tribu de $\Omega$ engendrée par l'union sur $i \in \mathcal{I} $ des $f_i * ( \tau _i ) $ . C'est la plus petite tribu pour laquelle toutes les applications $f_i$ sont mesurables.
+Soit $f_i : \Omega \rightarrow (X_i , \T_i ) , i \in I$ une famille d'applications.
+
+La tribu engendrée par les $(f_i)_{ i \in I }$ est la tribu de $\Omega$ engendrée par l'union sur $i \in I$ des $f_i^*(\T_i ) $ . C'est la plus petite tribu pour laquelle toutes les applications $f_i$ sont mesurables.
 \end{definition}
 
 \begin{definition}[Tribu produit]
 
-Soit $(X_i , \tau _i )$ des espaces mesurables, $i \in \mathcal{I} $.  \\
-La tribu produit sur $\Omega := \prod \limits _i X_i $ est la tribu engendrée par les projections de $\Omega$ sur les $X_i$.
+Soit $(X_i , \T_i )$ des espaces mesurables, $i \in I $.
+
+La tribu produit sur $\Omega := \prod_{i\in I} X_i $ est la tribu engendrée par les projections de $\Omega$ sur les $X_i$.
 
 \end{definition}
 
-Autrement dit, c'est par définition la tribu engendrée par les cylindres $Z_i \times \prod \limits_{j \neq i} X_j $, avec $Z_i \in \tau _i $. 
+Autrement dit, c'est par définition la tribu engendrée par les cylindres $Z_i \times \prod_{j \neq i} X_j $, avec $Z_i \in \T_i $. 
+
 
 \begin{rem}
 
-Si $\mathcal{I}$ est fini ou dénombrable, la tribu produit est la tribu engendrée par le produit des $Z_i$. 
+Si $I$ est fini ou dénombrable, la tribu produit est la tribu engendrée par le produit des $Z_i$. 
 
 \end{rem}
 
 \begin{rem}
-Si l'ensemble $\mathcal{I} $ n'est pas dénombrable, les ensembles de la tribu produit ne dépendent que d'une famille dénombrable de coordonnées, c'est-à-dire qu'il existe une décomposition 
-$\mathcal{I} = \mathcal{I}_1 \cup \mathcal{I}_2 $ 
-avec $\mathcal{I}_1 $ dénombrable et 
-$\Pi_{ \mathcal{I}_2} \Omega \rightarrow \Pi_{\mathcal{I}_2} X_i $ vérifie 
-$\Pi (A) = Pi_{ \mathcal{I}_2} X_i $.
+	
+Si $I$ n'est pas dénombrable, les éléments de la tribu produit dépendent d'une famille au plus dénombrable de coordonnées, c'est à dire que si $A \in \T$, alors il existe une partie $J \subset I$ telle que $I \setminus J$ soit au plus dénombrable et telle que $\pi_J : \prod_I X_i \rightarrow \prod_J X_j$ vérifie $\pi_J(A) =\prod_J X_j$, autrement dit, $A$ ne dépend pas des coordonnées de $J$.
 \end{rem}
 
 \begin{propriete}
 
-Si $f : \Omega \longleftarrow (X_i , \tau _i )$ et \\
-$ F : \Omega \longrightarrow ( \prod X_i , \prod \tau _i ) $ l'application dont les $f_i$ sont les coordonnées, alors la tribu engendrée par les $f_i$ est $F* (\prod \tau _i ) $.
+Si $f : (X_i , \T_i ) \rightarrow \Omega$ et $F : \Omega \rightarrow ( \prod X_i , \prod \T _i ) $ l'application dont les $f_i$ sont les coordonnées, alors la tribu engendrée par les $f_i$ est $F^*(\prod \T_i ) $.
 
 \end{propriete}
 
 \begin{propriete}
 
-L'application $F : ( \Omega , \tau ) \longrightarrow ( \prod X_i , \prod \tau_i ) $ est mesurable si et seulement si ses coordonnées le sont.
+L'application $F : ( \Omega , \T ) \rightarrow ( \prod X_i , \prod \T_i ) $ est mesurable si et seulement si ses coordonnées le sont.
 
 \end{propriete}
 
 
 \subsection{Tribus de $\R ^d$}
 
-$d \leq 1 $ \\
+$d \geq 1 $ \\
 
 \begin{theorem}
 Les tribus suivantes sont identiques :
@@ -1330,7 +1339,7 @@ Les tribus suivantes sont identiques :
 \item Les tribus engendrées par les ouverts ;
 \item Le produit des tribus boréliennes ;
 \item La tribu engendrée par les produits d'intervalles ;
-\item La tribu engendrée par les produits des $( - \infty , a_i ], a_i \in \mathbb{D} $ (ou n'importe quel ensemble dense).
+\item La tribu engendrée par les produits des $]-\infty , a_i ], a_i \in \mathbb{D} $ (ou n'importe quel ensemble dense).
 \item La tribu engendrée par les produits d'intervalles ouverts. 
 \end{enumerate}
 
@@ -1340,29 +1349,26 @@ On l'appelle la tribu borélienne de $\R ^d $.
 
 \begin{rem}
 
-C'est un cas particulier de la tribu produit $\tau _3 $. \\
-C'est un cas particulier de la tribu borélienne sur un espace métrique en général, on appelle tribu borélienne la tribu engendrée par les ouverts.
+C'est un cas particulier de la tribu produit et c'est un cas particulier de tribu borélienne. Dans le cas général, sur un espace métrique, on appelle tribu borélienne la tribu engendrée par les ouverts.
+$\T_1 = \T_2$ est toujours vrai.
 
 \end{rem}
 
 \begin{demo}
 
-Tout ouvert est la réunion d'une famille dénombrable de pavés ouverts. Donc $\tau _6 = \tau _1 $.  \\
+$\T_3$ est la tribu engendrée par les produits de boréliens, donc $\T_3 \subset T_4 \subset T_5$, mais $(\pi_i)^*\T_5$ contient les intervalles $]-\infty, a], a\in\mathbb D$, donc contient la tribu borélienne.
 
-$\tau _3$ est engendrée par les ensembles  $\prod _1 ^{-1} (Z) , Z \subset \mathbb{R}$ borélien. Donc $\tau _3$ contient tous les pavés.
+En conséquence, $\pi_i^{-1}(Z_i)$ est dans $\T_5$ pour tout $Z_i$ mesurable, donc $\T_5$ est la tribu produit. Donc $\T_5 = \T_4=\T_3$, et c'est aussi la tribu engendrée par les produits d'intervalles ouvertes ($\T_6$).
 
-La tribu $\tau _4 $ engendrée par les produits d'intervalle contient la tribu produit $\tau _3$. \\
-
-$( \Pi _i ) * \tau _3 $ est la figure de $\mathbb{R}$ qui contient les intervalles et donc elle contient Borel. Donc $\tau _4$ contient $\Pi _u^{-1} $ Pour tout $i$ et pour tout $B$ borélien. Donc $\tau _4$ contient la tribu produit.
+Donc $\T_6 \subset \T_1$, et réciproquement. Donc $\T_6=\T$, car tout ouvert est une réunion dénombrable de pavés ouverts.
 \end{demo}
 
 \section{La mesure de Lebesgue sur $\R$}
 
-Soit $\mathcal{B}$ la tribu borélienne sur $\R$.
+Soit $\B := \borel(\R)$.
 
 \begin{theorem}
-Il existe une unique mesure $\lambda : B \rightarrow [0, + \infty ] $ telle que 
-$\lambda ( [a,b] = b-a \ \forall a \leq b $.
+Il existe une unique mesure $\lambda : \B \rightarrow [0, + \infty ] $ telle que $\lambda ( [a,b] )= b-a \quad \forall a \leq b $.
 \end{theorem} 
 
 C'est la mesure de Lebesgue. 
@@ -1374,36 +1380,33 @@ $\lambda$ n'est pas une mesure finie. Mais elle est $\sigma$-finie : on peut rec
 On va commencer par construire la mesure de Lebesgue sur $[0, 1]$. 
 
 \begin{theorem}
-Il existe une unique mesure borélienne $\lambda : B \rightarrow [0, 1] $ telle que $\lambda ( [a,b] = b-a \ \forall a \leq b $ dans $[0;1]$..
+Il existe une unique mesure borélienne $\lambda : \B \rightarrow [0, 1] $ telle que $\lambda ( [a,b]) = b-a \quad \forall a \leq b $ dans $[0;1]$..
 \end{theorem}
 
 \begin{demo}
 
-On considère l'algèbre $\mathcal{A}$ engendrée par les intervalles $[a,b[$, c'est-à-dire les réunions finies d'intervalles de ce type. On peut supposer cette réunion disjointe. \\
+On considère l'algèbre $\A$ engendrée par les intervalles $[a,b[$, c'est-à-dire les réunions finies d'intervalles de ce type. On peut supposer cette réunion disjointe.
 
-On a une mesure additive $\underline{\lambda} : \ \mathcal{A} \rightarrow [0,1]  $ donnée par la somme des longueurs. On peut essayer d'appliquer le théorème d'extension de Hahn - Kolmogorov pour étendre $\underline{\lambda} $ en une mesure borélienne $\lambda$. Ceci implique l'unicité de $\lambda$. \\
+On a une mesure additive $\underline\lambda : \A \rightarrow [0,1] $ donnée par la somme des longueurs. On peut essayer d'appliquer le théorème d'extension de Hahn - Kolmogorov pour étendre $\underline\lambda$ en une mesure borélienne $\lambda$. Ceci implique l'unicité de $\lambda$.
 
-On peut montrer l'existence par deux méthodes : ou bien on montre que $\underline{\lambda} $ est $\sigma$-additive sur $\mathcal{A}$, \emph{ce qui n'est pas vrai pour toute mesure additive sur $\mathcal{A}$} ; ou bien, ce que nous allons faire :
-
-On pose 
-
-$$Y := \lbrace 0,1, \ldots , 9 \rbrace $$
-$$\Omega = Y ^{\N} $$
+On peut montrer l'existence par deux méthodes : ou bien on montre que $\underline{\lambda} $ est $\sigma$-additive sur $\A$, \emph{ce qui n'est pas vrai pour toute mesure additive sur $\A$} ; ou bien, ce que nous allons faire : On pose 
+\[Y := \lbrace 0,1, \ldots , 9 \rbrace \]
+\[ \Omega = Y ^\N \]
 
 
 \begin{align*}
-f : \Omega &\longrightarrow [0,1[ \\
-(y_i) &\longmapsto \sum \limits_{i=1}^\infty y_i 10^{-I} 
+f : \ &\Omega \rightarrow [0,1[ \\
+&(y_i) \mapsto \sum_{i=1}^\infty y_i 10^{-i} 
 \end{align*}
 
 
-On met sur $\omega$ la probabilité $\mathbb{P}$ qui est le produit des lois uniformes sur Y. Alors $f_i \mathbb{P} $ est la mesure cherchée.
+On met sur $\Omega$ la probabilité $\prob$ qui est le produit des lois uniformes sur Y. Alors $f_i \prob $ est la mesure cherchée.
 Il suffit de vérifier que pour tout $a \in \mathbb{D} $, $f^{-1} \left( [0,a]  \right) $ est mesurable et que 
-$\mathbb{P} \left( f^{-1} \left( [0,a]  \right) \right) = a $ avec $ a = 0, a_1 a_2 \ldots a_k $. \\
+$\prob \left( f^{-1} \left( [0,a]  \right) \right) = a $ avec $ a = 0, a_1 a_2 \ldots a_k $. \\
 
-$\lbrace f \leq a \rbrace = \lbrace y_1 < a_1 \rbrace \cup \lbrace y_1 = a_1 \rbrace \cap \lbrace y_2 < a_2 \rbrace \cup \dots \cup \lbrace y = a \rbrace $ \\
+$\lbrace f \leq a \rbrace = \lbrace y_1 < a_1 \rbrace \cup (\lbrace y_1 = a_1 \rbrace \cap \lbrace y_2 < a_2 \rbrace) \cup \dots \cup \lbrace y = a \rbrace $ \\
 
-Ceci implique que $\lbrace f \leq a \rbrace$ est dans $d_{\infty} $ et $P (f \leq a ) = a_1 \times 10^{-1} + \ldots + a_k \times 10 ^ {-K} + 0 = a $.
+Ceci implique que $\lbrace f \leq a \rbrace$ est dans $ \A_{\infty} $ et $P (f \leq a ) = a_1 \cdot 10^{-1} + \dots + a_k \cdot 10 ^ {-K} + 0 = a $.
 
 \end{demo}
 
@@ -1437,45 +1440,46 @@ D'où le résultat désiré par unicité.
 
 \begin{propriete}
 
-Soit $\mu $ une mesure borélienne sur $\R$, invariante par translation telle que $\mu ([0,1[ )< \infty $, alors $\mu = \mu ([0,1[ ) - \lambda )$.
+Soit $\mu $ une mesure borélienne sur $\R$, invariante par translation telle que $\mu ([0,1[ )< \infty $, alors $\mu = \mu ([0,1[ ) \cdot \lambda )$.
 
 \end{propriete}
 
-Démonstration à recopier
+\begin{demo}
+	Tous les points ont la même mesure, et c'est $0$. Ensuite, comme $[0,1[$ est la réunion disjionte de $k$ translatés de $[0,\frac 1 k[$, on conclut que $\mu\left(\left[0, \frac 1 k\right[\right) = \frac{\mu([0,1[)}{k}$. On pose alors $\tilde \mu = \frac \mu {\mu([0,1[)}$.
+	
+	Si $q=\frac l k$ est un rationnel, alors $[0,q[$ est l'union disjointe de $l$ translatés de $[0,\frac 1 k[$, donc $\tilde\mu([0,q[)= q$.
+	
+	Par passage à la limite croissante, $\tilde\mu([0,t[) = t \quad \forall t \ge 0$.
+	
+	Et donc, $\tilde\mu(Z)=\lambda(Z)$ pour tout intervalle, donc $\tilde\mu=\lambda$.
+\end{demo}
 
-\section{Mesure de probabilité sur $\R$} 
+\section{Mesures de probabilité boréliennes sur $\R$} 
 
-Si P est une mesure de probabilité sur $\R$, on définit sa \emph{fonction de répartition} : $f(t) = P ( ]- \infty , t ] ) $.
+Si P est une mesure de probabilité sur $\R$, on définit sa \emph{fonction de répartition} : $f(t) := P ( ]- \infty , t ] ) $.
 
 \begin{propriete}
 
 La fonction de répartition est 
 
-\begin{itemize}
-\item croissante ;
-\item continue à droite ;
-\item De limite nulle en moins l'infini et de limite unitaire en plus l'infini.
-\end{itemize}
+	\begin{itemize}
+		\item croissante ;
+		\item continue à droite ;
+		\item de limite nulle en moins l'infini et de limite unitaire en plus l'infini.
+	\end{itemize}
 
 \end{propriete}
 
 \begin{theorem}
-Si $f$ est une fonction vérifiant les trois propriétés ci-dessus, alors il existe une unique probabilité borélienne P dont $f$ est la fonction de répartition.
+Si $f$ est une fonction vérifiant les trois propriétés ci-dessus, alors il existe une unique probabilité borélienne $\prob$ dont $f$ est la fonction de répartition.
 \end{theorem}
 
 \begin{demo}
-
-Une première méthode est que l'on doit avoir $P(]s,t[ = f(t) - f(s) $ , donc que c'est une mesure additive sur $\mathcal{A}$, ce qui implique une extension. \\
-
-Une deuxième méthode est d'obtenir P comme la loi d'une variable aléatoire. On définit donc : 
-
-$$g(\omega) := inf \lbrace x \in \R ; f(x) \geq \omega \rbrace$$
-
-
-avec $\omega \in ]0,1[$. \\
-
-La condition 3 implique que pour tout $\omega$ dans $]0,1[$, $g(\omega ) \in \R$ et $g$ est croissante, donc pour tout $t \in \mathbb{R} $, $ g(f(t)) \leq t$. 
-
+\begin{itemize}
+	\item Unicité : si $\prob$ et $\tilde\prob$ engendrent la même fonction de répartition, alors elles ont les mêmes valeurs sur les intervalles de la forme $]a,b]$ donc sur tous les boréliens.
+	\item Existence : on considère une fonction $g$ qui va jouer le rôle d'"inverse" de $f$ : \[g(\omega) := inf \lbrace x \in \R ; f(x) \geq \omega \rbrace\]
+	La condition 3 implique que pour tout $\omega$ dans $]0,1[$, $g(\omega ) \in \R$ et $g$ est croissante, donc pour tout $t \in \mathbb{R} $, $ g(f(t)) \leq t$. 	
+\end{itemize}
 \end{demo}
 
 \begin{lemme}
@@ -1488,9 +1492,602 @@ Si I est un intervalle de $\mathbb{R}$, alors $ g^-1 (I) $ est un intervalle car
 
 \end{demo}
 
-Il reste à vérifier que $g_*  \lambda $ a bien $f$ comme fonction de répartition. Dans le cas où $f$ est inversible ($f$ est continue et strictement croissante ), alors $g = f^{-1}$.
+Il reste à vérifier que $g_*  \lambda$ a bien $f$ comme fonction de répartition. Dans le cas où $f$ est inversible ($f$ est continue et strictement croissante ), alors $g = f^-1$.
+
+Dans le cas général, on a encore $g^{-1}(]-\infty, t]) = ]0,f(t)]$, $\omega \le f(t) \Rightarrow g(\omega) \le g \circ f(t) \le t$. Réciproquement, 
+
+\section{Intégration}
+
+On cherche à définir $\int_\R f(t)\mathrm dt$, et plus généralement $\int_\Omega f(\omega)\mathrm dm(\omega)$ lorsque $(\Omega,\T, m)$ est un espace mesuré, et $f:(\Omega,\T)\rightarrow(\R,\borel)$ est mesurable.
+
+\begin{propriete}
+	Si $f, g$ sont mesurables, $a\in\R$, alors, $f+g$, $af$, $fg$, $\min(f,g)$, $\max(f,g)$ sont mesurables.
+\end{propriete}
+
+\begin{demo}
+	$\R^2$ muni de sa tribu $\borel$. $(f,g) : \Omega \rightarrow \R^2$ est mesurable donc si $h:\R^2 \rightarrow R$ est mesurable alors $h(f,g)$ est mesurable.
+	
+	Or une fonction continue est mesurable (caractérisation des boréliens par les ouverts).
+\end{demo}
+
+\begin{rem}
+	Moyennant que cela ait un sens, ce qui n'est pas toujours le cas, cette propriété s'étend au cas de fonctions à valeurs dans $[-\infty,+\infty]$.
+\end{rem}
+
+\begin{rem}
+	Une fonction $f : \Omega \rightarrow \bar\R$ est mesurable ssii les préimages $f^{-1}(I)$ sont mesurables ou si $f^{-1}(\R)$, $f^{-1}(+\infty)$, $f^{-1}(-\infty)$ sont mesurables et $f|_{f^{-1}(\R)} : f^{-1}(\R)\rightarrow \R$ est mesurable.
+\end{rem}
+
+\begin{propriete}
+	Soit $(f_n)$ une suite de fonctions mesurables, à valeurs dans $\bar\R$, alors $\sup f_n$, $\inf f_n$, $\liminf f_n$, $\limsup f_n$ sont mesurables (donc en particulier $\lim f_n$ quand elle existe).
+\end{propriete}
+
+\begin{demo}
+	$\{\sup f_n > a\} = \bigcap_n \{f_n > a\}$ est mesurable. On conclut par passage à l'opposé et par composition de $\sup$ et d'$\inf$.
+\end{demo}
+
+\begin{rem}
+	Surtout en analyse, on se préoccupe rarement de vérifier si quelque chose est mesurable ou pas, parce que presque tout ce qu'on a envie de considérer est mesurable.
+\end{rem}
+
+\begin{rem}
+	Si $(f_\alpha)$ est une famille quelconque de fonctions mesurables, $\underset\alpha\sup f_\alpha$ n'est pas fonrcément une fonction mesurable.
+	
+	\begin{exemple}
+		On considère $f : x \in \R \mapsto \delta_{0,x}$ (symbole delta de Kronecker). Toute fonction $g : \R \rightarrow ]0,1[$ est le $\sup$ d'une famille de fonctions de la forme $(x\mapsto f(x-a)-b)_{a,b}$.
+	\end{exemple}
+\end{rem}
+
+\begin{propriete}
+	\begin{enumerate}
+		\item Si $f:\Omega \rightarrow [0,+\infty]$ est mesurable alors $f$ est la limite croissante d'une suite $(f_n)$ de fonctions qui prennent un nombre fini de valeurs réelles positives (a.k.a des fonctions simples).
+		\item Si $f: \Omega \rightarrow \R$ est mesurable, alors c'est la limite uniforme d'une suite $(f_n)$ de fonctions prenant un nombre dénombrable de valeurs réelles.
+	\end{enumerate}
+\end{propriete}
+
+\begin{demo}
+	\begin{enumerate}
+		\item Pour chaque $n$, on pose $f_n = \frac k {2^n}$ si $k \le 4^k$ et $f\in[\frac k {2^n}, \frac {k+1}{2^n}[$ et $f_n = 2^n$ si $f \ge 2^n$.
+		\begin{quote}
+			\textit{On fait du coloriage pour enfants vraiment jeunes, on s'en fiche de dépasser, les parents seront quand même contents à la fin.} - Thibaud \textsc{Raymond}
+		\end{quote}
+		Alors $f_n$ est croissante, $f_n \le f$, $f_n \ge f-\frac 1 {2^n}$ sauf si $f\ge 2^n$ donc dans tous les cas $\forall x, f_n(x) \rightarrow f(x)$
+		\item On ne s'en servira pas donc on ne le démontre pas.
+	\end{enumerate}
+\end{demo}
+
+\begin{definition}[Intégrale d'une fonction positive]
+	\begin{enumerate}
+		\item Si $f$ prend un nombre fini de valeurs : $\int f\dd m := \underset{y\in \Im(f)}{\sum} y\cdot m(f=y)$. C'est une somme finie, mais certains termes peuvent être infinis.
+		
+		L'intégrale ici est bien définie, d'après la propriété précédente, pour
+		\begin{itemize}
+			\item Si $f$ est à valeurs dans $[0,+\infty]$
+			\item Si $f$ est à valeurs réelles si $m$ est finie, même lorsque $f$ n'est pas positive.
+		\end{itemize}
+	\end{enumerate}
+\end{definition}
+
+On va noter $S$ l'ensemble des fonctions mesurables réelles prenant un nombre fini de valeurs (les fonctions simples), et $S^+$ celles qui sont positives.
+
+\begin{propriete}
+	\begin{itemize}
+		\item Si $m$ est finie, alors $f\in S \mapsto \int f\dd m$ est linéaire.
+		\item En général, pour tout $m$, $\int af + bf = a\int f + b\int g, \quad \forall a,b \ge 0, \forall f,g \in S^+$.
+	\end{itemize}
+\end{propriete}
+
+\begin{definition}
+	Pour $f: \Omega \rightarrow [0,+\infty]$ mesurable, on définit $\int f\dd m = \underset{\underset{g \le f}{g \in S^+}}{\sup} \int g \dd m$
+\end{definition}
+
+\begin{propriete}
+	\begin{enumerate}
+		\item $0 \le f \le \tilde f \Rightarrow \int f \le \int \tilde f$
+		\item $0 \le f$ et $\int f \dd m = 0 \Rightarrow m(f>0) = 0$ (on dit $f = 0$ p.p.)
+		\item $f=0$ p.p., $f\ge0 \Rightarrow \int f\dd m = 0$
+		\item $\int_A f\dd m_A = \int_\Omega f\mathds 1_A \dd m$ si $m_A(B):=m(A\cap B)$.
+	\end{enumerate}
+\end{propriete}
+
+\begin{demo}
+	\begin{enumerate}
+		\item Vient trivialement avec 2.
+		\item $0=\int f\dd m \ge \int \eps \mathds 1_{\{f\ge \eps\}} \dd m =\eps m(f\ge \eps)$
+		
+		$\forall \eps > 0, m(f\ge \eps) = 0$. On prend l'intersection sur $\eps = \frac 1 n$. Donc $m(f>0) = 0$.
+		\item Soit $g\in S^+$ telle que $0 \le g\le f$ et $f=0$ p.p. $\Rightarrow g =0$ p.p. $\Rightarrow \int g \dd m = 0$
+		\item Si $g \in S$, $\int_A g \dd m_A = \underset{y \in \Im g}\sum y\cdot m_A(g=y)$
+		
+		$\int_\Omega g \mathds 1_A \dd m = \underset{y\in\Im g\mathds 1_A}\sum y \cdot m(g\mathds 1_A=y) = \underset{y\in \Im y \cup \{0\}}\sum y\cdot m(A\cap \{g=y\})$
+	\end{enumerate}
+\end{demo}
+
+\begin{theorem}[Convergence monotone]
+	Si $(f_n)$ est une suite de fonctions mesurables à valeurs dans $[0,+\infty]$ croissante, alors 
+	\[ \int f_n \dd m \underset{n\rightarrow + \infty} \longrightarrow \int \underset{n\rightarrow + \infty} \lim f_n \dd m \]
+\end{theorem}
+
+\begin{demo}
+	$f_n \le f$ donc $\int f_n \le \int f \forall n$ donc $\lim \int f_n \le \int f$
+	Il faut démontrer que $\lim \int f_n \ge \int f$ ce qui découle de $\lim \int f_n \ge \int g \quad \forall g\in S^+, g\le f$
+	On se fixe $\lambda \in ]0,1[$, et on définit $g_n := \left\{ \begin{aligned}
+		&\lambda g &\text{si } f_n\le \lambda g \\
+		& 0 &\text{si } f_n < \lambda g
+	\end{aligned}\right.$
+
+	$g_n \le f_n$, $g_n$ est croissante et $g_n \rightarrow \lambda g$. On avait démontré le théorème de convergence monotone pour les fonctions simples.
+	$\int g_n \dd m \rightarrow \int \lambda g \dd m$.
+	$f_n \ge g_n \Rightarrow \lim\int f_n \ge \lim \int g_n \ge \int \lambda g \dd m$
+	
+	On a montré : $\forall \lambda \in ]0,1[, \quad \lim \int f_n \ge \int \lambda g = \lambda \int g$. Donc, par passage au $\sup$ sur $\lambda$, $\lim \int f_n \ge \int g \quad, \forall g \in S^+, g \le f$, et donc $\lim \int f_n \ge \int f$.
+\end{demo}
+
+\begin{lemme}[Fatou]
+	Soit $(f_n : \Omega \rightarrow [0,+\infty])_n$ une suite de fonctions mesurables.
+	
+	Alors $\int \liminf f_n \le \liminf \int f_n$.
+\end{lemme}
+\begin{rem}
+	\begin{enumerate}
+		\item cf lemme de Fatou ensembliste.
+		\item Penser aux fonctions triangles pour un exemple où l'inégalité n'est pas respectée (une bosse qui part à l'infini).
+	\end{enumerate}
+\end{rem}
+
+\begin{demo}
+	$g_n = \underset{k\ge n}\inf f_k$. $g_n$ est croissante, $\liminf f_n := f$. On montre par le théorème de convergence monotone $\int g_n \rightarrow \int f$, et $g_n \le f_n$ donc $\liminf \int f_n \le \lim \int g_n = \int f$.
+\end{demo}
+
+\begin{propriete}
+	Si $a,b \ge 0$, $f,g \ge 0$ mesurables, alors $\int(af+bg) = a\int f + b\int g$
+\end{propriete}
+\begin{demo}
+	Soient $f_n, g_n \in S^+$ qui tendent simplement vers $f$ et $g$ respectivement.
+	
+	Alors $af_n+bg_n \in S^+$, est croissante et tend vers $af+bg$.
+	
+	Par théorème de croissance monotone, $\int f_n \rightarrow \int f$, $\int g_n \rightarrow \int g$, $\int af_n+bg_n \rightarrow \int af+bg$.
+	
+	De plus $_int af_n+bg_n = a\int f_n + b\int g_n$, donc on conclut par passage à la limite.
+\end{demo}
+
+\begin{propriete}
+	Si $f:\Omega \rightarrow [0,+\infty]$ mesurable, alors la fonction $A \mapsto \int_A f\dd m, \quad A\in \T$ est une mesure sur $(\Omega,\T)$. On la note parfois $fm$.
+\end{propriete}
+\begin{demo}
+	On note $\mu(A) = \int_A f\dd m$.
+	
+	Soient $A,B\in \T, A\cap B = \varnothing$. Alors $\mathds 1_{A\sqcup B} = \mathds 1_A + \mathds 1_B$
+	
+	$\mu(A\sqcup B) = \int_\Omega f\mathds 1_{A\sqcup B} \dd m = \int_\Omega f \mathds 1_A \dd m + \int_\Omega f \mathds 1_B \dd m = \mu(A)+\mu(B)$
 
 
+$\sigma$-additivité : $(A_n) \in \T^\N$ disjoints. On pose $B_n = \bigsqcup_{i=1}^n A_i$
 
+$\mu(B_n)=\sum_{i=1}^n \mu(A_i)$ or $\sum_{i=1}^n \mu(A_i) \rightarrow \sum_{i=1}^\infty \mu(A_i)$.
+
+$\mu(B_n) = \int_\Omega f \1_{B_n} \dd m \rightarrow \int_\Omega f \1_B \dd m$ (convergence monotone).
+
+$f\1_{B_n}$ tend en croissant vers $f\1_B$
+\end{demo}
+
+\begin{definition}[Fonctions mesurables à valeurs réelles]
+	
+	$f^+ := \max(f,0), \quad f^- := max(-f, 0)$
+	
+	$|f| = f^+ + f^-, \quad f=f^+-f^-$
+	
+	On a envide définir $\int f := \int f^+ - \int f^-$. Ceci a un sens si l'une des intégrales de $f^+$ ou $f^-$ est finie.
+	
+	On dit que $f$ est \emph{intégrable} si elle est mesurable et si $\int f^+$ et $\int f^-$ sont finies, c'est à dire $\int|f| < +\infty$.
+\end{definition}
+
+\.\\
+
+\begin{definition}
+	On note $\mathcal L^1(\Omega,m)$ l'ensemble des fonctions intégrales à valeurs réelles.
+\end{definition}
+
+\begin{propriete}
+	$\mathcal L^1$ est un espace vectoriel et $f\mapsto \int_\Omega f \dd m$ est linéaire sur $\mathcal L^1$.
+\end{propriete}
+
+\begin{demo}
+	Si $f$ et $g$ sont intégrable, alors $\int|af+bg| \dd m \le |a|\int|f| + |b|\int|g| < + \infty$.
+
+	Donc $af+bg \in \mathcal L^1$.
+
+	Si $_f\in\mathcal L^1, \alpha\in \R$, alors pour $a\ge 0$, $(af)^\pm = a(f^\pm)$
+	
+	Donc $\int(af)^+ - (af)^- = \int a(f^+) - a(f^-) = a \int f^+-f^- = a\int f$.
+	
+	Idem pour $a\le 0$.
+	
+	$f,g\in \LL^1$. A priori, $(f+g)^+ \neq f^+ + g^+$, donc on doit prendre quelques précautions.
+	
+	$f+g = (f+g)^+ - (f=g)^- = f^+ - g^- + g^+ - g^-$. Le reste suit trivialement.
+	
+\end{demo}
+
+\begin{theorem}[Convergence dominée]
+	Soit $(f_n : (\Omega, \T, m) \rightarrow \R)_n$ une suite de fonctions mesurables telles que :
+	\begin{itemize}
+		\item $f_n \rightarrow f$ presque partout.
+		\item $\exists h\ge$ intégrable telle que $|f_n| \le h$ presque partout pour tout $n$.
+	\end{itemize}
+
+	Sous ces hypothèses, $\int f_n \rightarrow \int f$
+\end{theorem}
+
+\begin{demo}
+	On applique le lemme de Fatou à $f_n+h$ et à $h-f_n$.
+	\begin{itemize}
+		\item $f_n \rightarrow f$ presque partout donc $\int f \le \liminf \int(f_n+h) \dd m = (\liminf \int f_n) + \int h$
+		
+		Donc $\int f \le \liminf \int f_n$
+		\item $h-f_n \rightarrow  h-f$ (et sont positives)
+		
+		$\int h-f \le \liminf \int h - f_n \dd m = \int h - \limsup \int f_n \dd m$
+		
+		Donc $\int f \ge \limsup \int f_n \dd m \ge \liminf \int f_n \ge \int f$.
+		
+		Donc $\int f = \lim \int f_n$.
+	\end{itemize}
+\end{demo}
+
+\begin{definition}[L'espace $\LL^1$]
+	On définit $\|f\|_1 = \int|f|\dd m$ pour tout $f$ mesurable.
+	
+	$f\in \LL^1 \Leftrightarrow \|f\|_1 < + \infty$.
+	
+	$\|\cdot \|_1$ est une semi-norme (ne vérifie pas l'hypothèse de séparation).
+\end{definition}
+
+Pour y remédier, on "identifie" (on quotiente par) les fonctions égales presque partout.
+
+On note $L^1$ ce quotient.
+
+\begin{rem}
+	Attention, pour $f\in L^1$, $f(x)$ n'est pas défini, sauf si $m({x}) > 0$.
+\end{rem}
+
+\begin{propriete}
+	$L^1$ est un espace vectoriel :
+	$f=\tilde f$ p.p., $g=\tilde g$ p.p. alors $af+bg = a\tilde f + b\tilde g$ p.p.
+\end{propriete}
+\begin{demo}
+	Évident.
+\end{demo}
+
+\begin{propriete}
+	$f = \tilde f  \text{ p.p.}\Rightarrow \|f\|_1 = \|\tilde f\|_1$, et $\|\cdot \|_1$ induit une norme sur $L^1$, qu'on notera pareil.
+	
+	Donc $(L^1(\Omega,\T,m), \|\cdot\|_1)$ est un espace vectoriel normé.
+\end{propriete}
+
+\begin{rem}
+	C'est une propriété générale : quotienter un EV par le noyau d'une semi-norme donne un espace vectoriel normé (on note $\pi$ la surjection canonique).
+\end{rem}
+
+\begin{propriete}
+	L'ensemble $S$ des fonctions simples est dense dans $L^1$, plus exactement $S\cap L^1$ est dense dans $L^1$
+\end{propriete}
+
+\begin{rem}
+	Plus exactement $\pi(S\cap\LL^1)$ est dense dans $L^1$.
+\end{rem}
+
+\begin{demo}
+	Posons $f\in \LL^1$, $f=f^+ - f^-$.
+	
+	$\exists(f_n^+),(f_n^-)$ des suites croissantes de fonctions simples positives qui convergent vers $f^+$ et $f^-$.
+	
+	Montrons que $f_n^+-f_n^- \underset{\LL^1}{\rightarrow} f$. Par convergence monotone : $\int f_n^+ \rightarrow f^+, \int f_n^- \rightarrow f^-$.
+	
+	Donc $\|f-(f_n^+-f_n^-)\|_1 \le \|f^+-f_n^+\|_1 + \|f^- - f_n^-\|_1 = \int f^+ - f_n^+ + \int f^--f_n^-  \rightarrow 0$ 
+\end{demo}
+
+Le théorème de convergence dominée n'est pas optimal mais :
+
+\begin{propriete}
+	Si $f_n \rightarrow f$ dans $L^1$ alors ils existe une sous-suite $f_{n_k}$ qui satisfait les hypothèses du TCD : 
+	\begin{enumerate}
+		\item $f_{n_k} \rightarrow f$ p.p.
+		\item $\exists h \ge 0$ intégrable telle que $|f_{n_k}| \le h$ presque partout pour tout $k$.
+	\end{enumerate}
+\end{propriete}
+
+\begin{demo}
+	On choisit $n_k$ telle que $\|f_{n_k}-f\| \le k^{-3}$.
+	
+	Alors $m(|f_{n_k}-f| \ge \frac 1 k) \le k ^{-2}$ par Markov.
+	
+	$\sum k^{-2} < +\infty$ donc on peut appliquer le premier lemme de Borel-Cantelli.
+	
+	Donc $m(|f_{n_k}-f| \ge \frac 1 k \text{i.o.}) = 0$, et en dehorsde cet ensemble, $f_{n_k} \rightarrow f$, donc on a 1.
+	
+	Pour 2., on pose $g = \sum |f_{n_k + 1} - f_{n_k} : \Omega \rightarrow [0,+\infty]$.
+	
+	$g_l = \sum_{k=1}^l |f_{n_k+1} - f_{n_k}| ...$ %TODO
+	
+	$\|g\|_1 = \int g \underset{\text{CV monotonne}} = \lim \int g_l \le \lim \sum_{k=1}^l \|f_{n_k+1} - f_{n_k}\| \le \sum_{k=1}^\infty k^{-3} < +\infty$
+	
+	Or, $|f_{n_k}| \le |f| + g$ car $|f_{n_k} - f| = \sum_k^\infty|f_{n_{k+1}} - f_{n_k}| \le g$
+\end{demo}
+
+\begin{rem}
+	La mesure de Lebesgue sur $\R$ n'est pas finie mais $\sigma$-finie.
+\end{rem}
+
+\begin{lemme}
+	Sur $(\Omega,\T)$, la mesure $m$ est $\sigma$-finie ssi il existe une probabilité $\prob$ et une fonction $f:\Omega \rightarrow [0,+\infty[$ mesurable telle que $m=f\prob$, où $f\prob$ est la mesure $A\mapsto \int_A f\dd\prob$
+\end{lemme}
+
+\begin{demo}
+	Si $m=f\prob$, on définit $A_n=\{f\le n\}$.
+	$\Omega = \underset n \bigcup A_n$ et 
+	\[m(A_n) = \int_{A_n}f\dd\prob \le \int_{A_n}n\dd\prob \le n\prob(A_n) \le n\]
+	
+	Réciproquement, si $m$ est $\sigma$-finie, il existe $(A_n)$ telle que $\Omega = \underset n \bigcup A_n$, $m(A_n) < \infty$. On pose $B_n = A_n \setminus \underset{k=1} {\overset {n-1} \bigcup} A_n$. Alors $m(B_n) \le m(A_n) < \infty, \bigsqcup B_n = \bigcup A_n = \Omega$ et les $B_n$ disjoints.
+	
+	On va considérer une fonction $f=a_n$ sur $B_n$, $a_n \in \R_+$. On définit $\prob := \frac 1 f m$.
+	
+	$P(\Omega) = \underset{k=1}{\overset \infty \sum} P(B_k) = \underset{k=1}{\underset \infty \sum} \frac 1 {a_k} m(B_k)$.
+	
+	On peut prendre $a_k=m(B_k)\cdot 2^{-k-1}$. Alors, $P(\Omega) = \sum_{k\ge 1} 2^{-(k+1)} = 1$.
+\end{demo}
+
+\begin{rem}
+	La mesure de Lebesgue est "localement finie", i.e. tout point admet un voisinage de mesure finie. On dit aussi que $\lambda$ est une "mesure de Radon".
+	
+	Mais ce concept concerne la structure topologique et la structure mesurée de $\R$.
+\end{rem}
+
+\section{Intégration et mesure image}
+	$(\Omega,\T,m)$ et $\phi:\Omega \rightarrow X$ alors on a défni une tribu image $\phi_*\T = \{Y\subset X,\ \phi^{-1}(Y)\in\T\}$ et la mesure image (loi) $\phi_*m(Y) = m(\phi^{-1}(Y))$.
+
+\begin{propriete}
+	La mesure $\mu=\phi_*m$ vérifie $\int f\dd\mu = \int f \circ \phi \dd m$ pour toute fonction $f$ positive telle que $f\circ \phi$ est mesurable sur $(\Omega,\T)$.
+\end{propriete}
+\begin{rem}
+	\begin{enumerate}
+		\item Cette relation est vraie aussi pour $f$ à valeurs réelles si $f\circ\phi$ est $m$-intégrable.
+		\item Cette propriété caractérise $\mu$ car $\mu(Y)=\int\1_Y\dd\mu = \int \1_Y \circ \phi \dd m = \int \1_{\phi^{-1}(Y)}\dd m = m(\phi^{-1}(Y))$.
+	\end{enumerate}
+\end{rem}
+
+\begin{demo}
+	Pour quelles fonctions $f$ a-t-on $\int f\dd \mu = \int f \circ \phi \dd m$ ?
+	\begin{enumerate}
+		\item Pour les indicatrices de $Y$ avec $Y \subset \phi_*\T$.
+		\item Par linéarité, pour toute fonction simple positive $\phi_*\T$-mesurable.
+		\item Pour toute fonction $\phi_*\T$-mesurable positive. Si $f$ est une telle fonction, on considère $(f_n)$ croissante de fonctions simples, $f_n \rightarrow f$.
+		
+		On peut passer à la limite dans l'égalité $\int f_n \dd \mu = \int f_n \circ \phi \dd m \overset{\text{CV monotone}} \longrightarrow \int f \dd\mu = \int f\circ \phi \dd m$.
+	\end{enumerate}
+\end{demo}
+
+\begin{propriete}
+	Si $\mu = fm$ et si $g$ est mesurable positive alors $\int g \dd \mu = \int fg \dd m$.
+\end{propriete}
+
+\begin{rem}
+	$\prob = \frac 1 f m \Rightarrow m=f\prob$ (même preuve)
+\end{rem}
+
+\section{Intégrales dépendant d'un paramètre}
+
+On étudie la fonction $F : x \mapsto \int_\Omega f(x,\omega) \dd m(\omega)$, où $f:X\times \Omega \rightarrow \R$, $f(x, \cdot)$ intégrable sur $(\Omega,\T,m)$ pour tout $x$.
+
+\subsection{Continuité}
+On suppose que $X$ est un espace métrique.
+\begin{theorem}
+	Si : \begin{itemize}
+		\item $x\mapsto f(x,\omega)$ est continue en $x_0$ pour presque tout $\omega$
+		\item $|f(x,\omega)| \le g(\omega) \quad \forall x$ avec $g$ intégrable.
+	\end{itemize}
+	Alors $F$ est continue en $x_0$.
+\end{theorem}
+\begin{demo}
+	Si $x_n \rightarrow x_0$, alors $h_n(\omega) := f(x_n,\omega)$ converge presque partout vers $h(\omega)=f(x_0,\omega)$, et $|h_n(\omega)| \le g$.
+	
+	Théorème de convergence dominée : $F(x_n) ......$
+\end{demo}
+
+\begin{exemple}
+	\begin{enumerate}
+		\item Si $m$ est une mesure finie sur $\R$, on défjnit sa transformée de Fourier (fonction caractéristique en proba) : $\hat m(y) := \int e^{iyx}\dd m(x)$.
+		$y\mapsto \hat m(y)$ est continue sur $\R$, par le théorème qui précède :
+		$y\mapsto e^{iyx}$ est $\mathcal C^0 \quad \forall x$ et $|e^{iyx}|\le 1$, $1$ est intégrable.
+		\item Convolutions. $f \in \LL^1(\R,\lambda)$ et $h$ continue et bornée. On définit $h\varhexstar f : x \mapsto \int h(x-t)f(t)\dd \lambda(t)$, $x\in\R$.
+		$h\varhexstar f$ est continue.
+		
+		$x,t\mapsto |h(x-t)f(t)| \le \ (\sup h)|f|$
+		\begin{rem}
+			Si $h$ et $f\ge 0$, alors $\forall x\in\R, h\varhexstar f(x) = f\varhexstar h(x) = \int f(x-t)h(t) \dd t$.
+			$\int_\R h(x-t)f(t)\dd\lambda(t) = \int_\R h(-s)f(s-x) \dd\lambda(s)$ car $\lambda$ est invariante par translation.
+			$= \int_\R h(s)f(x-s)\dd\lambda(s)$ car $\lambda$ est invariante par la symétrie $s\mapsto -s$ (ne change pas la longueur des intervalles).
+		\end{rem}
+	\item $f\in\LL^1 \Rightarrow x\mapsto \int_{-\infty}^x f(t) \dd t \in \mathcal C^0$.
+	\begin{demo}
+		$F : x\mapsto \int _\R f(t)\1_{]-\infty,x]}(t)\dd t$. La fonction intégrée est dominée par $|f(t)|$ et $\forall x_0, x\mapsto f(t)\1_{]-\infty,x]}(t)$ est continue en $x_0$, $\forall t \neq x_0$ or $\lambda({x_0}) = 0$. Donc $F$ est continue en $x_0$.
+	\end{demo}
+	\end{enumerate}
+\end{exemple}
+\begin{rem}
+	Notation : $\int_A f(t)\dd \lambda(t)$ / $\int_a^b f(t)\dd t$.
+	\begin{definition}
+		$\int_a^b f(t) \dd t = \left\{\begin{aligned}
+			&\int_{[a,b]} f(t)\dd\lambda(t)&\text{ si } a\le b\\
+			&-\int_{[a,b]}f(t)\dd \lambda(t)&\text{ si } a > b
+		\end{aligned} \right.$
+	\end{definition}
+\end{rem}
+
+\subsection{Dérivabilité}
+$X\subset \R$ est un intervalle ouvert.
+\begin{theorem}
+	\begin{itemize}
+		\item $\forall x\in X, f(x,\cdot)$ est intégrable.
+		\item $x\mapsto f(x,\omega)$ est dérivable en $x_0$, $\forall \omega\in\Omega$
+		\item $\exists g\in \LL^1, |f(x,\omega)-f(x_0,\omega)| \le |x-x_0|g(\omega), \quad \forall x\in X, \omega \in \Omega$.
+	\end{itemize}
+	Alors $F$ est dérivable en $x_0$ et $F'(x_0) = \int_\Omega\partial_xf(x_0,\omega)\dd m(\omega)$.
+\end{theorem}
+\begin{rem}
+	$|f(x,\omega)-f(x_0,\omega)|\le |x-x_0|g(\omega)$ est satisfaite si $\partial_xf$ existe partout et $|\partial_xf(x,\omega)|\le g(\omega), \quad \forall x\in X, \omega \in \Omega$.
+\end{rem}
+\begin{demo}
+	$\frac{F(x_n)-F(x_0)}{x_n-x_0} = \int_\Omega \frac{f(x_n,\omega)-f(x,\omega)}{x_n-x_0} \dd m(\omega)$
+	
+	$x_n \rightarrow x_0$.
+	
+	On peut appliquer le TCD : $\int_\Omega \partial_x f(x_0,\omega)\dd m(\omega)$.
+\end{demo}
+
+\begin{exemple}
+	\begin{enumerate}
+		\item $f\in \LL^1$, $h$ est $\mathcal C^1$, bornée de dérivée bornée, alors $f\varhexstar h$ est $\mathcal C^1$ et $(f\varhexstar h)'f\varhexstar (h')$.
+		\begin{demo}
+			$\int h(x-t)f(t)\dd t$, $g(x,t)=h(x-t)f(t)$, $\partial_x g = h'(x).....$
+		\end{demo}
+		\item Si $m$ est une mesure finie et $\int |x| \dd m < +\infty$ alors $\hat m$ est $\mathcal C^1$ et $\hat m' = \int ixe^{iyx}\dd x$
+		\begin{demo}
+			$f(y,x) = e^{iyx}$, $\partial_y f = iye^{iyx}$, $|\partial_y f| \le |x|$.
+		\end{demo}
+	\end{enumerate}
+\end{exemple}
+
+\begin{propriete}[Théorème fondamental de l'analyse]
+	Si $f$ est continue, $F : x \mapsto \int_0^x f(t)\dd t$ est dérivable de dérivée $f(x)$.
+\end{propriete}
+\begin{demo}
+	$F(x_0+x) - F(x_0) =  \int_{x_0}^{x_0+x} f(t)\dd t \le \int_{x_0}^{x_0+x} f(x_0) + \eps(|x|) \dd t \le f(x_0)x + |x|\eps(|x|)$. De même, $F(x_0+x) - F(x_0) \ge \int_{x_0}^{x_0+x}(f(x_0)-\eps(|x|))\dd t \le f(x_0)x-|x|\eps(|x|)$.
+	
+	$\eps(x) = \underset{t\in [x_0-x, x_0+x]}\sup |f(t)-f(x_0)|$
+	
+	$f(t) \le f(x_0) +\eps(x) \forall t [x_0-x, x_0+x]$.
+\end{demo}
+\subsection{Inégalité de Jensen}
+
+	$\phi:\R\rightarrow \R$ convexe ($\forall t \in [0,1],\forall x,y\in\R, \phi(tx+(1-t)y)\le t\phi(x)+(1-t)\phi(y), \phi : \R \rightarrow \bar\R)$
+On appelle domaine de $\phi$ l'ensemble $\{\phi<+\infty\} \subset \R$
+\begin{rem}
+	Si $J\subset \R$ est un intervalle, et si $\phi : J \rightarrow \bar\R$ est convexe, alors $\tilde\phi  = \phi \text{ sur } J, +\infty \text{ hors de } J$ est convexe.
+\end{rem}
+
+\begin{theorem}[Inégalité de Jensen]
+
+Si $\mu$ est une mesure de probabilité sur $\Omega$, et $\phi : \R \rightarrow \bar\R$ est convexe, alors $\forall f$ mesurable, intégrable (ou semi-intégrable), $\phi\left(\int_\Omega f \dd\mu\right) \le \int_\Omega \phi \circ f \dd\mu$.
+\end{theorem}
+(on dit que $f$ est semi-intégrable si $\int f^+ \dd\mu < +\infty$ ou $\int f^- \dd\mu < + \infty$).
+\begin{rem}
+	Si $f$ est semi-intégrable mais pas intégrable, alors $\int f\dd\mu \in \{-\infty, + \infty\}$. Alors $\phi\left(\int f\dd\mu\right) := \underset{t\rightarrow \pm\infty} \lim \phi(t)$
+\end{rem}
+\begin{rem}
+	$\phi(txx+(1-t)y) \le t\phi(x)+(1-t)\phi(y) \Leftrightarrow \phi\left(\int \omega \dd\mu\right) \le \int \phi(\omega)\dd\mu$ où $\mu = t\delta_x + (1-t)\delta_y$.
+	
+	Par récurrence sur le nombre de points, on montre que si $\phi$ est convexe, alors $\phi(\mathrm{Bar(x_1, \dots, x_n, t_1, \dots, t_n)}) \le \mathrm{Bar(\phi(x_1), \dots, \phi(x_n), t_1, \dots, t_n)}$ où $\mathrm{Bar}$ désigne le barycentre.
+	
+	On pourrait donner une preuve de Jensen sur cette base. On fait autrement.
+\end{rem}
+\begin{propriete}
+	Si $\phi : \R \rightarrow \R\cup\{+\infty\}$ est convexe.
+	\begin{enumerate}
+		\item Le domaines de $\phi$ est un intervalle $I$.
+		\item $\phi$ est continue sur $\mathring I$ et admet des dérivées et à droite en chaque point de $\mathring I$ telle que $\phi'(x^-) \le \phi'(x^+) \forall x\in \mathring I$
+		\item $\forall x_0 \in \mathring I$, il existe une fonction affine $l(x)$ telle que $l(x_0) = \phi(x_0)$ et $l(x) \le \phi \forall x$.
+		\item $\underset{\pm \infty} \lim \phi$ existe.
+	\end{enumerate}
+\end{propriete}
+\begin{demo}
+	Fixons $x_0 \in \mathring I$, alors $p:x\mapsto \frac{\phi(x) - \phi(x_0)}{x-x_0}$ est croissante (découle de la convexité, laissée en exercice au lecteur).
+	
+	Alors $\underset{x\rightarrow x_0^+} \lim $ et $\underset{x \rightarrow x_0^-}\lim $ existent donc, et $p(x_0^-) \le p(x_0^+)$. De plus, ces limites sont finies : si $x_1 \le x_0 \le x_2$ dans $I$, alors $-\infty\le p(x_1) \le p(x_0^-) \le p(x_0^+) \le p(x_2) < +\infty$.
+	
+	Pour $x_0 \in I$, on considère $a\in [\phi'(x_0^-), \phi'(x_0)^+]$.
+	$l(x) := a(x-x_0) +\phi(x_0)$. $l(x_0) = \phi(x_0)$.
+	
+	$l(x) \le \phi(x) \Leftrightarrow a(x - x_0) \le \phi(x) - \phi(x_0)$, ce qui est vrai par croissance du taux de variation : si $x\ge x_0, a\le \frac{\phi(x)-\phi(x_0)}{x-x_0}$.
+	
+	Existence des limites.
+	Si $\exists x\in \mathring I, \phi'(x_0^+) > 0$, alors $\phi(x) \ge \phi(x80) + \phi'(x_0^+)(x-x_0) \forall x\ge x_0$ donc $\phi \underset {+\infty} \rightarrow +\infty$
+	
+	Si $\forall x_0 \in \mathring I, \phi'(x_0) \le 0 \Rightarrow \phi$ est décroissante $\Rightarrow \phi$ admet une limite.
+	
+	Idem en $-\infty$.
+\end{demo}
+
+\begin{demo}[Jensen]
+	$I$ le domaine de $\phi$.
+	
+	Cas principal : $y_0 = \int f\dd\mu \in \mathring I$.
+	
+	$\exists l : y \mapsto ay+b$ tel que $l(x_0) = \phi(y_0), l\le \phi$.
+	
+	$\phi(y_0) = l(y_0) = l\left(\int f\dd\mu\right) = a \int f\dd\mu + b = \int af+b\dd\mu = \int l\circ f \dd\mu \le \int \phi\circ f \dd\mu$.
+	
+	Cas où $y_0 = \int f\dd\mu = \sup I$. Si $\int \phi \circ f \dd\mu = +\infty$, on n'a rien à démontrer.
+	
+	Si $\int \phi\circ f \dd\mu < + \infty$, alors $\phi\circ f < +\infty$ presque partout, donc $f\in I$ presque partout, donc $f\le y_0$ presque partout. Alors, $y_0-f \ge 0$ et $\int y_0-f = 0$ donc $f=y_0$ presque partout. Donc $\phi\circ f = \phi(y_0)$ presque partout donc $\int \phi \circ f = y_0$.
+	
+	Idem si $y_0 = \inf I$.
+	
+	Dernier cas : $y_0 \neq \bar I$.
+	Alors $\int \phi \circ f \dd \mu = +\infty$ car $\mu(\phi\circ f = +\infty) > 0$. En effet, sinon $\phi\circ f < +\infty$ presque partout donc $f\in I$ presque partout, donc $\int f\dd\mu \in \bar I$.
+\end{demo}
+
+\section{L'espace $L^2$}
+
+On se donne $(\Omega,\T, m)$ mesuré.
+
+\begin{definition}
+	$\LL^2(\Omega,\T,m)$ est l'ensemble des fonctions mesurables de carré intégrable ($\int f^2 \dd m < +\infty$).
+\end{definition}
+
+\begin{rem}
+	Si $m$ est finie, $\LL^2 \subset \LL^1$ car $|f|\le 1+f^2$.
+\end{rem}
+
+On note $\|f\|_2 = \sqrt{\int f^2 \dd m}$, $<f,g> = \int fg \dd m$.
+
+\begin{lemme}
+	$\LL^2$ est un espace vectoriel et $f,g\mapsto <f,g>$ est une forme bilinéaire symétrique positive.
+\end{lemme}
+\begin{demo}
+	$(f+g)^2 \le 2f^2 + 2g^2$, $()\lambda f)^2 \le \lambda^2 f^2$, donc $\LL^2$ est un sous-espace vectoriel des fonctions mesurables.
+	
+	$<\cdot, \cdot>$ est clairement bilinéaire, symétrique et positive. Il faut juste montrer que c'est bien défini.
+	
+	$|fg| \le \frac 1 2 (f^2 + g^2)$ par inégalité arithmético-géométrique, donc $fg$ est intégrable si $f,g\in\LL^2$.
+\end{demo}
+Ainsi, $\LL^2$ est presque un pré-hilbertien, ce est bien mais pas top. Donc on quotiente encore une fois par la semi-norme $\|\cdot\|_2$ : $L^2 = \LL^2/\|\cdot\|_2$.
+
+Ainsi, $L^2$ est un espace pré-hilbertien, muni du produit scalaire $<\cdot,\cdot>$. En particulier, on a donc Cauchy-Schwarz ($<f,g> \le \sqrt{\|f\|_2\|g\|_2})$.
+
+On a aussi l'égalité du parallélogramme ($\|f+g\|^2 +\|f-g\|^2 = 2(\|f\|^2 + \|g\|^2)$)
+
+\begin{definition}
+	Un espace de Hilbert est un espace pré-hilbertien complet (i.e. les suite de Cauchy convergent).
+\end{definition}
+
+\begin{propriete}
+	Un espace vectoriel normé E est complet ssi les séries les séries normalement convergentes sont convergentes.
+	
+	$\sum\|f_n\| < +\infty \Rightarrow \sum_{k=1}^n f_k$ converge dans $E$.
+\end{propriete}
+
+\begin{demo}
+	Soit $(E,\|\cdot\|)$ un evn complet, et soit $f_n$ une suite telle que $\sum\|f_n\| < + \infty$ alors $S_n := \sum_{k=1}^n f_n$ vérifie $\|X_n-S_m\| = \|\sum_{k=n+1}^m f_k\| \le \sum_{k=n+1}^m \|f_k\| \le \sum_{k=n+1}^\infty \|f_k\| = \eps(n)$ i.e. $\forall \eps, \exists n_0, \forall m\ge n_0, n\ge n_0, \|S_n-S_m\| \le \eps$ donc $S_n$ converge par complétude.
+	
+	Réciproque : soit $f_n$ une suite de Cauchy. Il suffit e montrer que $f_n$ a une sous-suite convergente.
+	
+	On choisit $n_k$ tel que : $\|f_{n_{k+1}}-f_{k_k}\|\le 2^{-k}$. Alors $\sum \|f_{n_{k+1}} - f_{n_k}\| < + \infty$ donc $\sum(f_{n_{k+1}} - f_{n_k})$ converge. Donc $f_{n_k}$ converge.
+\end{demo}
+
+\begin{theorem}
+	$L^1$ et $L^2$ sont complets
+\end{theorem}
 
 \end{document}
