@@ -1,0 +1,88 @@
+\ProvidesPackage{pfmath}
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[french]{babel}
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{wasysym}
+\RequirePackage{graphicx}
+\RequirePackage{dsfont}
+\RequirePackage{tcolorbox}
+\RequirePackage{stmaryrd}
+\RequirePackage[left=2.00cm, right=2.00cm, top=1.50cm, bottom=1.50cm]{geometry}
+
+\everymath{\displaystyle}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathcal T}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\dd}{\ \mathrm d}
+\newcommand{\1}{\mathds 1}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\comp}[1]{#1^\complement}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\indep}{\perp \!\!\! \perp}
+\renewcommand{\Im}{\mathrm{Im }}
+\newcommand{\borel}{\mathrm{Borel}}
+\newcommand{\prob}{\mathbb P}
+
+\newenvironment{definition}[1][]{
+	
+	\textbf{Définition #1 : }
+}
+{}
+
+\newcounter{th}
+\newenvironment{theorem}[1][]{
+\refstepcounter{th}
+\begin{tcolorbox}
+	\textbf{Théorème \theth \ #1}
+	
+	
+}{\end{tcolorbox}}
+
+\newenvironment{propriete}[1][]{
+	\begin{tcolorbox}
+		\textbf{Propriété #1 : }
+}
+{\end{tcolorbox}}
+
+\newenvironment{demo}[1][]{
+
+	\textbf{Démonstration #1 :}
+}{\begin{flushright}
+	$\square$
+\end{flushright}
+}
+
+\newenvironment{exo}{
+	
+	\textbf{Exercice :} }{}
+
+\newenvironment{exemple}{
+	
+	\textbf{Exemple :} }{}
+
+\newenvironment{corollaire}{
+	\begin{tcolorbox}
+		\textbf{Corollaire : }
+	}
+	{\end{tcolorbox}}
+
+\newenvironment{lemme}[1][]{
+	\begin{tcolorbox}
+		\textbf{Lemme #1 : }
+	}
+	{\end{tcolorbox}}
+
+\newenvironment{rem}{
+	
+		\textbf{Remarque :}}{}

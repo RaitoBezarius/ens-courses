@@ -1,97 +1,13 @@
 % !TeX spellcheck = fr-FR
 
-
 \documentclass[10pt,a4paper,notitlepage ]{report}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[french]{babel}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{wasysym}
-\usepackage{graphicx}
-\usepackage{dsfont}
-\usepackage{tcolorbox}
-\usepackage{stmaryrd}
-\usepackage[left=2.00cm, right=2.00cm, top=1.50cm, bottom=1.50cm]{geometry}
+\usepackage{pfmath}
 
-\everymath{\displaystyle}
 
 \title{Intégration et probabilités}
 \date{Premier semestre 2020}
 \author{Paul Fournier et Constantin Vaillant-Tenzer, d'après le cours de Patrick Bernard}
 
-\newcommand{\N}{\mathbb N}
-\newcommand{\R}{\mathbb R}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\T}{\mathcal T}
-\newcommand{\A}{\mathcal A}
-\newcommand{\B}{\mathcal B}
-\newcommand{\dd}{\ \mathrm d}
-\newcommand{\1}{\mathds 1}
-\newcommand{\LL}{\mathcal L}
-\newcommand{\eps}{\varepsilon}
-\newcommand{\comp}[1]{#1^\complement}
-\newcommand{\var}{\mathrm{Var}}
-\newcommand{\cov}{\mathrm{Cov}}
-\newcommand{\indep}{\perp \!\!\! \perp}
-\renewcommand{\Im}{\mathrm{Im }}
-\newcommand{\borel}{\mathrm{Borel}}
-\newcommand{\prob}{\mathbb P}
-
-\newenvironment{definition}[1][]{
-	
-	\textbf{Définition #1 : }
-}
-{}
-
-\newcounter{th}
-\newenvironment{theorem}[1][]{
-\refstepcounter{th}
-\begin{tcolorbox}
-	\textbf{Théorème \theth \ #1}
-	
-	
-}{\end{tcolorbox}}
-
-\newenvironment{propriete}[1][]{
-	\begin{tcolorbox}
-		\textbf{Propriété #1 : }
-}
-{\end{tcolorbox}}
-
-\newenvironment{demo}[1][]{
-
-	\textbf{Démonstration #1 :}
-}{\begin{flushright}
-	$\square$
-\end{flushright}
-}
-
-\newenvironment{exo}{
-	
-	\textbf{Exercice :} }{}
-
-\newenvironment{exemple}{
-	
-	\textbf{Exemple :} }{}
-
-\newenvironment{corollaire}{
-	\begin{tcolorbox}
-		\textbf{Corollaire : }
-	}
-	{\end{tcolorbox}}
-
-\newenvironment{lemme}[1][]{
-	\begin{tcolorbox}
-		\textbf{Lemme #1 : }
-	}
-	{\end{tcolorbox}}
-
-\newenvironment{rem}{
-	
-		\textbf{Remarque :}}{}
 
 \begin{document}
 	\maketitle
@@ -1470,7 +1386,7 @@ La fonction de répartition est
 
 \end{propriete}
 
-\begin{theorem}
+sty\begin{theorem}
 Si $f$ est une fonction vérifiant les trois propriétés ci-dessus, alors il existe une unique probabilité borélienne $\prob$ dont $f$ est la fonction de répartition.
 \end{theorem}
 
