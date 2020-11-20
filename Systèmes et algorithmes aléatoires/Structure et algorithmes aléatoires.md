@@ -1137,3 +1137,189 @@ $$
 **Théorème**: Une CMH irréductible ayant un nombre fini d'états est récurrente positive.
 
 **Démo** : cf slides.
+
+### Méthode de Foster-Lyapunov
+
+#### Temps de retour dans un sous-ensemble
+
+**Lemme**: Soit $\{X_n\}$ une CMH irréductive, avec l'espace d'états $\mathcal E$ dénombrable et la matrice de transition $\mathbf P$.
+
+Soit $F\subset \mathcal E$ un sous-ensemble fini, et $\tau(F)$ le temps de retour dans $F$. Si $E_i(\tau(F)) < \infty, \forall i \in F$, alors la chaîne est récurrente positive.
+
+**Demo**: Soit $i\in F$ et $T_i$ le temps de retour à $i$. Notons $\tau_1=\tau(F)$, $\tau_2\dots$ les temps de retour successifs dans $F$.
+
+Propriété de Markov forte implique que $\{Y_n\}_{n\ge 0}$, où $Y_0=X_0=i$ et $Y_n=X_{\tau_n},n\ge 1$ est une CMH avec l'espace d'états $F$.
+
+CMH $\{Y_n\}$ est :
+
+- irréductible car $\{X_n\}$ est irréductible.
+- récurrente positive, car $F$ est fini, en particulier $E_i(\tilde T_i) < \infty$ où $\tilde T_i$ est le temps de retour à $i$ pour la chaîne $\{Y_n\}$.
+
+On pose $S_0 = \tau_1, S_k=\tau_{k+1} - \tau_k, k\ge 1$. Alors
+
+- $T_i = \sum_{k=0}^\infty S_k\mathbf 1_{\{k<\tilde T_i\}}$, et $E_i(T_i) = \sum_{k=0}^\infty E_i(S_k\mathbf 1_{\{k<\tilde T_i\}})$.
+- $E_i(S_k\mathbf 1_{\{k<\tilde T_i\}}) = \sum_{l\in F} E_i(S_k\mathbf 1_{\{k<\tilde T_i\}}\mathbf 1_{\{X_{\tau_k}=l\}})$
+
+Pat la propriété de MArkov forte pour $\{X_n\}$ et le temps d'arrêt $\tau_k$ ($\{k<\tilde T_i\}$ est dans le passé de $\{X_n\}$ au temps $ \tau_k$), pour $P(k<\tilde T_i, X_{\tau_k}=l)>0$,
+$$
+\begin{aligned}
+E_i(S_k\mathbf1_{\{k<\tilde T_i\}}\mathbf1_{\{X_{\tau_k}=l\}}) =& E_i(S_k|k<\tilde T_i, X_{\tau_k}=l)P(k<\tilde T_i, X_{\tau_k}=l) \\
+&= E_i(S_k|X_{\tau_k}=l)P(k<\tilde T_i, X_{\tau_k}=l) \\
+&= E_l(\tau(F)) P(k\tilde T_i, X_{\tau_k}=l)
+\end{aligned}
+$$
+Remarque : vrai aussi si $P(k<\tilde T_i, X_{\tau_k}=l)=0$.
+
+Donc $E_i(S_k\mathbf 1_{\{k<\tilde T_i\}}) \le (\max_{l\in F}E_l(\tau(F)))P(k<\tilde T_i)$ et 
+$$
+E_i(T_i) \le (\max_{l\in F}E_l(\tau(F)))\sum_{k=0}^\infty P(k<\tilde T_i) = (\max_{l\in F}E_l(\tau(F)))E_i(\tilde T_i) < \infty
+$$
+
+
+#### Critère de Foster
+
+##### Théorème (Foster, 1953)
+
+Soit $\{X_n\}$ une CMH irréductible, avec l'espace d'états $\mathcal E$ dénombrable et la matrice de transition $\mathbf P$.
+
+Supposons qu'il existe une fonction $h:\mathcal E \rightarrow \mathbb R$ telle que $\inf_i h(i) > -\infty$, un sous ensemble fini $F\subset \mathcal E$ et un $\varepsilon > 0$ tels que
+$$
+E_i(h(X_1)) = \sum_{k\in \mathcal E} p_{ik}h(k) < \infty, \forall i \in F, \\
+E_i(h(X_1)) = \sum_{k\in\mathcal E}p_{ik}k(k) \le h(i) - \varepsilon, \forall i \notin F
+$$
+Alors la CMH est récurrente positive.
+
+**Démo**: 
+
+On suppose $h\ge 0$ (sans perte de généralité, on translate d'une constante).
+
+Soit $\tau$ le temps de retour dans $F$, et $Y_n=h(X_n)\mathbf 1_{n<\tau}$.
+
+On a $E(h(X_{n+1})|X_n=i) \le h(i) - \varepsilon, \forall i \notin F$. Pour $i\notin F$,
+$$
+\begin{aligned}
+E_i(Y_{n+1}|X_0^n) &= E_i(Y_{n+1}\mathbf 1_{n\ge \tau}|X_0^n) \\
+&= E_i(Y_{n+1}\mathbf1_{n<\tau}|X_0^n) \\
+& \le E_i(h(X_{n+1})\mathbf 1_{n<\tau}|X_0^n) \\
+&= \mathbf 1_{n<\tau} E_i(h(X_{n+1})|X_0^n) = \mathbf 1_{n<\tau}E_i(h(X_{n+1})|X_n) \\
+&\le \mathbf 1_{n<\tau}h(X_n) - \varepsilon \mathbf 1_{n<\tau} = Y_n - \varepsilon 1_{n<\tau}
+\end{aligned}
+$$
+En prenant l'espérance,
+$$
+E_i(Y_{n+1}) \le E_i(Y_n) - \varepsilon P_i(\tau > n)
+$$
+et
+$$
+0 \le E_i(Y_{n+1}) \le E_i(Y_0) - \varepsilon \sum_{k=0}^n P_i(\tau > k)
+$$
+On a $Y_0 = h(i)$ et $\sum_{k=0}^, P_i(\tau > k) = E_i(\tau)$. Donc pour tout $i\notin F$,
+$$
+E_i(\tau) \le \frac 1 \varepsilon h(i)
+$$
+Pour $j\in F$, la méthode d'un pas en avant donne
+$$
+E_j(\tau) = 1+\sum_{i\notin F}p_{ji}E_i(\tau)
+$$
+Donc
+$$
+E_k(\tau) \le 1+\frac 1 \varepsilon \sum_{i\notin F} p_{ji}h(i) < \infty
+$$
+par hypothèse du théorème pour $j\in F$. On peut donc appliquer le lemme.
+
+##### Corollaire (Pakes, 1969)
+
+Soit $\{X_n\}$ une CMH irréductible, avec l'espace d'états $\mathcal E = \mathbb N$ telle que pour tout $n\ge 0$ et $i\in\mathcal E$,
+$$
+E(X_{n+1}-X_n|X_n=i) < \infty
+$$
+et
+$$
+\limsup_{i\rightarrow \infty} E(X_{n+1}-X_n|X_n=i) < 0
+$$
+Alors $\{X_n\}$ est récurrente positive.
+
+**Démo**: Soit $\limsup_{i\rightarrow \infty} E(X_{n+1}-X_n|X_n=i) = -2\varepsilon$. Alors $\varepsilon > 0$. Alors il existe $i_0$ tel que pour tout $i>i_0$, $E(X_{n+1}--X_n|X_n=i)<-\varepsilon$. Le corollaire suit du théorème de Foster pour $h(i)=i$ et $F=\{i, i\le i_0\}$.
+
+**Exemple (Marche aléatoire sur $\mathbb N$)**
+
+Soit $\{Z_n\}$ une suite i.i.d. des v.a. dans $\mathbb Z$ intégrables et telles que $E(Z_1) < 0$.
+
+Soit
+$$
+X_{n+1}=(X_n + Z_{n+1})^+
+$$
+et $X_0$ indépendant de $\{Z_n\}$. Si $\{X_n\}$ est irréductible, alors
+$$
+\begin{aligned}
+E(X_{n+1}-i|X_n=i) &= E((i+Z_{n+1})^+ - i) \\
+&= E(-i\mathbf 1_{Z_{n+1}\le -i} + Z_{n+1}\mathbf1_{Z_{n+1}>-i})\le E(Z_1\mathbf1_{Z_1 > -i})
+\end{aligned}
+$$
+Par la convergence monotone, $\lim_{i\rightarrow \infty} E(Z_1\mathbf 1_{Z_i>-i}) = E(Z_1) < 0$ et par le corollaire précédent, la CMH $\{X_n\}$ est récurrent positive.
+
+##### Critère négatif
+
+**Théorème**:
+
+Soit $\{X_n\}$ une CMH irréductible, avec l'espace d'états $\mathcal E$ dénombrable et la matrice de transition $\mathbf P$.
+
+Supposons qu'il existe une fonction $h:\mathcal E \rightarrow \mathbb R$ telle que $\inf_i h(i) > -\infty$, un sous-ensemble fini $F\subset \mathcal E$ tels que
+$$
+\exists j\notin F \text{ tel que } h(j)>\max_{i\in F} h(i) \\
+\sup_{i\in \mathcal E}\sum_{k\in\mathcal E}p_{ik}|h(k)-h(i)| < \infty \\
+\sum_{k\in \mathcal E}p_{ik}(h(k)-h(i)) \ge 0, \forall i\notin F
+$$
+Alors cette CMH ne peut pas être récurrente positive.
+
+*Exemple* : un processus de naissance et de mort sur $\mathbb N$, avec $p_i=p, \forall i$, $q_i=q, i > 1$ et $p\ge q$.
+
+**Démo** :
+
+Soit $\tau$ le temps de retour à $F$. On a : $h(X_\tau)\mathbf 1_{\tau < \infty} = h(X_0) + \sum_{n=0}^\infty (h(X_{n+1})-h(X_n))\mathbf 1_{\tau > n}$. Alors pour $j\ge F$, 
+$$
+\begin{aligned}
+\sum_{n=0}^\infty E_j(|h(X_{n+1})-h(X_n)| |\mathbf 1_{\tau > n}) &= \sum_{n=0}^\infty E_j(E_j(|h(X_{n+1})-h(X_n)| | X_0^n)\mathbf 1_{\tau > n}) \\
+&= \sum_{n=0}^\infty E_j(E_j(|h(X_{n+1}-h(X_n)||X_n)\mathbf 1_{\tau > n}) \\
+&\le K\sum_{n=0}^\infty P_j(\tau > n)
+
+\end{aligned}
+$$
+pour un $K$ positif par la condition 2. Si la chaîne était récurrente positive, alors $\sum_{n+0}^\infty P_j(\tau > n) = E_j(\tau)$ et
+$$
+\begin{aligned}
+E_j(h(X_\tau)) &= E_j(h(X_\tau)\mathbf1_{\tau < \infty}) = h(j) + \sum_{n=0}^\infty E_j((h(X_{n+1})-h(X_n))\mathbf 1_{\tau > n}) \\
+&> h(j) > \max_{i\in F}h(i) \ge E_j(h(X_\tau))
+\end{aligned}
+$$
+ce qui est une contradiction.
+
+#### Protocole Aloha
+
+Protocole utilisé pour la communication satellite.
+
+Chaque utilisateur envoie un message via un seul canal de communication. Si plusieurs messages sont envoyés en même temps, il a interférence et aucun message n'est transmis.
+
+Les utilisateurs détectent s'il y a eu l'interférence, et dans ce cas, retransmettent le même message plus tard.
+
+Protocole Aloha en temps discret :
+
+- Les messages sont envoyés à des temps discrets ; la durée de transmission du message est plus petite que la durée du pas de temps;
+- Tous les messages en attente ré-essaient avec une probabilité $\nu\in]0,1[$, indépendamment les uns des autres (Bernoulli).
+- Les nouveaux messages transmettent toujours.
+- Soit $X_n$ le nombre de messages en attente au temps $n$.
+- Notons par $b_i(k)$ la probabilité que $i$ messages ré-essaient si $X_n=k$,
+
+
+$$
+b_i(k)=\binom k i \nu^i (1-\nu)^{k-i}
+$$
+
+- Soit $A_n$ le nombre de nouveaux messages au temps $n$. ON suppose $\{A_n\}$ i.i.d. avec $P(A_n=j) = a_j$. $\lambda = E(A_n)$ est appelée l'intensité du trafic.
+- $\{X_n\}$ est une CMH.
+
+Questions :
+
+- Quelle est sa matrice de transition ?
+- Sous quelles conditions $\{X_n\}$ est une CMH irréductible ?
+- Est-elle récurrente positive ?
