@@ -1198,7 +1198,7 @@ Soit $\tau$ le temps de retour dans $F$, et $Y_n=h(X_n)\mathbf 1_{n<\tau}$.
 On a $E(h(X_{n+1})|X_n=i) \le h(i) - \varepsilon, \forall i \notin F$. Pour $i\notin F$,
 $$
 \begin{aligned}
-E_i(Y_{n+1}|X_0^n) &= E_i(Y_{n+1}\mathbf 1_{n\ge \tau}|X_0^n) \\
+E_i(Y_{n+1}|X_0^n) &= E_i(Y_{n+1}\mathbf 1_{n < \tau}|X_0^n) + E_i(Y_{n+1}\mathbf1_{n\ge \tau}|X_0^n) \\
 &= E_i(Y_{n+1}\mathbf1_{n<\tau}|X_0^n) \\
 & \le E_i(h(X_{n+1})\mathbf 1_{n<\tau}|X_0^n) \\
 &= \mathbf 1_{n<\tau} E_i(h(X_{n+1})|X_0^n) = \mathbf 1_{n<\tau}E_i(h(X_{n+1})|X_n) \\
