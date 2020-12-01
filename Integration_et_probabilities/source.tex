@@ -2,7 +2,7 @@
 
 \documentclass[10pt,a4paper,notitlepage ]{report}
 \usepackage{pfmath}
-
+\usepackage{hyperref}
 
 \title{Intégration et probabilités}
 \date{Premier semestre 2020}
@@ -2002,8 +2002,580 @@ On a aussi l'égalité du parallélogramme ($\|f+g\|^2 +\|f-g\|^2 = 2(\|f\|^2 + 
 	On choisit $n_k$ tel que : $\|f_{n_{k+1}}-f_{k_k}\|\le 2^{-k}$. Alors $\sum \|f_{n_{k+1}} - f_{n_k}\| < + \infty$ donc $\sum(f_{n_{k+1}} - f_{n_k})$ converge. Donc $f_{n_k}$ converge.
 \end{demo}
 
+\begin{definition}
+	Un espace de \textsc{Hilbert} est un espace pré-hilbertien complet.
+\end{definition}
+
 \begin{theorem}
-	$L^1$ et $L^2$ sont complets
+	$L^1$ et $L^2$ sont complets (en fait c'est vrai pour $L^p, \forall p\in [1,\infty[$)
 \end{theorem}
+
+\begin{demo}
+	On se place dans le cas $p=1$ ou $p=2$.
+	
+	Un espace vectoriel normé est complet ssi les séries normalement convergentes sont convergentes.
+	
+	Soit $f_n\in L^p, \sum_{n\ge 1}\|f_n\|_p < +\infty$. On veut montrer que $S_n := \sum_{k=1}^n f_k$ a une limite dans $L$.
+	
+	On introduit $G_n(x) = \sum_{k=1}^n |f_n(x)|$.
+	
+	\begin{enumerate}
+		\item $G_n$ est ponctuellement croissante. Donc $G_n \nearrow G$ avec $G$ mesurable à valeurs dans $[0,+\infty]$.
+		
+		Montrons que $G\in L^p$.
+		
+		$\|G_n\|_p \le \sum_{k=1}^n \|f_n\|_p \le \sum_{k\ge 1} \|f_n\|_p < \infty$.
+		
+		Donc, comme $G_n \rightarrow G$ presque partout, le théorème de convergence monotone implique que $\|G_n\|_p^p = \int |G_n|^p \dd m \rightarrow \int |G|^p \dd m = \|G\|_p^p$. Donc $\|G\|_p \le \sum_{k\ge 1} \|f\|_p < + \infty$. Donc $G \in L^p$.
+		
+		Quitte à modifier presque nulle part, on peut supposer $G$ à valeurs finies.
+		
+		\item $S_n$ converge ponctuellement.
+		
+		$S_n(x) = \sum_{k\ge 1}^n f_k(x)$ a, comme $G(x) < \infty$ a une limite $S(x)$ qui est une fonction mesurable à valeurs réelles.
+		
+		\item $S\in L^p$ et $S_n \rightarrow S$ dans $L^p$.
+		$|S_n(x)-S(x)| \le G(x)$. Donc $|\sum_{k=n+1}^\infty f_k(x)| \le \sum_{k=n+1}^\infty |f_k(x)| \le G(x)$.
+		
+		On peut appliquer le théorème de convergence dominée à $|S_n-S|^p \le G^p$.
+		
+		$\int|S_n-S|^p \dd m \rightarrow 0$, c'est à dire $\|S_n-S\|_p^p \rightarrow 0$. Donc $\|S_n-S\|_p \rightarrow 0$.
+		
+		Donc $S_n \rightarrow S$ dans $L^p$.
+	\end{enumerate}
+\end{demo}
+
+\subsection{Généralités sur les espaces de Hilbert}
+
+\begin{theorem}
+	Soit $F$ un sous-espace fermé de $H$, alors $H=F\oplus F^\perp$.
+\end{theorem}
+
+\begin{demo}
+	On va construire un projeté orthogonal d'un point $x$ sur $F$ en minimisant la distance.
+	
+	On définit $\delta = d(x,F) = \inf_{y\in F} \|y-x\|$.
+	
+	On va montrer que cet infimum est un minimum.
+	
+	On considère pour ceci $A_n = \{y\in F, \|y-x\|^2 \le \delta^2 + \frac 1 n\}$. $A_n$ est fermé et non vide.
+	Soient $y$ et $z$ deux points de $A_n$.
+	
+	\[\begin{aligned}
+		\|y-z\|^2 &= \| y-x + x-z \|^2 \\
+		&= 2\|x-y\|^2 + 2\|x-z\|^2 - \|(x-y) + (x-z)\|^2 - 4\left\|x-\frac{y+z} 2\right\|^2 \\
+		&\le 2\delta^2 + \frac 2 n + 2\delta^2 + \frac 2 n - 4\delta ^2\\
+		&\le \frac 4 n
+	\end{aligned} \]
+
+	Donc $\mathrm{diam}(A_n) \le \frac 2 {\sqrt n}$. Donc $\left|\bigcap_{n\ge 1} A_n \right| = 1$. On appelle $f$ cet unique point, qui vérifie $d(x,f)=\delta=d(x,F)$.
+	
+	Montrons que $x-f \perp F$. C'est à dire que $<x-f,y>=0 \forall y\in F$. On considère, pour $y\in F$ la fonction $h:t\in\R \mapsto \|x-(f+ty)\|^2 = \|(x-f)+ty\|^2 = \delta^2 - 2t<x-f,y> + t^2\|y\|^2$.
+	
+	$h'(0) = -2<x-f,y>$. Comme $h'(0)=0$, on a $x-f\perp y$.
+	\\
+	
+	On a montré que $H=F+F^\perp$. Or $F\cap F^\perp = \{0\}$ car si $f\in F\cap F^\perp$, alors $<f,f>=0$ i.e. $f=0$.
+	
+	Donc $H=F\oplus F^\perp$.
+	
+\end{demo}
+
+\begin{rem}
+	Si $\pi$ et $\pi^\perp$ sont les projections relativement à cette décomposition. Alors $\|\pi\| = 1 \|\pi^\perp\|$.
+	
+	Car $\|x\|^2  = \|\pi(x)\|^2 + \|\pi^\perp(x)\|^2$ ($x=\pi(x)+\pi^\perp(x)$).
+\end{rem}
+
+\begin{theorem}[Riesz]
+	Soit $J :\begin{aligned} &H \rightarrow H^*\\ &x\mapsto <x,\cdot>\end{aligned}$. $J$ est un isomorphisme de $H$ de $H^*$.
+\end{theorem}
+
+\begin{demo}
+	$h\mapsto <x,h>$ est une forme linéaire continue (de norme $\|x\|$). $|<x,h>|\le \|x\|\|h\|$ donc $\|J(x)\| = \|x\|$.
+	
+	$J(x) = 0 \Rightarrow <x,x>=0 \Rightarrow x=0$.
+	
+	Donc $J$ est injective.
+	
+	Montrons désormais le surjectivité de $J$.
+	Soit $\ell$ une forme linéaire continue sur $H$ non nulle. $\Ker \ell$ est un espace vectoriel fermé de $H$.Soit $G=(\Ker \ell)^\perp$, on a $H=\im \ell \oplus G$.
+	
+	$\ell|_G : G \rightarrow \R$ est un isomorphisme.
+	
+	$\forall g_\in G, \ell(g)=0 \Leftrightarrow g \in \Ker\ell \Rightarrow g=0$.
+	
+	Comme $\ell$ non nulle, $\ell|_G$ non nulle donc surjective.
+	
+	On va montrer que $\ell = J(g)$ pour un certain $g\in G$.
+	
+	Soit $g\in G$ tel que $\|g\|=1$.
+	
+	Tout $x\in H$ s'écrit $x=<x,g>g + (x-<x,g>g) = <x-<x,g>g,g> = <x,g>-<x,g><g,g> = 0$.
+	
+	$\ell(x) = <x,g>$, $\ell(g)$ donc $\ell(x) = <x,gl(g)>$.
+	
+	Donc $\ell=J(g\ell(g))$.
+\end{demo}
+
+\subsubsection{Familles et bases orthonormées}
+
+$(e_i)_{i\in I}$ est dite orthonormée ssi $\|e_i\| = 1, \forall i$, et $e_\perp e_j, \forall i \neq j$.
+
+Une famille orthonormée est libre.
+\begin{demo}
+	C'est bien connu par tout élève de sup.
+\end{demo}
+
+\begin{propriete}
+	Pour une famille orthonormée,on a de façon équivalente :
+	\begin{enumerate}
+		\item La famille est maximale.
+		\item La famille engendre un sev dense.
+		\item $\bigcap_i e_i^\perp=0$
+	\end{enumerate}
+\end{propriete}
+
+\begin{demo}
+	$3\Leftrightarrow 1$.
+	
+	Si il existe $v$ tel que $(e_i)\cup\{v\}$ est orthonormée, alors $v\in e_i^\perp$.
+	
+	Réciproquement, si $\exists v \in \bigcap_i e_i^\perp, v\neq 0$. Alors $(e_i)\cup \{\frac v {\|v\|}\}$ est orthonormée.
+	
+	$2 \Leftrightarrow 3$
+	
+	Soit $F$ la famille de l'espace vectoriel engendré e par les $e_i$.
+	
+	$H = F \oplus F^\perp \Rightarrow F=H$ ssi $F^\perp = (\Vect e_i)^\perp = 0$.
+\end{demo}
+
+Dans ce cas, on dit que $(e_i)$ est une base orthonormée (/!\ ce n'est pas une base au sens de l'algèbre linéaire).
+
+\begin{theorem}
+	Si H est un espace de \textsc{Hilbert} séparable (admettant une suite dense), alors il existe une base orthonormée dénombrable.
+\end{theorem}
+
+\begin{demo}
+	Soit $(x_n)$ une suite dense. On enlève des termes à $x_n$ de sorte que $(\tilde x_n)$
+	\begin{itemize}
+		\item engendre un sev dense
+		\item soit libre
+	\end{itemize}
+	Pour le faire, on garde $x_n$ ssi $x_n \notin \Vect(x_1,\dots,x_{n-1})$.
+	
+	On définit les $(e_n)$ à partir des $(\tilde x_n)$ en appliquant le processus d'orthonormalisation de \textsc{Gram-Schmidt}.
+\end{demo}
+
+
+\begin{lemme}
+	Si $F=\Vect(e_1,\dots,e_n)$ est de dimension finie et $e_1,\dots,e_n$ orthonormée. Alors $\pi_F(x) = \sum_{i=1}^n <x,e_i>e_i$.
+\end{lemme}
+
+\begin{theorem}
+	Soit $H$ un espace de Hilbert séparable et $(e_i)_{i\in\N}$ une base orthonormale de $H$.
+	
+	Alors \begin{enumerate}
+		\item $x=\sum_{k=1}^\infty <x,e_k>e_k$
+		\item $\|x\|^2 = \sum_{k=1}^\infty <x,e_k>^2$
+		\item $J:\begin{aligned} x&\mapsto (<x,e_k>)_{k\in\N} \\ H &\rightarrow \ell^2 \end{aligned}$ est un isomorphisme isométrique, où $\ell^2 = L^2(\N,\text{comptage})$.
+	\end{enumerate}
+\end{theorem}
+
+\begin{demo}
+	$x_n = \sum_{k=1}^n <x,e_k> e_k$ est le projeté orthogonal de $x$ sur $(e_1,\dots,e_n) = F_n$. Donc $\|x-x_n\| = d(x,F_n)$. Mais $e_k$ est une base orthonormée, donc $x\in \Adh(\bigcup F_n)$. Donc $\forall \eps > 0, \exists n\in\N, \exists y\in F_n, \|x-y\| \le \eps$. Donc $d(x,F_n) \rightarrow 0$.
+	
+	$\|x_n\|^2 = \sum_{k=1}^n <x,e_k>^2$ donc en passant à la limite, on a $\|x\|^2 = \sum_{k=1}^\infty <x,e_k>^2$.
+	
+	Sur $\ell^2, \|a_n\|^2 = \sum a_n^2$. Donc on a immédiatement le caractère isométrique de $J$. 
+	
+	Montrons que $J$ est surjective. Soit $(a_n)\in \ell^2$. On pose $x=\sum a_ne_n$, on va montrer que c'est la pré-image de $(a_n)$.
+	
+	Il faut montrer que cette somme converge. Or elle est de \textsc{Cauchy} donc elle converge.
+\end{demo}
+
+\subsection{L'espace $L^2(\Omega,\T,m)$ est-il séparable ?}
+
+\begin{theorem}
+	Si $\T$ est engendré par une famille dénombrable, alors pour toute mesure $\sigma$-finie $m$, $L^2(\Omega,\T,m)$ est séparable.
+\end{theorem}
+
+\begin{demo}
+	Il existe alors une algèbre dénombrable $\A$ qui engendre $\T$.
+	
+	On a vu dans la démontrstation du théorème d'extension de mesures de \textsc{Hahn-Kolmogorov} que 
+	\[
+	\tau = \{Y \subset \Omega,\quad  \forall \eps > 0, \exists A, m(A\setminus Y) \le \eps \wedge m(Y\setminus A) \le \eps \}
+	\]
+	est une tribu qui contient $\A$ donc $\T$.
+	
+	On va en conclure que $\1_A, A\in\A$ engendre un sous-espace $F$ dense de $L^p$.
+	\begin{enumerate}
+		\item Montrons que les fonctions indicatrices sont dans $\Adh(F)$. Pour tout $X\in\T$, on a :
+		$\|\1_A - \1_X\|_p^p = \int \1_{X\setminus A} + \1_{A\setminus X} \dd m = m(X\setminus A) + m(A\setminus X)$ peut donc être rendu arbitrairement petit.
+		\item Comme $\Adh(F)$ est un sous-espace vectoriel de $L^p$, $\Adh(F)$ contient les fonctions simples.
+		\item Les fonctions simples sont denses dans $L^p$. $\forall f \in L^p, f=f^+ - f^-, \exists (f_n^\pm) \text{ simples } f_n^\pm \nearrow f^\pm$.
+		
+		$\|f-(f_n^+-f_n^-)\|_p^p = \int |f^+-f_n^+|^p - \int |f^- f_n^-|^p$ qui est nul par théorème de convergence dominée.
+	\end{enumerate}
+
+	Cas où $m$ est $\sigma$-finie. $m=fP$ avec $P$ mesure de probabilité.
+	
+	$J : \begin{aligned} L^2(m) &\rightarrow L^2(\prob) \\ y&\mapsto y\sqrt f\end{aligned}$ est un isomorphisme.
+	
+	$\|y\sqrt f\|_{L^2(P)} = \int g^2 f\dd\prob = \int g^2 \dd m = \|g\|_{L^2(m)}$ et $J^{-1}(h) = \frac h {\sqrt g}$ donc $L^2(P)$ est séparable. Donc $L^2(m)$ aussi.
+	
+	(Rappel : $\mu = fm$ ssi $\mu(A) = \int \1_A f \dd m \Leftrightarrow \int g \dd\mu = \int gf\dd m \forall g\ge 0\text{ mesurable }$)
+		
+\end{demo}
+
+\begin{definition}
+	Soit $\mu$ et $m$ des mesures $\sigma$-finies sur $(\Omega,\T)$.
+	On dit que $\mu$ est absolument continue par rapport à $m$ ssi $\forall A\in\T, m(A)=0 \Rightarrow \mu(A) = 0$. On note $\mu \ll m$
+	
+	On dit que $\mu$ et $m$ sont singulières ssi il existe une décomposition $\Omega = A \sqcup B$ (mesurables) telle que $\mu(B) = 0, m(A)=0$. On note $\mu \perp m$.
+\end{definition}
+
+\begin{theorem}[Radon Nikodym]
+	Soient $\mu$ et $m$ deux mesures $\sigma$-finies. Il existe $f$ mesurable positive telle que $\mu=fm \Leftrightarrow \mu \ll m$
+\end{theorem}
+
+\begin{demo}
+	Étape 1 : on suppose $\mu$ et $m$ finies, $\mu \le m$. Alors $\int f \dd\mu \le \int f\dd m \quad \forall f \ge 0$.
+	
+	On considère $\phi : f \mapsto \int f dd\mu$ comme forme linéaire sur $L^2(m)$.
+	
+	$|\int f\dd\mu| \le \int |f|\dd\mu \le \|f\|_{L^2(m)} \|\1\|_{L^2(m)}$.
+	
+	Il existe donc, d'après le théorème de \textsc{Riesz} $g\in\L^2(m)$ tel que $\int f \dd\mu = \int fg\dd m$ pour tout $f\in L^2(m)$. C'est en particulier vrai lorsque $f=\1_A$ donc $\mu=gm$.
+	
+	Montrons que $g$ prend ses valeurs dans $[0,1]$ $m$ presque partout.
+	
+	$f=\1_\{g<0\}$, $0 \le \int f\dd\mu = \int_{\{g<0\}} g\dd m \le 0$
+	
+	Ceci implique que $m(g<0)=0$. Fixons $a>1$, et prenons $f=\1_{\{g\ge a\}}$.
+	
+	$\mu(g\ge a) = \int f\dd\mu \le \int_{\{g \ge a\}} g \dd m \ge am(g\ge a)$.
+	
+	Donc $m(g\ge a) \ge \mu(g\ge a) = 0$ donc $m(g > 1) = 0$.
+	
+	Étape 2 : $\mu, m$ finies, $\mu \le \mu + m$.
+	
+	On applique l'étape 1 : il existe $g:\Omega \rightarrow [0,1]$ tel que $\mu=g\cdot (\mu+m) = g\mu + gm$.
+	
+	On définit $A=\{g < 1\}, B=\{g=1\}$.
+	
+	Sur $A$ : $(1-g)\cdot \mu = gm \Rightarrow \mu = \frac g {1-g} m$.
+	
+	Sur $B$ : $\mu = \mu+m \Rightarrow m=0$.
+	
+	Donc $\mu = \underset{\mu^c, \text{ a une densité par rapport à }m}{\underbrace{\frac g {1-g} \1_A}} + \underset{\mu^s \perp m}{\underbrace{\1_B \mu}}$.
+	
+	Étape 3 : $m, \mu$ $\sigma$-finies. 
+	
+	$m=hP$, $\mu=gQ$ avec $h,g$ mesurables strictement positives et $P,Q$ mesures de proba.
+	
+	$Q=Q^s + fP$ où $Q^s \perp P$
+	
+	$\mu=gQ^s + \frac{gf}h+m$ : $Q^s \perp P \Leftrightarrow Q^s m \Rightarrow gQ^s \perp m$.
+\end{demo}
+
+\begin{theorem}[Lebesgue]
+	Il existe un unique couple $\mu^s$, $\mu^c$ tel que $\mu=\mu^s+\mu^c, \mu^c \ll \mu, \mu^c \perp \mu$
+\end{theorem}
+
+\begin{demo}
+	$\mu$, $m$, $\sigma$-finies, $\mu=\mu^s + \mu^c, \mu^c \perp m$, $\mu^c = fm$, $\tilde\mu^c = gm$.
+	
+	Unicité : $fm=gù \Rightarrow f=g$ $m$-presque partout.
+	
+	$fm(\{f\ge g\})=gm(\{f\ge g\}) \Rightarrow \int_{\{f\ge g\}} f-g \dd m =0$.
+	Donc $f-g=0$ $m$-presque partout sur $\{f\ge g\}$. Donc $g\le f$ $m$-presque partout.
+	
+	De plus, $\mu=\mu^s+\mu^c = \tilde\mu^s + \tilde\mu^c$ avec $\mu^s \perp m$. Donc il existe $A_s$ tel que $m(A_s)=0$ et $\mu^s(\comp{A_s}) = 0$. Donc $\mu^c(A_s) = \tilde\mu^c(A_s) = 0$.
+	
+	$\1_{A_s} \mu = \1_{A_s}\mu^s = \mu^s = \1_{A_s}\tilde\mu^s$.
+	
+	Donc $\mu^s = \tilde\mu^s$.
+	
+	Par symétrie, $\tilde\mu^s = \mu^s$.
+\end{demo}
+
+Ainsi, on a trivialement $\mu=\mu^s + fm$.
+
+\begin{rem}
+	$f$ est uniquement déterminée $m$-presque partout.
+\end{rem}
+
+Regardons le cas $\Omega = \, m = \lambda$.
+
+$\forall x \in \R, \delta_x$ est singulière. $\delta_x(A) = \left\{\begin{aligned} 1 &\text{ si } x\in A \\ 0 &\text{ sinon} \end{aligned}\right.$
+
+Donc $\delta_x \perp \lambda$ : $\R = \{x\} \sqcup (\R\setminus\{x\})$.
+
+Étant donnée une mesure quelconque, on dit que $x$ est un atome de $\mu$ si $\mu(\{x\}) > 0$.
+
+Ainsi, une mesure finie ou $\sigma$-finie aura un nombre au plus dénombrable d'atomes.
+
+La partie atomique de $\mu$ est $\mu^a = \sum_x \mu(\{x\})\delta_x = \sum_{x \text{ atome}} \mu(\{x\})\delta_x$.
+
+$\mu^a$ est une mesure et $\mu^a \le \mu$ et $\mu^a \perp \lambda$. Donc $\mu^a \le \mu^s$.
+
+Mais $\mu^s$ peut être beaucoup plus compliquée.
+
+\begin{theorem}
+	Sur $[0,1]$, il existe une mesure $\mu$ sans atomes mais singulière ($\mu\perp\lambda$).
+\end{theorem}
+
+\begin{demo}
+	On commence par travailler dans $X=Y^\N$ avec $Y=[\![0,9]\!]$.
+	
+	Pour toute probabilité $p$ sur $Y$, on note $m_p$ le produit infini des $p$.
+	
+	\begin{lemme}
+		Si $p\neq \tilde p$, alors $m_p \perp m_{\tilde p}$ sur $X$.
+	\end{lemme}	
+	\begin{demo}
+		Plus précisément, en considérant $A_p=\{(Y_n) \text{ tq } \frac 1 N\sum_{n=1}^N \1_{\{Y_n=j\}} \rightarrow p(j) \forall j\in Y\}$.
+		\begin{itemize}
+			\item $A_p\cap A_{\tilde p} = \varnothing$ si $p\neq\tilde p$.
+			\item $A_p$ est mesurable
+			\item $m_p(A_p)=1$, i.e. $m_p(\comp{A_p}) = 0$ (cela découle de la loi forte des grands nombres).
+		\end{itemize}
+	\end{demo}
+	On transporte sur $\R$ au moyen de l'application $F: \begin{aligned} X&\rightarrow [0,1] \\ (y_n) &\mapsto \sum_{n\ge 1} y_n 10^{-n}\end{aligned}$.
+	
+	$F$ n'est pas tout à fait bijective, mais presque.
+	
+	$F$ est bijective en restriction à l'ensemble $Z$ des suites qui ne se terminent pas par des 9.
+	\[
+	F|_Z : Z \rightarrow [0,1[
+	\]
+	Soit $H$ un inverse de $F|_Z$, $H$ est mesurable.
+	
+	$H : [0,1[ \rightarrow Z\subset X$
+	
+	Pour vérifier que $H$ est mesurable, il suffit de vérifier que $H^n$, la collection des $n$ premières coordonnées, st mesurable.
+	
+	\[H^n =((H)_1, \dots, (H)_n)\]
+	
+	$\inv{(H^n)}(y_1,\dots,y_n) = [0,y_1\dots y_n, 0,y_1\dots y_n+10^{-n}[$
+	
+	Si $p(9)<1$, $A_p\subset Z$. Donc $F(A_p) = \inv H(A_p)$ est mesurable dans $[0,1[$.
+	
+	Si on définit $\mu_p := F_*\mu_p, B_p=:=F(A_p)$, alors $\mu_p$ est concentrée sur $B_p$ ($\mu_p(\comp{B_p}) = 0$), et $B_p\cap B_{\tilde p} = \varnothing$ car $p\neq \tilde p$.
+	Si $p_0 = (\frac 1 {10}, \dots, \frac 1 {10})$, alors $\mu_{p_0} = \lambda$. Et $\forall p\neq p_0, \mu_p \perp \lambda$.
+	
+	De plus, si $p(j) < 1 \forall j$, alors $m_p$, donc $\mu_p$ n'ont pas d'atome.
+\end{demo}
+\begin{rem}
+	Si on définit alors $h(t) = \mu_p([0,t])$, alors $h'(t)=0$ presque partout, mais $h$ est strictement croissante. C'est les "escaliers du diable".
+\end{rem}
+
+\section{Mesures signées}
+
+\begin{definition}
+	On dit que $\mu : \T \rightarrow \R$ est une mesure signée si $\forall A_n\in\T$ une suite disjointe, alors $\mu(\bigsqcup_n A_n)= \sum_n\mu(A_n) = \lim_{N\rightarrow \infty}\sum_{n=1}^N \mu(A_n)$.
+\end{definition}
+
+\begin{rem}
+	Une mesure (positive) finie est une mesure signée.
+\end{rem}
+\begin{rem}
+	Il découle de ce qui va suivre que la série dans la définition est absolument convergente.
+\end{rem}
+
+\begin{lemme}
+	Si $\mu$ est une mesure à signe, il existe $C$ tel que $|\mu(A)|\le C, \forall A \in \T$.
+\end{lemme}
+
+\begin{demo}
+	On va démontrer l'existence d'une borne supérieure ; on suppose qu'il n'y en a pas.
+	
+	Posons $A_1=B_1$ tel que $\mu(A_1) \ge 1$.
+	
+	Il existe $A_2$ tel que $\mu(1_2)\ge \mu(B_1) + 1 \Rightarrow \mu(A_2\setminus B_1) \ge 1$.
+	Donc il existe $B_2$ disjoint de $B_1$ tel que $\mu(B_2) \ge 1$.
+	
+	Et par récurrence, il existe $B_n$ suite disjointe telle que $\forall n, \mu(B_n) \ge 1$.
+	
+	Ceci contredit la définition de $\mu$.
+	
+	Au pire, on peut choisir d'inverser toutes les inégalités.
+\end{demo}
+
+\begin{theorem}
+	Si $\mu$ est une mesure signée, alors il existe deux mesures positives finies singulières $\mu^+$ et $\mu^-$ telles que $\mu=\mu^+ - \mu^-$. ($\mu^+ \perp \mu^-$).
+	Cette décomposition est unique : $\forall A \in \T, \mu(A)=\mu^+(A\cap A^+) - \mu^-(A \cap A^-)$ ($A^+$ et $A^-$ sont les supports de $\mu^+$ et $\mu^-$)
+\end{theorem}
+\begin{demo}
+	On note $(x)^+ = \max(x,0)$ ($\mu^+(A) > (\mu(A))^+$ en général).
+	
+	On définit $\mu^+(A) = \sup_{A=\bigsqcup_nA_n} \sum(\mu(A_n))^+$ où le sup est pris sur l'ensemble des décompositions mesurables dénombrables de $A$.
+	
+	\emph{1ère étape : } $\mu^+$ est $\sigma$-additive.
+	
+	On considère $B=\bigsqcup_n B_n$ et on veut $\mu^+(B)=\sum\mu^+(B_n)$.
+	
+	Fixons $\eps > 0$.
+	
+	Il existe une décomposition $B_{n,m}$ de $B_n$ tel que $\mu^+(B_n) \le \sum_m \left(\mu(B_{n,m})\right)^+ + \eps2^{-n}$.
+	
+	Donc $\sum_n \mu^+(B_n) \le \eps + \sum_{n,m} \left(\mu(B_{n,m})\right)^+ \le \eps + \mu^+(B)$.
+	
+	Autre inégalité : soit $A_m$ une décomposition de $B$.$B_{n,m} = A_m\cap B_n$
+	$\sum_m (\mu(A_m))^+ = \sum_m(\sum_n \mu(B_{n,m})^+ \le \sum_m\sum_n(\mu(B_{n,m}))^+ = \sum_n \sum_m (\mu(B_{n,m}))^+ \le \sum_n \mu^+(B_n)$. .
+	
+	En prenant le sup sur la décompositionn $A_{n,m}$, on obtient $\mu^+(B) \le \sum\mu^+(B_n)$.
+	
+	\emph{2ème étape : }$\mu^+$ est finie.
+	
+	Soit $C$ tel que $\mu(A) \le C \forall A\in\T$.
+	
+	Supposons que $\mu^+(\Omega) > C$.
+	Alors $\exists A_n$ décomposition de $\Omega$ telle que $\sum(\mu(A_n))^+ > C$. Soit $\mathcal N\subset \N$ l'ensemble des indices pour lesquels $\mu(A_n) > 0$.
+	
+	$\mu(\bigsqcup_{n\in\mathcal N}) = \sum_{n\in\mathcal N} \mu(A_n) > C$. Absurde.
+		
+	On pose $\mu^- = \mu^+ - \mu$, $|\mu| := \mu^+ + \mu^- = 2\mu^+ - \mu$.
+	
+	$\mu \le |\mu|$, et $\mu(A) < |\mu(A)|$ en général.
+	
+	$\mu^+, \mu^-, |\mu|$ sont des mesures positives foncées finies. $\mu^+\le |\mu|, \mu^-\le |\mu|$.
+	
+	Donc il existe $f^\pm$ tel que $\mu^\pm=f^\pm|\mu|$.
+	
+	On pose $h=\min(f^+,f^-), \tilde f^+ = f^+ - h, \tilde f^- = f^- - h$.
+	
+	$\tilde\mu^\pm = \tilde f^\pm |\mu|$.
+	
+	$\tilde f^\pm$ sont des mesures positives finies.
+	
+	$\tilde f^£ - \tilde \mu^- = (\tilde f^+ - \tilde f^-) |\mu| = (f^+ - f^-)|\mu| = \mu$.
+	
+	$\tilde\mu^+\perp\tilde\mu^-$ car $\set{\tilde f^+ > 0} = \set{f^+ > h} = \set{f^+>f^-}$, et $\set{\tilde f^- > 0} = \set{\tilde f^- > h} = \set{\tilde f^- > \tilde f^+}$
+
+\end{demo}
+
+\section{Espaces $\LL^\infty$, $L^\infty$}
+
+\begin{definition}
+On note $\LL \infty$ l'espace des fonctions mesurables bornées. On note $\norm[\infty] f := \sup_{x\in\Omega}|f(x)|$.
+
+C'est une norme sur $\LL^\infty$, et $(\LL^\infty, \norm[\infty]\cdot )$ qui est de plus complet.
+
+On note $L^\infty$ l'espace des classes d'équivalences des fonctions à égalité presque partout : $L^\infty = \LL^\infty / \mathcal N^\infty$ où $\mathcal N^\infty$ est l'ensemble des fonctions mesurables bornées nulles presque partout.
+
+On munit $L^\infty$ de la norme de supremum essentiel :
+\[
+\norm[\infty]f = \inf_{y\in\mathcal N^\infty} \norm[\infty]{f+y} = \inf_{[\tilde f]=f} \norm[\infty]{\tilde f}
+\]
+
+\end{definition}
+
+\begin{propriete}
+
+Alors, $(L^\infty, \norm[\infty]\cdot)$ est un espace de \textsc{Banach}.
+
+\end{propriete}
+
+\begin{rem}
+
+Cette construction est un cas particulier de la suivante.
+
+On considère $(E,\norm[E]\cdot)$ un espace vectoriel normé. Soit $F\subset E$ un sous-espace vectoriel fermé. On regarde le quotient $E/F$, muni de la norme $\norm y = \inf_{\pi(x)=y} \norm x$.
+
+\begin{propriete}
+	$(E/F,\norm\cdot)$ est un espace vectoriel normé qui est complet si $E$ est complet.
+\end{propriete}
+\begin{demo}
+	$\norm{y+z} = \inf_{\pi(x) = y+Z} \norm[E] x \le \inf_{\theta \in \inv\pi(y), \theta' \in \inv\pi(z)} \norm[E]{\theta+\theta'} \le \inf_{\theta,\theta'}(\norm[E] \theta + \norm[E] \theta') = \inf_\theta \norm[E]\theta + \inf_{\theta'}\norm[E]\theta' = \norm y + \norm z$. D'où l'inégalité triangulaire.
+	
+	Si $a\neq 0$, $\norm[E]{ay} = \inf_{\theta\in\inv\pi(ay)}\norm[E]\theta = \inf_{x\in\inv\pi(y)}\norm[E]{ax} = \inf_x |a|\norm[E] x = |a|\inf_x \norm[E] x = |a|\norm y$.
+	
+	$\norm y = 0 \Rightarrow \exists x_n \in \inv\pi(y)$ tel que $\norm[E] {x_n} \le \frac 1 n$. $x_n \rightarrow 0$ dans $E$, $x_n\in x_1+F$. Or, comme $F$ est fermé, $0\in x_1+F$ donc $\inv\pi(y)=F$ i.e. $y=0$.
+	
+	On rappelle que $E$ est complet ssi toute série normalement convergente est convergente.
+	
+	Considérons $y_n\in E/F$ telle que $\sum\norm[E]{y_n} < \infty$.
+	
+	\begin{rem}
+		$\norm\pi \le 1$
+	\end{rem}
+	
+	$\forall n, \exists x_n , \pi(x_n)=y_n \wedge \norm[E]{x_n}\le\norm{y_n}+2^{-n}$. Alors $\sum\norm[E]{x_n} < \infty$. Donc $\exists s = \lim_{N\rightarrow \infty} \sum_{n=1}^N x_n$. Alors $\norm{\pi(s) - \sum_{n=1}^Ny_n} \le \norm[E]{s-\sum_{n=1}^N x_n} \rightarrow_{N\rightarrow \infty} 0$.
+\end{demo}
+
+\end{rem}
+
+\begin{rem}
+	Si $L:E\rightarrow G$ est linéaire continue, et si $L|_F=0$, alors il existe $\tilde L :E/F \rightarrow G$ telle que $L=\tilde L\circ \pi$.
+	
+	En particulier $(E/F)^* \cong F^\perp \subset E^*$, et $l\mapsto l\circ\pi$ est un isomorphisme isométrique.
+	
+	\begin{demo}
+		On définit $\tilde L$ par $\tilde L(y)=L(x) \forall x \in \inv\pi(y)$. Si $\tilde x$ est un autre élément de $\inv\pi(y)$, alors $\tilde x - x \in F$ donc $L(\tilde x) = L(x)$.
+	\end{demo}
+	
+	$\tilde L$ est linéaire.
+	
+	Montrons que $\tilde L$ est continue.
+	
+	$\forall x \in \inv\pi(y), \norm{\tilde L(y)} \le \norm L\norm x \le \norm L \norm y$.
+	
+	Donc $\norm{\tilde L} \le \norm L$.
+	
+	Soit $y\neq 0$ tel que $\norm{\tilde L(y)} \ge (\norm{\tilde L}-\eps)\norm y$. Fin de la preuve laissée en exercice au lecteur.	
+\end{rem}
+
+\begin{theorem}
+	Soit $(\Omega,\T,m)$ un espace mesuré $\sigma$-finie. Alors $L^\infty$ est le dual de $L^1$.
+	
+	Plus précisément, $J:\begin{aligned} L^\infty &\rightarrow (L^1)^* \\ h&\mapsto (f:\mapsto \int fh\dd m)\end{aligned}$ est un isomorphisme isométrique.
+\end{theorem}
+\begin{rem}
+	$L^1$ n'est \emph{pas} le dual de $L^\infty$.
+\end{rem}
+
+\begin{demo}
+	$\left|\int fh\dd m \right|\le \norm[\infty] h \int |f|\dd m = \norm[\infty] h \norm[1]f$.
+	
+	$\forall \tilde h = h$ presque partout, on a:
+	
+	$\left|\int fh\dd m\right| = \left|\int f \tilde h \dd m\right| \le \norm[\infty]{\tilde h} \norm[1] f$. En prenant l'infimum sur $\tilde h$, on a : $\left|\tilde fh\dd m \right| \le \norm[\infty] h \norm[1]f$.
+	
+	Donc : $\norm{J(h)} \le \norm[\infty]h$.
+	
+	Supposons dans un premier temps que $m$ est finie. Soit $\ell\in(L^1)^*$. On veut montrer qu'il existe $h,\norm[\infty]h \le \norm \ell$, tels que $\ell = J(h)$.
+	
+	On définit la mesure à signe $A\mapsto \mu(A) := \ell(\1_A)$.
+	
+	Soient $A_n$ mesurables dijoints, $\1_{\bigsqcup_{n=1}^N A_n} = \sum_{n=1}^N \1_{A_n}$. Donc $\mu\left(\bigsqcup_{n=1}^N A_n\right) = \sum_{n=1}^N \mu(A_n)$.
+	
+	De plus, $\1_{\bigsqcup_{n=1}^\infty A_n} = \lim_{N\rightarrow \infty} \sum_{n=1}^N \1_{A_n}$ (limite ponctuelle croissante).
+	
+	$\norm[1]{\1_{\bigsqcup_{n=N}^\infty A_n}} \rightarrow 0$ par le théorème de convergence dominée.
+	
+	Donc, par continuité de $\ell$, $\mu\left(\bigsqcup_{n=1}^\infty A_n\right) = \ell(\1_{\bigsqcup A_n}) = \lim_{n\rightarrow \infty} \sum_{n=1}^N \mu(A_n) = \sum_{n=1}^\infty \mu(A_n)$.
+	
+	Si $m(A) = 0$, alors $\mu(A)=\ell(\1_A)=\ell(0) = 0$.
+	
+	On écrit maintenant $\mu=\mu^+-\mu^-$ avec $\mu^+$ et $\mu^-$ mesures finies, $\mu^+ \perp \mu^-$.
+	
+	Si $m(A)=0$, alors $\mu^+(A) = \mu^-(A)=0$ (car $\mu^+ \perp \mu^-$).
+	
+	En appliquant le théorème de \textsc{Radon-Nikodym} à $\mu^+$ et à $\mu^-$, on obtient une fonction mesurable $h$ telle que $\mu=hm$.
+	
+	Ainsi, $\ell(\1_A) = \int \1_A h\dd m, \forall A\in\T$.
+	
+	L'égalité $\ell(f)=\int fh\dd m$ est donc vraie par linéarité pour les fonctions simples puis par passage à la limite pour $f\in L^1$.
+	
+	Vérifions que $h\in L^\infty$ et même que $\norm[\infty] h \le \norm l$.
+	
+	Prenons $A=\set{x\in\Omega, h(x)>\norm\ell+\eps}$. Alors $\mu(A)=\ell(\1_A)\le\norm\ell m(A)$ et $\mu(A) = \int_A h\dd m \ge (\eps + \norm\ell)m(A)$. Donc $m(A) = 0$.
+	
+	Donc $m(\set{h\ge\norm\ell}) = 0$ et $m(\set{h\le-\norm\ell}) = 0$.
+
+\end{demo}
 
 \end{document}

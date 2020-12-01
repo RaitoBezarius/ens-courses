@@ -12,7 +12,6 @@
 \RequirePackage{tcolorbox}
 \RequirePackage{stmaryrd}
 \RequirePackage[left=2.00cm, right=2.00cm, top=1.50cm, bottom=1.50cm]{geometry}
-
 \everymath{\displaystyle}
 
 \newcommand{\N}{\mathbb N}
@@ -30,30 +29,50 @@
 \newcommand{\var}{\mathrm{Var}}
 \newcommand{\cov}{\mathrm{Cov}}
 \newcommand{\indep}{\perp \!\!\! \perp}
-\renewcommand{\Im}{\mathrm{Im }}
+\DeclareMathOperator{\im}{Im}
 \newcommand{\borel}{\mathrm{Borel}}
 \newcommand{\prob}{\mathbb P}
+\newcommand{\inv}[1]{#1^{-1}}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\norm}[2][]{\|#2\|_{#1}}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Vect}{Vect}
+\DeclareMathOperator{\Adh}{Adh}
+
+\tcbuselibrary{skins}
+
+\newtcolorbox{enonce}[1]
+{ 	no shadow,
+	coltext=violet!50!black,
+	colframe=violet!80!black,
+	colbacktitle=violet!80!black,
+	coltitle=yellow!80!white,
+	colback=yellow!5!white,
+	fonttitle=\bfseries,
+	bottomrule=0pt,
+	rightrule=0pt,
+	sharp corners,
+	rounded corners=northwest,
+	arc=1pt,
+	enhanced,
+	title=#1}
 
 \newenvironment{definition}[1][]{
-	
-	\textbf{Définition #1 : }
+	\begin{tcolorbox}[title=Définition #1, fonttitle=\bfseries, enhanced, no shadow, bottomrule=0pt, rightrule=0pt, sharp corners]
 }
-{}
+{\end{tcolorbox}}
 
 \newcounter{th}
 \newenvironment{theorem}[1][]{
 \refstepcounter{th}
-\begin{tcolorbox}
-	\textbf{Théorème \theth \ #1}
+\begin{enonce}{Théorème\  \theth\ #1}
 	
-	
-}{\end{tcolorbox}}
+}{\end{enonce}}
 
 \newenvironment{propriete}[1][]{
-	\begin{tcolorbox}
-		\textbf{Propriété #1 : }
+	\begin{enonce}{Propriété #1}
 }
-{\end{tcolorbox}}
+{\end{enonce}}
 
 \newenvironment{demo}[1][]{
 
@@ -72,16 +91,14 @@
 	\textbf{Exemple :} }{}
 
 \newenvironment{corollaire}{
-	\begin{tcolorbox}
-		\textbf{Corollaire : }
+	\begin{enonce}{Corollaire}
 	}
-	{\end{tcolorbox}}
+	{\end{enonce}}
 
 \newenvironment{lemme}[1][]{
-	\begin{tcolorbox}
-		\textbf{Lemme #1 : }
+	\begin{enonce}{Lemme #1}
 	}
-	{\end{tcolorbox}}
+	{\end{enonce}}
 
 \newenvironment{rem}{
 	
